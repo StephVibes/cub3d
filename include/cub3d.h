@@ -42,4 +42,12 @@ typedef struct s_maze
 } t_maze;
 
 
+// Init
+void	maze_init(t_maze *maze);
+
+// Main
+void	error(void);
+
+//Events
+int	close_handler(t_maze *maze);
 #endif

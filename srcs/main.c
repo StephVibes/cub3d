@@ -2,9 +2,15 @@
 
 void	error()
 {
-	write(1, "Error usage", 1);
+	write(1, "Error usage\n", 12);
 	exit(1);
 
+}
+
+int	parsing(char *map_name)
+{
+	printf("%s\n", map_name);
+	return(0);
 }
 
 int	main(int argc, char **argv)
@@ -13,9 +19,11 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		error();
+	if (parsing(argv[1]) != 0)
+		error();
 	maze_init(&maze);
-	maze_render(&maze);
-	mlx_loop();
+	//maze_render(&maze);
+	mlx_loop(maze.mlx_ptr);
 }
 
 /*int main(void)

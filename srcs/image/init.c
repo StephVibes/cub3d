@@ -1,6 +1,15 @@
 #include "cub3d.h"
 
-void maze_init(t_maze *maze)
+static void	events_init(t_maze *maze)
+{
+	mlx_hook(maze->win_ptr,
+		DestroyNotify,
+		StructureNotifyMask,
+		close_handler,
+		maze);
+}
+
+void	maze_init(t_maze *maze)
 {
 	maze -> mlx_ptr = mlx_init(); // connect with the minilibx
 	if (maze -> mlx_ptr == NULL)
@@ -21,6 +30,6 @@ void maze_init(t_maze *maze)
 		error(); // improve
 	}
 	maze -> screen.data = mlx_get_data_addr(maze -> screen.img_ptr, &maze -> screen.bpp, &maze -> screen.line_length, &maze -> screen.endian);
-	//events_init()?
+	events_init(maze);
 	//data_init()?
 }
