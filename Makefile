@@ -1,5 +1,5 @@
 # Project Name
-NAME = cub3d
+NAME = cub3D
 
 # Compiler and Flags
 CC = gcc
@@ -10,12 +10,13 @@ INCLUDE_DIR = include
 SRC_DIR = srcs
 OBJ_DIR = objs
 LIB_DIR = include/minilibx-linux
-LIBFT_DIR = $(SRC_DIR)/libft
+LIBFT_DIR = libft
 
 # Files
 SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/image/init.c \
-       $(SRC_DIR)/image/events.c
+       $(SRC_DIR)/image/events.c \
+	   $(SRC_DIR)/parsing/read_file.c $(SRC_DIR)/parsing/parsing.c 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 
@@ -36,6 +37,7 @@ $(LIBFT):
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)/image
+	@mkdir -p $(OBJ_DIR)/parsing
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
 clean:
