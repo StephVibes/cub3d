@@ -11,20 +11,22 @@ void	error(char *message)
 int	parsing(char *map_name, t_maze *maze)
 {
 	printf("%s\n", map_name);
-    maze->map = load_map(map_name);
-    if (!maze->map)
-        return (1);
-	else return(0);
+	maze->map = load_map(map_name);
+	if (!maze->map)
+		return (1);
+	else
+		return(0);
 }
 
 int	main(int argc, char **argv)
 {
-	t_maze  maze;
+	t_maze	maze;
 
 	if (argc != 2)
 		error("not enough arguments");
 	if (parsing(argv[1], &maze) != 0)
 		error("error parsing map");
+	printf("despues del parsing");
 	maze_init(&maze);
 	//maze_render(&maze);
 	mlx_loop(maze.mlx_ptr);
