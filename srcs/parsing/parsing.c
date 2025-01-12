@@ -89,7 +89,79 @@ void	parse_colors(char **lines, t_map *map)
 	}
 }
 
-// void	parse_map(char **lines, t_map *map)
-// {
 
-// }
+int	find_map_start(char **lines)
+{
+	int	i;
+	char	*line;
+
+	i = 0;
+	line = NULL;
+	while (lines[i])
+	{
+		//printf("line nro = %d\n", i);
+		line = lines[i];
+		if ((line[0] == '0' || line[0] == '1' || line[0] == ' ') 
+				&& (line[1] == '0' || line[1] == '1' || line[1] == ' '))
+			return (i);
+	i++;
+	}
+	return (0);
+}
+
+void	get_map_info(char **lines, t_map *map, int map_start)
+{
+	int	i;
+	int	line_len;
+
+	i = map_start;
+	map->map_height = 0;
+	map->map_width = 0;
+	while (lines[i])
+	{
+		line_len = ft_strlen(lines[i]);
+		if(line_len > map->map_width)
+			map->map_width = line_len;
+		map->map_height++;
+		i++;
+	}
+	i = 0;
+	map->layout = malloc(sizeof(char *) * (map->map_height + 1));
+	while (lines[map_start + i])
+	{
+		map->layout[i] = ft_strdup(lines[map_start + i]);
+		i++;
+	}
+	map->layout[map->map_height] = NULL;
+}
+
+/*int	validate_map(char **lines, int map_start)
+{
+	int	i;
+	int	j;
+
+	i = map_start;
+
+	while (lines[i])
+	{
+		j = 0;
+		while (lines[i][j])
+		{
+			if(line[i][j] == '0' || line[i][j] == '1' || line[i][j] == ' ' || 
+				line[i][j] == 'N' || line[i][j] == 'S' || line[i][j] == 'E' line[i][j] == 'W')
+				j++;
+		}
+	}
+}*/
+
+void	parse_map(char **lines, t_map *map)
+{
+	int	map_start;
+
+	map_start = find_map_start(lines);
+	if (map_start)
+	{
+		get_map_info(lines, map, map_start);
+	}
+	//validate_map
+}

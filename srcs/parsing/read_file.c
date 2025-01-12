@@ -75,7 +75,7 @@ t_map	*load_map(const char *file_name)
 	if (!map)
 		return (NULL);
 	ft_memset(map, 0, sizeof(t_map)); // Initialize map to zero
-	printf("cargo el mapa");
+	//printf("cargo el mapa");
 	parse_textures(lines, map);
 	printf("texture[0]: %s\n", map->textures[0]);
 	printf("texture[1]: %s\n", map->textures[1]);
@@ -88,8 +88,15 @@ t_map	*load_map(const char *file_name)
 	printf("ceiling_color[0]: %d\n", map->ceiling_color[0]);
 	printf("ceiling_color[1]: %d\n", map->ceiling_color[1]);
 	printf("ceiling_color[2]: %d\n", map->ceiling_color[2]);
-    //parse_map(lines, map);
-
+	parse_map(lines, map);
+	printf("map height = %d\n", map->map_height);
+	printf("map_width = %d\n", map->map_width);
+	int i = 0;
+	while(map->layout[i])
+	{
+		printf("[%d] = %s", i, map->layout[i]);
+		i++;
+	}
     // validate_map(map);
     ft_free_split(lines); // Free the file lines
     return map;

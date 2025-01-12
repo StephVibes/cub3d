@@ -66,5 +66,5 @@ void	ft_free_split(char **split);
 t_map  	*load_map(const char *file_name);
 void	parse_textures(char **lines, t_map *map);
 void	parse_colors(char **lines, t_map *map);
-//void	parse_map(char **lines, t_map *map);
+void	parse_map(char **lines, t_map *map);
 #endif
