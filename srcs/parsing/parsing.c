@@ -117,10 +117,12 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 	i = map_start;
 	map->map_height = 0;
 	map->map_width = 0;
-	while (lines[i])
+	while (lines[i] && lines[i][0] != '\n')
 	{
 		line_len = ft_strlen(lines[i]);
-		if(line_len > map->map_width)
+		if (lines[i][line_len - 1] == '\n')
+			line_len--;
+		if (line_len > map->map_width)
 			map->map_width = line_len;
 		map->map_height++;
 		i++;
