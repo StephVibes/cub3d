@@ -26,39 +26,8 @@ int	main(int argc, char **argv)
 		error("not enough arguments");
 	if (parsing(argv[1], &maze) != 0)
 		error("error parsing map");
-	printf("despues del parsing");
 	maze_init(&maze);
-	//maze_render(&maze);
-	mlx_loop(maze.mlx_ptr);
+    mlx_loop_hook(maze.mlx_ptr, draw_loop, &maze);
+    mlx_loop(maze.mlx_ptr);
+    return (0);
 }
-
-/*int main(void)
-{
-    void *mlx;
-    void *win;
-    void *img;
-    char *data;
-    int bpp, size_line, endian;
-    int width = 800, height = 600;
-
-    mlx = mlx_init();
-    win = mlx_new_window(mlx, width, height, "Image Example");
-    img = mlx_new_image(mlx, width, height);
-    data = mlx_get_data_addr(img, &bpp, &size_line, &endian);
-
-    // Fill the image with a gradient
-    for (int y = 0; y < height; y++)
-    {
-        for (int x = 0; x < width; x++)
-        {
-            int color = (x * 255 / width) << 16 | (y * 255 / height) << 8;
-            int pixel_pos = (y * size_line) + (x * (bpp / 8));
-            *(int *)(data + pixel_pos) = color;
-        }
-    }
-
-    // Display the image
-    mlx_put_image_to_window(mlx, win, img, 0, 0);
-    mlx_loop(mlx);
-    return 0;
-}*/

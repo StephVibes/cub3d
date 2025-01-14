@@ -14,8 +14,9 @@ LIBFT_DIR = libft
 
 # Files
 SRCS = $(SRC_DIR)/main.c \
-       $(SRC_DIR)/image/init.c \
-       $(SRC_DIR)/image/events.c \
+       $(SRC_DIR)/rendering/init.c \
+       $(SRC_DIR)/rendering/events.c \
+	   $(SRC_DIR)/rendering/render.c \
 	   $(SRC_DIR)/parsing/read_file.c $(SRC_DIR)/parsing/parsing.c 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
@@ -36,7 +37,7 @@ $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)/image
+	@mkdir -p $(OBJ_DIR)/rendering
 	@mkdir -p $(OBJ_DIR)/parsing
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 

@@ -1,12 +1,40 @@
 #include "cub3d.h"
 
+static void	data_init(t_maze *maze)
+{
+	maze->player.key_state[0] = 0;
+	maze->player.key_state[1] = 0;
+	maze->player.key_state[2] = 0;
+	maze->player.key_state[3] = 0;
+	maze->map->player_x = WIDTH / 2; //SACAR DEL MAPA
+	maze->map->player_y = HEIGHT / 2; //SACAR DEL MAPA
+	maze->player.x = maze->map->player_x; //decidir si actualizar o no
+	maze->player.y = maze->map->player_y;
+}
+
 static void	events_init(t_maze *maze)
 {
+	mlx_hook(maze->win_ptr,
+		KeyPress,
+		KeyPressMask,
+		key_press_handler,
+		maze);
+	mlx_hook(maze->win_ptr,
+		KeyRelease,
+		KeyReleaseMask,
+		key_release_handler,
+		maze);
+	/*mlx_hook(maze->win_ptr,
+		ButtonPress,
+		ButtonPressMask,
+		mouse_handler,
+		maze);*/
 	mlx_hook(maze->win_ptr,
 		DestroyNotify,
 		StructureNotifyMask,
 		close_handler,
 		maze);
+		
 }
 
 void	maze_init(t_maze *maze)
@@ -29,7 +57,8 @@ void	maze_init(t_maze *maze)
 		free(maze -> mlx_ptr);
 		error("error creating the image with minilibx"); // improve
 	}
-	maze -> screen.data = mlx_get_data_addr(maze -> screen.img_ptr, &maze -> screen.bpp, &maze -> screen.line_length, &maze -> screen.endian);
+	maze -> screen.data = mlx_get_data_addr(maze -> screen.img_ptr, &maze -> screen.bpp, &maze -> screen.line_len, &maze -> screen.endian);
+	data_init(maze);
+	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
 	events_init(maze);
-	//data_init()?
 }

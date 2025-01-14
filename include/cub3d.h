@@ -16,41 +16,50 @@
 
 typedef struct s_image
 {
-    void    *img_ptr;      // Pointer to the image
-    char    *data;         // Pointer to the pixel data
-    int     width;         // Image width
-    int     height;        // Image height
-    int     bpp;           // Bits per pixel
-    int     line_length;   // Length of a line in bytes
-    int     endian;        // Endianness
+	void	*img_ptr;      // Pointer to the image
+	char	*data;         // Pointer to the pixel data
+	int 	width;         // Image width
+	int		height;        // Image height
+	int		bpp;           // Bits per pixel
+	int		line_len;   // Length of a line in bytes
+	int		endian;        // Endianness
 } t_image;
 
 typedef struct s_map {
-    char    *textures[4]; // Paths for NO, SO, WE, EA
-    int     floor_color[3]; // RGB for floor color
-    int     ceiling_color[3]; // RGB for ceiling color
-    char    **layout; // 2D array for the map layout
-    int     map_width; // Width of the map
-    int     map_height; // Height of the map
-    char    player_dir; // Initial player direction (N, S, E, W)
-    int     player_x; // Player's starting X coordinate
-    int     player_y; // Player's starting Y coordinate
+	char	*textures[4]; // Paths for NO, SO, WE, EA
+	int		floor_color[3]; // RGB for floor color
+	int		ceiling_color[3]; // RGB for ceiling color
+	char	**layout; // 2D array for the map layout
+	int		map_width; // Width of the map
+	int		map_height; // Height of the map
+	char	player_dir; // Initial player direction (N, S, E, W)
+	int		player_x; // Player's starting X coordinate
+	int		player_y; // Player's starting Y coordinate
 } t_map;
+
+typedef struct s_player
+{
+	int			key_state[4];    // For tracking key presses WASD
+	double	x; // Player's X coordinate
+	double	y; // Player's Y coordinate
+	// double	dir_x; // Player's direction X
+	// double	dir_y; // Player's direction Y
+	double	plane_x; // Camera plane X
+	double	plane_y; // Camera plane Y
+} t_player;
 
 typedef struct s_maze
 {
-    void        *mlx_ptr;        // Pointer to the MLX instance
-    void        *win_ptr;        // Pointer to the window
-    t_image     textures[4];     // Array for wall textures (e.g., north, south, east, west)
-    t_image     screen;          // For rendering the screen buffer
-    double      plane_x;         // Camera plane X
-    double      plane_y;         // Camera plane Y
-    t_map       *map;            // Pointer to the map info
-    int         key_state[256];  // For tracking key presses
+	void		*mlx_ptr;        // Pointer to the MLX instance
+	void		*win_ptr;        // Pointer to the window
+	//t_image		textures[4];     // Array for wall textures (e.g., north, south, east, west)
+	t_image		screen;          // For rendering the screen buffer
+	double		plane_x;         // Camera plane X
+	double		plane_y;         // Camera plane Y
+	t_map		*map;            // Pointer to the map info
+
+	t_player	player;          // Player info
 } t_maze;
-
-
-
 
 // Init
 void	maze_init(t_maze *maze);
@@ -60,6 +69,9 @@ void	error(char *message);
 
 //Events
 int	close_handler(t_maze *maze);
+int	key_press_handler(int keycode, t_maze *maze);
+int	key_release_handler(int keycode, t_maze *maze);
+
 
 // Parsing
 void	ft_free_split(char **split);
@@ -67,4 +79,11 @@ t_map  	*load_map(const char *file_name);
 void	parse_textures(char **lines, t_map *map);
 void	parse_colors(char **lines, t_map *map);
 void	parse_map(char **lines, t_map *map);
+
+// Rendering
+
+void	draw_square(int x, int y, int size, int color, t_image *screen);
+void	maze_render(t_maze *maze);
+int	draw_loop(t_maze *maze);
+
 #endif
