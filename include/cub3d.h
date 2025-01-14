@@ -85,5 +85,6 @@ void	parse_map(char **lines, t_map *map);
 void	draw_square(int x, int y, int size, int color, t_image *screen);
 void	maze_render(t_maze *maze);
 int	draw_loop(t_maze *maze);
+void   draw_map(t_maze *maze);
 
 #endif

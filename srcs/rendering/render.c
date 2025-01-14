@@ -30,7 +30,7 @@ void	draw_square(int x, int y, int size, int color, t_image *screen)
 
 void	move_square(t_player *player)
 {
-	int	speed = 5;
+	int	speed = 2;
 
 	if (player->key_state[0])
 		player->y -= speed;
@@ -65,6 +65,7 @@ int	draw_loop(t_maze *maze)
 	move_square(&maze->player);
 	clear_screen(&maze->screen);
 	draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
+	draw_map(maze);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
 	return (0);
 }

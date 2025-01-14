@@ -17,6 +17,7 @@ SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/rendering/init.c \
        $(SRC_DIR)/rendering/events.c \
 	   $(SRC_DIR)/rendering/render.c \
+	   $(SRC_DIR)/rendering/draw.c \
 	   $(SRC_DIR)/parsing/read_file.c $(SRC_DIR)/parsing/parsing.c 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
