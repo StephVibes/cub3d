@@ -21,6 +21,10 @@ int	key_press_handler(int keycode, t_maze *maze)
 		maze->player.key_state[3] = 1;
 	if (keycode == XK_Escape)
 		close_handler(maze);
+	if (keycode == XK_Right)
+		maze->player.right_rotate = 1;
+	if (keycode == XK_Left)
+		maze->player.left_rotate = 1;
 	return (0);
 }
 
@@ -34,5 +38,9 @@ int	key_release_handler(int keycode, t_maze *maze)
 		maze->player.key_state[2] = 0;
 	if (keycode == XK_d)
 		maze->player.key_state[3] = 0;
+	if (keycode == XK_Right)
+		maze->player.right_rotate = 0;
+	if (keycode == XK_Left)
+		maze->player.left_rotate = 0;
 	return (0);
 }

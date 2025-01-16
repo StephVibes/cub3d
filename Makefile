@@ -23,7 +23,7 @@ OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 
 # Libraries and Frameworks
-MLX = -L$(LIB_DIR) -lmlx -lXext -lX11
+MLX = -L$(LIB_DIR) -lmlx -lXext -lX11 -lm
 LIBFT = $(LIBFT_DIR)/libft.a
 LIBS = $(MLX) $(LIBFT)
 

@@ -16,9 +16,21 @@ void	draw_map(t_maze *maze)
 		while(map[y][x])
 		{
 			if (map[y][x] == '1')
-				draw_square(x * 35, y * 35, 35, color, &maze->screen);
+				draw_square(x * SQUARE, y * SQUARE, SQUARE, color, &maze->screen);
 			x++;
 		}
 		y++;
 	}
+}
+
+int	touch(double px, double py, t_maze *maze)
+{
+	int	x;
+	int	y;
+
+	x = px / SQUARE;
+	y = py / SQUARE;
+	if (maze->map->layout[y][x] == '1')
+		return (1);
+	return (0);
 }

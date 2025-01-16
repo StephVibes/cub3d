@@ -6,10 +6,13 @@ static void	data_init(t_maze *maze)
 	maze->player.key_state[1] = 0;
 	maze->player.key_state[2] = 0;
 	maze->player.key_state[3] = 0;
-	maze->map->player_x = WIDTH / 2; //SACAR DEL MAPA
-	maze->map->player_y = HEIGHT / 2; //SACAR DEL MAPA
-	maze->player.x = maze->map->player_x; //decidir si actualizar o no
-	maze->player.y = maze->map->player_y;
+	maze->player.right_rotate = 0;
+	maze->player.left_rotate = 0;
+	maze->player.angle = (3 * PI) / 2;
+//	maze->map->player_x = WIDTH / 2; //SACAR DEL MAPA
+//	maze->map->player_y = HEIGHT / 2; //SACAR DEL MAPA
+	maze->player.x = WIDTH / 2; //sacar del mapa para inicializar
+	maze->player.y = HEIGHT / 2; //sacar del mapa para inicializar
 }
 
 static void	events_init(t_maze *maze)

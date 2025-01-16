@@ -13,7 +13,8 @@
 
 # define WIDTH 1200
 # define HEIGHT 900
-
+# define SQUARE 35
+# define PI 3.141592
 typedef struct s_image
 {
 	void	*img_ptr;      // Pointer to the image
@@ -33,19 +34,20 @@ typedef struct s_map {
 	int		map_width; // Width of the map
 	int		map_height; // Height of the map
 	char	player_dir; // Initial player direction (N, S, E, W)
-	int		player_x; // Player's starting X coordinate
-	int		player_y; // Player's starting Y coordinate
+//	int		player_x; // Player's starting X coordinate
+//	int		player_y; // Player's starting Y coordinate
 } t_map;
 
 typedef struct s_player
 {
-	int			key_state[4];    // For tracking key presses WASD
+	int	key_state[4];    // For tracking key presses WASD
 	double	x; // Player's X coordinate
 	double	y; // Player's Y coordinate
-	// double	dir_x; // Player's direction X
-	// double	dir_y; // Player's direction Y
-	double	plane_x; // Camera plane X
-	double	plane_y; // Camera plane Y
+	int	right_rotate;
+	int	left_rotate;
+	double	angle;
+//	double	plane_x; // Camera plane X
+//	double	iplane_y; // Camera plane Y
 } t_player;
 
 typedef struct s_maze
@@ -85,6 +87,7 @@ void	parse_map(char **lines, t_map *map);
 void	draw_square(int x, int y, int size, int color, t_image *screen);
 void	maze_render(t_maze *maze);
 int	draw_loop(t_maze *maze);
-void   draw_map(t_maze *maze);
+void	draw_map(t_maze *maze);
+int     touch(double px, double py, t_maze *maze);
 
 #endif
