@@ -14,7 +14,7 @@
 # define WIDTH 1200
 # define HEIGHT 900
 # define SQUARE 35
-# define PI 3.141592
+
 typedef struct s_image
 {
 	void	*img_ptr;      // Pointer to the image
@@ -46,8 +46,8 @@ typedef struct s_player
 	int	right_rotate;
 	int	left_rotate;
 	double	angle;
-//	double	plane_x; // Camera plane X
-//	double	iplane_y; // Camera plane Y
+	double	ray_x;
+	double	ray_y;
 } t_player;
 
 typedef struct s_maze
