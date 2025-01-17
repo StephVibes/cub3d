@@ -35,8 +35,8 @@ void	move_player(t_player *player)
 	double	cos_angle;
 	double	sin_angle;
 
-	speed = 2;
-	angle_speed = 0.07;
+	speed = 8;
+	angle_speed = 0.08;
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	if (player->right_rotate)

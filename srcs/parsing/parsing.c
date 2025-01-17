@@ -29,7 +29,7 @@ int	validate_color(char *color, t_map *map, int index, int type)
 	i = 0;
 	while (color[i] && color[i] != 10)
 	{
-		if (!ft_isdigit(color[i]))
+		if (!ft_isdigit(color[i]) && color[i] != 32 && color[i] != 9)
 		{
 			printf("is not digit: %d\n", color[i]);
 			return (1);
@@ -66,7 +66,6 @@ void	parse_colors(char **lines, t_map *map)
 			j = 0;
 			while (floor_color[j])
 			{
-				//printf("validating color:%s\n", floor_color[j]);
 				if (validate_color(floor_color[j], map, j, 0))
 					error("Invalid color floor");
 				j++;
@@ -89,24 +88,41 @@ void	parse_colors(char **lines, t_map *map)
 	}
 }
 
+int	is_map_line(char *line)
+{
+	size_t	i;
+
+	i = 0;
+	if (!line)
+		return (0);
+	while (line[i] == ' ')
+		i++;
+	while (line[i] && line[i] != '\n')
+	{
+		if (!(line[i] == '0' || line[i] == '1' || line[i] == ' ' ||
+			line[i] == 'N' || line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
+			return 0;
+		i++;
+	}
+	return (ft_strchr(line, '0') || ft_strchr(line, '1') ||
+            ft_strchr(line, 'N') || ft_strchr(line, 'S') ||
+            ft_strchr(line, 'W') || ft_strchr(line, 'E'));
+}
 
 int	find_map_start(char **lines)
 {
 	int	i;
-	char	*line;
 
+	if (!lines)
+		return (-1);
 	i = 0;
-	line = NULL;
 	while (lines[i])
 	{
-		//printf("line nro = %d\n", i);
-		line = lines[i];
-		if ((line[0] == '0' || line[0] == '1' || line[0] == ' ') 
-				&& (line[1] == '0' || line[1] == '1' || line[1] == ' '))
+		if (is_map_line(lines[i]))
 			return (i);
-	i++;
+		i++;
 	}
-	return (0);
+	return (-1);
 }
 
 void	get_map_info(char **lines, t_map *map, int map_start)
@@ -115,6 +131,7 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 	int	line_len;
 
 	i = map_start;
+	printf("***map start = %d\n", i);
 	map->map_height = 0;
 	map->map_width = 0;
 	while (lines[i] && lines[i][0] != '\n')
@@ -161,9 +178,13 @@ void	parse_map(char **lines, t_map *map)
 	int	map_start;
 
 	map_start = find_map_start(lines);
-	if (map_start)
+	if (map_start > 0)
 	{
+		printf("aqui");
 		get_map_info(lines, map, map_start);
+		printf("o aqui");
 	}
+	else
+		error("map not found");
 	//validate_map
 }

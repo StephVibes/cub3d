@@ -30,6 +30,9 @@ int	touch(double px, double py, t_maze *maze)
 
 	x = px / SQUARE;
 	y = py / SQUARE;
+	
+	if (x < 0 || y < 0 || x >= maze->map->map_width || y >= maze->map->map_height)
+		return (1);
 	if (maze->map->layout[y][x] == '1')
 		return (1);
 	return (0);
