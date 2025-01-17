@@ -56,8 +56,8 @@ typedef struct s_maze
 	void		*win_ptr;        // Pointer to the window
 	//t_image		textures[4];     // Array for wall textures (e.g., north, south, east, west)
 	t_image		screen;          // For rendering the screen buffer
-	double		plane_x;         // Camera plane X
-	double		plane_y;         // Camera plane Y
+//	double		plane_x;         // Camera plane X
+//	double		plane_y;         // Camera plane Y
 	t_map		*map;            // Pointer to the map info
 
 	t_player	player;          // Player info

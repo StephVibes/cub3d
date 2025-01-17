@@ -35,8 +35,8 @@ void	move_player(t_player *player)
 	double	cos_angle;
 	double	sin_angle;
 
-	speed = 8;
-	angle_speed = 0.08;
+	speed = 5;
+	angle_speed = 0.07;
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	if (player->right_rotate)
@@ -91,16 +91,19 @@ void	draw_rays(t_maze *maze, t_player *player)
 {
 	double	fov;
 	int	num_rays;
-	double angle_step;
+	double	angle_step;
 	int	i;
+	double	ray_angle;
 
 	fov = M_PI / 2; // 90° Field of View
-	num_rays = 150; // Num of rays
+	num_rays = 180; // Num of rays
 	angle_step = fov / (num_rays - 1); // angular increment
 	i = 0;
 	while (i < num_rays)
 	{
-		double ray_angle = player->angle - (fov / 2) + (i * angle_step); // Calculate ray angle
+		ray_angle = player->angle - (fov / 2) + (i * angle_step); // Calculate ray angle
+		player->ray_x = player->x;
+		player->ray_y = player->y;
         // Cast the ray
 		while (!touch(player->ray_x, player->ray_y, maze))
 		{
@@ -114,27 +117,11 @@ void	draw_rays(t_maze *maze, t_player *player)
 
 int	draw_loop(t_maze *maze)
 {
-/*	double	ray_y;
-	double	ray_x;
-	double	cos_angle;
-	double	sin_angle;
-
-	ray_y = maze->player.y;
-	ray_x = maze->player.x;
-	cos_angle = cos(maze->player.angle);
-	sin_angle = sin(maze->player.angle);*/
 	move_player(&maze->player);
 	clear_screen(&maze->screen);
 	draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
 	draw_map(maze);
 	draw_rays(maze, &maze->player);
-/*	while(!touch(ray_x, ray_y, maze))
-	{
-		my_pixel_put(ray_x, ray_y, &maze->screen, 0xFFFFFF00);
-		ray_x += cos_angle;
-		ray_y += sin_angle;
-	}
-*/
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
 	return (0);
 }
