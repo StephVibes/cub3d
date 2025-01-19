@@ -8,7 +8,7 @@ static void	data_init(t_maze *maze)
 	maze->player.key_state[3] = 0;
 	maze->player.right_rotate = 0;
 	maze->player.left_rotate = 0;
-	maze->player.angle = (3 * M_PI) / 2;
+	maze->player.angle = (3 * M_PI) / 2; // depending on N S W E in map
 //	maze->map->player_x = WIDTH / 2; //SACAR DEL MAPA
 //	maze->map->player_y = HEIGHT / 2; //SACAR DEL MAPA
 	maze->player.x = WIDTH / 2; //sacar del mapa para inicializar
