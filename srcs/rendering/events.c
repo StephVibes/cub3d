@@ -25,7 +25,11 @@ int	key_press_handler(int keycode, t_maze *maze)
 		maze->player.right_rotate = 1;
 	if (keycode == XK_Left)
 		maze->player.left_rotate = 1;
-	return (0);
+	if (keycode == XK_space && maze->mode == 0)
+		maze->mode = 1;
+	else if (keycode == XK_space && maze->mode == 1)
+		maze->mode = 0;
+	return (0);	return (0);
 }
 
 int	key_release_handler(int keycode, t_maze *maze)

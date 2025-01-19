@@ -59,7 +59,7 @@ typedef struct s_maze
 //	double		plane_x;         // Camera plane X
 //	double		plane_y;         // Camera plane Y
 	t_map		*map;            // Pointer to the map info
-
+	int		mode;
 	t_player	player;          // Player info
 } t_maze;
 
