@@ -66,21 +66,15 @@ t_map	*load_map(const char *file_name)
 	t_map	*map;
 	
 	lines = read_file(file_name);
-	//printf("after read file ok!\n");
 	if (!lines)
         	return (NULL);
 
 	map = malloc(sizeof(t_map));
-	//printf("after malloc map ok\n");
 	if (!map)
 		return (NULL);
 	ft_memset(map, 0, sizeof(t_map)); // Initialize map to zero
-	//printf("cargo el mapa");
 	parse_textures(lines, map);
-	printf("texture[0]: %s\n", map->textures[0]);
-	printf("texture[1]: %s\n", map->textures[1]);
-	printf("texture[2]: %s\n", map->textures[2]);
-	printf("texture[3]: %s\n", map->textures[3]);
+
 	parse_colors(lines, map);
 	printf("floor_color[0]: %d\n", map->floor_color[0]);
 	printf("floor_color[1]: %d\n", map->floor_color[1]);

@@ -1,5 +1,7 @@
 #include "cub3d.h"
 
+
+
 void	parse_textures(char **lines, t_map *map)
 {
 	int	i;
@@ -20,6 +22,9 @@ void	parse_textures(char **lines, t_map *map)
 			map->textures[3] = ft_strdup(line + 3);
 		i++;
 	}
+	
+	if (validate_textures(map->textures))
+		error("Invalid texture");
 }
 
 int	validate_color(char *color, t_map *map, int index, int type)

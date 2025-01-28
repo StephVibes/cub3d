@@ -82,6 +82,9 @@ void	parse_textures(char **lines, t_map *map);
 void	parse_colors(char **lines, t_map *map);
 void	parse_map(char **lines, t_map *map);
 
+// Validation
+int	validate_textures(char *textures[]);
+
 // Rendering
 
 void	draw_square(int x, int y, int size, int color, t_image *screen);
