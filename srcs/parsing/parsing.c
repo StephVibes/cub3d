@@ -1,31 +1,48 @@
 #include "cub3d.h"
 
+int	get_texture_index(char *line)
+{
+	int	j;
+	char	*coord[4];
 
+	coord[0] = "NO";
+	coord[1] = "SO";
+	coord[2] = "WE";
+	coord[3] = "EA";
+
+	j = 0;
+	while (j < 4)
+	{
+		if (line[0] == coord[j][0] && line[1] == coord[j][1])
+			return (j);
+		j++;
+	}
+	return (-1);
+}
 
 void	parse_textures(char **lines, t_map *map)
 {
-	int	i;
+	int		i;
+	int		index;
 	char	*line;
 
 	i = 0;
-	line = 	NULL;
 	while (lines[i])
 	{
 		line = lines[i];
-		if (line[0] == 'N' && line[1] == 'O')
-			map->textures[0] = ft_strdup(line + 3);
-		else if (line[0] == 'S' && line[1] == 'O')
-			map->textures[1] = ft_strdup(line + 3);
-		else if (line[0] == 'W' && line[1] == 'E')
-			map->textures[2] = ft_strdup(line + 3);
-		else if (line[0] == 'E' && line[1] == 'A')
-			map->textures[3] = ft_strdup(line + 3);
+		index = get_texture_index(line);
+		if (index != -1)
+		{
+			if (!map->textures[index])
+				map->textures[index] = ft_strdup(line + 3);
+			else
+				error("Duplicated texture");
+		}
 		i++;
 	}
-	
-	if (validate_textures(map->textures))
-		error("Invalid texture");
+	validate_textures(map->textures);
 }
+
 
 int	validate_color(char *color, t_map *map, int index, int type)
 {

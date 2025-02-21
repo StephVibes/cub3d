@@ -83,7 +83,7 @@ void	parse_colors(char **lines, t_map *map);
 void	parse_map(char **lines, t_map *map);
 
 // Validation
-int	validate_textures(char *textures[]);
+void	validate_textures(char *textures[]);
 
 // Rendering
 
