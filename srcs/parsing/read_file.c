@@ -27,11 +27,16 @@ char	**read_file(const char *file_name)
 	int	fd;
 	char	**lines;
 	int	i;
+	char	*ext;
 
 	i = 0;
 	num_lines = count_lines(file_name);
 	lines = malloc((num_lines + 1) * sizeof(char *));
-
+	ext = ft_strrchr(file_name, '.');
+	if (!ext)
+		error("Missing map file extension");
+	if (ft_strncmp(ext, ".cub", 4))
+		error("Invalid map file extension\n");
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
 		error("error opening the file"); // improve

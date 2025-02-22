@@ -9,7 +9,6 @@ int	get_texture_index(char *line)
 	coord[1] = "SO";
 	coord[2] = "WE";
 	coord[3] = "EA";
-
 	j = 0;
 	while (j < 4)
 	{
@@ -174,6 +173,8 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 		map->map_height++;
 		i++;
 	}
+	if (map->map_height < 3 || map->map_width < 3)
+		error("Map is too small");
 	i = 0;
 	map->layout = malloc(sizeof(char *) * (map->map_height + 1));
 	while (lines[map_start + i])
