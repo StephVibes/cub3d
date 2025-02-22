@@ -2,10 +2,11 @@
 
 static void	data_init(t_maze *maze)
 {
-	maze->player.key_state[0] = 0;
-	maze->player.key_state[1] = 0;
-	maze->player.key_state[2] = 0;
-	maze->player.key_state[3] = 0;
+	int	i;
+
+	i = 0;
+	while (i < 4)
+		maze->player.key_state[i++] = 0;
 	maze->player.right_rotate = 0;
 	maze->player.left_rotate = 0;
 	maze->player.angle = (3 * M_PI) / 2; // depending on N S W E in map
@@ -15,6 +16,9 @@ static void	data_init(t_maze *maze)
 	maze->player.y = HEIGHT / 2; //sacar del mapa para inicializar
 	maze->player.ray_x = maze->player.x;
 	maze->player.ray_y = maze->player.y;
+	i = 0;
+	while (i < 4)
+		maze->map->textures[i++] = NULL;
 }
 
 static void	events_init(t_maze *maze)
