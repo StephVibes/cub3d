@@ -18,7 +18,6 @@ static int	count_lines(const char *file_name)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	printf("num_lines: %d\n", num_lines);
 	return(num_lines);
 }
 
@@ -39,7 +38,7 @@ char	**read_file(const char *file_name)
 	while(i < num_lines)
 	{
 		lines[i] = get_next_line(fd);
-		printf("line[%d]: %s\n", i, lines[i]);
+		//printf("line[%d]: %s\n", i, lines[i]);
 		i++;
 	}
 	lines[i] = NULL;
@@ -60,44 +59,54 @@ void	ft_free_split(char **split)
 	free(split);
 }
 
+void	print_debug(t_map *map)
+{
+	int i = 0;
+	while (i < 4)
+	{
+		printf("texture[%d] = %s\n", i, map->textures[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		printf("floor_color[%d]: %d\n", i, map->floor_color[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color[i]);
+		i++;
+	}
+	printf("map height = %d\n", map->map_height);
+	printf("map_width = %d\n", map->map_width);
+	i = 0;
+	while(map->layout[i])
+	{
+		printf("[%d] = %s", i, map->layout[i]);
+		i++;
+	}
+}
+
 t_map	*load_map(const char *file_name)
 {
 	char	**lines;
 	t_map	*map;
 	
 	lines = read_file(file_name);
-	//printf("after read file ok!\n");
 	if (!lines)
         	return (NULL);
 
 	map = malloc(sizeof(t_map));
-	//printf("after malloc map ok\n");
 	if (!map)
 		return (NULL);
 	ft_memset(map, 0, sizeof(t_map)); // Initialize map to zero
-	//printf("cargo el mapa");
 	parse_textures(lines, map);
-	printf("texture[0]: %s\n", map->textures[0]);
-	printf("texture[1]: %s\n", map->textures[1]);
-	printf("texture[2]: %s\n", map->textures[2]);
-	printf("texture[3]: %s\n", map->textures[3]);
 	parse_colors(lines, map);
-	printf("floor_color[0]: %d\n", map->floor_color[0]);
-	printf("floor_color[1]: %d\n", map->floor_color[1]);
-	printf("floor_color[2]: %d\n", map->floor_color[2]);
-	printf("ceiling_color[0]: %d\n", map->ceiling_color[0]);
-	printf("ceiling_color[1]: %d\n", map->ceiling_color[1]);
-	printf("ceiling_color[2]: %d\n", map->ceiling_color[2]);
 	parse_map(lines, map);
-	printf("map height = %d\n", map->map_height);
-	printf("map_width = %d\n", map->map_width);
-	int i = 0;
-	while(map->layout[i])
-	{
-		printf("[%d] = %s", i, map->layout[i]);
-		i++;
-	}
-    // validate_map(map);
-    ft_free_split(lines); // Free the file lines
-    return map;
+	//print_debug(map);
+	//validate_map(map);
+	ft_free_split(lines); // Free the file lines
+	return (map);
 }
