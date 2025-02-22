@@ -43,7 +43,6 @@ void	parse_textures(char **lines, t_map *map)
 	validate_textures(map->textures);
 }
 
-
 int	validate_color(char *color, t_map *map, int index, int type)
 {
 	int	i;
@@ -153,7 +152,7 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 	int	line_len;
 
 	i = map_start;
-	printf("***map start = %d\n", i);
+//	printf("***map start = %d\n", i);
 	map->map_height = 0;
 	map->map_width = 0;
 	while (lines[i] && lines[i][0] != '\n')
@@ -201,11 +200,7 @@ void	parse_map(char **lines, t_map *map)
 
 	map_start = find_map_start(lines);
 	if (map_start > 0)
-	{
-		printf("aqui");
 		get_map_info(lines, map, map_start);
-		printf("o aqui");
-	}
 	else
 		error("map not found");
 	//validate_map
