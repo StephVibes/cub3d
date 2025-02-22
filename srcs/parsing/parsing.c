@@ -52,14 +52,14 @@ int	validate_color(char *color, t_map *map, int index, int type)
 	{
 		if (!ft_isdigit(color[i]) && color[i] != 32 && color[i] != 9)
 		{
-			printf("is not digit: %d\n", color[i]);
+			printf("It's not a digit: '%c'\n", color[i]);
 			return (1);
 		}
 		i++;
 	}
 	if (ft_atoi(color) < 0 || ft_atoi(color) > 255)
 	{
-		printf("num fuera de rango");
+		printf("Number for RGB value is out of range, 0 < value < 255");
 		return (1);
 	}
 	if (type == 0)

@@ -105,7 +105,7 @@ t_map	*load_map(const char *file_name)
 	parse_textures(lines, map);
 	parse_colors(lines, map);
 	parse_map(lines, map);
-	//print_debug(map);
+	print_debug(map);
 	//validate_map(map);
 	ft_free_split(lines); // Free the file lines
 	return (map);
