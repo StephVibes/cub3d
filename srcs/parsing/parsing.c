@@ -107,6 +107,15 @@ void	parse_colors(char **lines, t_map *map)
 		}
 		i++;
 	}
+	i = 0;
+	while(i < 3)
+	{
+		if (!map->ceiling_color[i])
+			error("Ceiling color incomplete");
+		if (!map->floor_color[i])
+			error("Floor color incomplete");
+		i++;
+	}
 }
 
 int	is_map_line(char *line)
