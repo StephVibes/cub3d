@@ -185,24 +185,41 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 	map->layout[map->map_height] = NULL;
 }
 
-/*int	validate_map(char **lines, int map_start)
+void	validate_map(char **layout, t_map *map)
 {
 	int	i;
 	int	j;
+	int	player_set;
 
-	i = map_start;
-
-	while (lines[i])
+	i = 0;
+	player_set = 0;
+	while (layout[i])
 	{
 		j = 0;
-		while (lines[i][j])
+		while (layout[i][j] != '\n')
 		{
-			if(line[i][j] == '0' || line[i][j] == '1' || line[i][j] == ' ' || 
-				line[i][j] == 'N' || line[i][j] == 'S' || line[i][j] == 'E' line[i][j] == 'W')
-				j++;
+			if ((i == 0 || i == map->map_height - 1 || j == 0 || j == map->map_width - 1) && layout[i][j] != '1')
+				error("Map needs to be inclosed by 1's"); // TODO improve message
+			if(!(layout[i][j] == '0' || layout[i][j] == '1' || layout[i][j] == ' ' 
+				|| layout[i][j] == 'N' || layout[i][j] == 'S' || layout[i][j] == 'E' || layout[i][j] == 'W'))
+				error("Wrong value in the map");
+			if ((layout[i][j] == 'N' || layout[i][j] == 'S' 
+				|| layout[i][j] == 'E' || layout[i][j] == 'W') && player_set == 0)
+			{
+				player_set = 1;
+				if (i == 0 || i == map->map_height - 1 || j == 0 || j == map->map_width - 1)
+					error("Player on the edge");
+			}
+			else if ((layout[i][j] == 'N' || layout[i][j] == 'S'
+				|| layout[i][j] == 'E' || layout[i][j] == 'W') && player_set == 1)
+				error("More than one player");
+			j++;
 		}
+		i++;
 	}
-}*/
+	if (player_set == 0)
+		error("No player found in the map");
+}
 
 void	parse_map(char **lines, t_map *map)
 {
@@ -213,5 +230,5 @@ void	parse_map(char **lines, t_map *map)
 		get_map_info(lines, map, map_start);
 	else
 		error("map not found");
-	//validate_map
+	validate_map(map->layout, map);
 }
