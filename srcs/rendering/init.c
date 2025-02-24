@@ -1,5 +1,6 @@
 #include "cub3d.h"
 
+
 static void	data_init(t_maze *maze)
 {
 	int	i;
@@ -10,10 +11,12 @@ static void	data_init(t_maze *maze)
 	maze->player.right_rotate = 0;
 	maze->player.left_rotate = 0;
 	maze->player.angle = (3 * M_PI) / 2; // depending on N S W E in map
+	get_player_init_pos(maze);
+	get_player_angle(maze);
 //	maze->map->player_x = WIDTH / 2; //SACAR DEL MAPA
 //	maze->map->player_y = HEIGHT / 2; //SACAR DEL MAPA
-	maze->player.x = WIDTH / 2; //sacar del mapa para inicializar
-	maze->player.y = HEIGHT / 2; //sacar del mapa para inicializar
+//	maze->player.x = WIDTH / 2; //sacar del mapa para inicializar
+//	maze->player.y = HEIGHT / 2; //sacar del mapa para inicializar
 	maze->player.ray_x = maze->player.x;
 	maze->player.ray_y = maze->player.y;
 	i = 0;

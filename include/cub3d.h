@@ -48,6 +48,7 @@ typedef struct s_player
 	double	angle;
 	double	ray_x;
 	double	ray_y;
+	char	dir;
 } t_player;
 
 typedef struct s_maze
@@ -81,6 +82,8 @@ t_map  	*load_map(const char *file_name);
 void	parse_textures(char **lines, t_map *map);
 void	parse_colors(char **lines, t_map *map);
 void	parse_map(char **lines, t_map *map);
+void	get_player_init_pos(t_maze *maze);
+void	get_player_angle (t_maze *maze);
 
 // Validation
 void	validate_textures(char *textures[]);

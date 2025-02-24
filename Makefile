@@ -19,8 +19,10 @@ SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/rendering/events.c \
        $(SRC_DIR)/rendering/render.c \
        $(SRC_DIR)/rendering/draw.c \
-       $(SRC_DIR)/parsing/read_file.c $(SRC_DIR)/parsing/parsing.c \
-	$(SRC_DIR)/parsing/validation.c
+       $(SRC_DIR)/parsing/read_file.c \
+	   $(SRC_DIR)/parsing/parsing.c \
+	   $(SRC_DIR)/parsing/player_init.c \
+	   $(SRC_DIR)/parsing/validation.c
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 
