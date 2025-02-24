@@ -119,8 +119,9 @@ int	draw_loop(t_maze *maze)
 {
 	move_player(&maze->player);
 	clear_screen(&maze->screen);
+	draw_map(maze); //Maze is in the back, player is in the front.
 	draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
-	draw_map(maze);
+//	draw_map(maze); //Player is in the back, maze is in the front.
 	draw_rays(maze, &maze->player);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
 	return (0);
