@@ -14,6 +14,9 @@
 # define WIDTH 1200
 # define HEIGHT 900
 # define SQUARE 35
+# define N_RAYS 180
+# define MIN_WALL 10
+# define MAX_DST 100
 
 typedef struct s_image
 {
@@ -49,6 +52,7 @@ typedef struct s_player
 	double	ray_x;
 	double	ray_y;
 	char	dir;
+
 } t_player;
 
 typedef struct s_maze
