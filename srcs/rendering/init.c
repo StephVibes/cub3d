@@ -51,6 +51,9 @@ static void	events_init(t_maze *maze)
 
 void	maze_init(t_maze *maze)
 {
+	int i;
+	i = 0;
+	
 	maze -> mlx_ptr = mlx_init(); // connect with the minilibx
 	if (maze -> mlx_ptr == NULL)
 		error("error initiliazing the minilibx"); // improve
@@ -73,4 +76,6 @@ void	maze_init(t_maze *maze)
 	data_init(maze);
 	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
 	events_init(maze);
+    while (i < 9)
+        maze->wall_seg[i++] = 0.0;
 }
