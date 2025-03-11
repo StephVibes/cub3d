@@ -12,11 +12,11 @@
 # include "../libft/libft.h"
 
 # define WIDTH 1200
-# define HEIGHT 900
+# define HEIGHT 800
 # define SQUARE 35
-# define N_RAYS 180
-# define MIN_WALL 10
-# define MAX_DST 100
+# define N_RAYS 90
+# define MIN_WALL 200
+# define MAX_DST 200
 
 typedef struct s_image
 {
@@ -96,7 +96,7 @@ void	validate_textures(char *textures[]);
 
 void	draw_square(int x, int y, int size, int color, t_image *screen);
 void	maze_render(t_maze *maze);
-int	draw_loop(t_maze *maze);
+int		draw_loop(t_maze *maze);
 void	draw_map(t_maze *maze);
 int     touch(double px, double py, t_maze *maze);
 
