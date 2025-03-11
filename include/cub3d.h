@@ -18,6 +18,15 @@
 # define MIN_WALL 200
 # define MAX_DST 200
 
+# define COLOR_GREEN_1 0x00FFAA00  // Light green
+# define COLOR_RED     0x00FF0000  // Red
+# define COLOR_GREEN   0x0000FF00  // Green
+# define COLOR_YELLOW  0x00FFFF00  // Yellow
+# define COLOR_BLUE    0x000000FF  // Blue
+# define COLOR_MAGENTA 0x00FF00FF  // Magenta
+# define COLOR_CYAN    0x0000FFFF  // Cyan
+# define COLOR_WHITE   0x00FFFFFF  // White
+
 typedef struct s_image
 {
 	void	*img_ptr;      // Pointer to the image
@@ -57,15 +66,16 @@ typedef struct s_player
 
 typedef struct s_maze
 {
-	void		*mlx_ptr;        // Pointer to the MLX instance
-	void		*win_ptr;        // Pointer to the window
+	void		*mlx_ptr;       // Pointer to the MLX instance
+	void		*win_ptr;       // Pointer to the window
 	//t_image		textures[4];     // Array for wall textures (e.g., north, south, east, west)
-	t_image		screen;          // For rendering the screen buffer
-//	double		plane_x;         // Camera plane X
-//	double		plane_y;         // Camera plane Y
-	t_map		*map;            // Pointer to the map info
-
-	t_player	player;          // Player info
+	t_image		screen;         // For rendering the screen buffer
+//	double		plane_x;        // Camera plane X
+//	double		plane_y;        // Camera plane Y
+	t_map		*map;           // Pointer to the map info
+	int			fd_log;			//File descriptor, log file.
+	t_player	player;         // Player info
+	double		wall_seg[9];	// coordinate that defines a wall segment
 } t_maze;
 
 // Init
