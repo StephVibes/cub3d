@@ -137,26 +137,74 @@ double get_wall_dst(t_player *player ,double x, double y)
 	return (dst);
 }
 
+double find_slope(double x, double y, double xx, double yy)
+{
+	double m;
+	
+	m = (yy - y) / (xx - x);
+	return (m);
+}
+
+double find_intercept(double m, double x, double y)
+{
+	double b;
+	b = y - m * x;
+	return (b);
+}
+
+/* double find_y(double x, double y, double )
+{
+	double y;
+	double m; //slope
+	double b; //intercept
+
+	m = (maze->wall_seg[4] - maze->wall_seg[1]) / (maze->wall_seg[3] - maze->wall_seg[0]);
+	b = maze->wall_seg[1] - m * maze->wall_seg[0];
+	y = m * x + b;
+	return (y);
+} */
+
 void draw_wall_segment(t_maze *maze)
 {
 	(void)maze;
-	/* double col_w;
-	double y_offset;
-	double h;
+	double col_w;
 	double x;
 	double y;
-	double wall_dst;
+	double xx;
+	double yy;
+	double w;
+	double ww;
+	double m;
+	double b;
+	double h;
+	double hh;
 
-	wall_dst = get_wall_dst(maze->player, )
+	w = get_wall_dst(&maze->player, maze->wall_seg[0], maze->wall_seg[1]);
+	ww = get_wall_dst(&maze->player, maze->wall_seg[3], maze->wall_seg[4]);
+	h = dst_to_h(w);
+	hh = dst_to_h(ww);
 	col_w = WIDTH / N_RAYS;
-	h = dst_to_h(dst);
-	y_offset = (HEIGHT - h) / 2; //for a given h, how much space is free up and down?
-	x = ray * col_w; //For a given ray, we know the x valu by multiplying ray by col width.
-	y = y_offset; */
-
-
-
-	//p2 is the vertice
+	y = (HEIGHT - h) / 2; //for a given h, how much space is free up and down?
+	x = maze->wall_seg[2] * col_w; //For a given ray, we know the x valu by multiplying ray by col width.
+	yy = (HEIGHT - hh) / 2;
+	xx = maze->wall_seg[5] * col_w;
+	m = find_slope(x, y, xx, yy);
+	b = find_intercept(m, x, y);
+	printf("segment1: x:%0.2f, y:%0.2f\n", x, y);
+	printf("segment2: xx:%0.2f, yy:%0.2f\n", xx, yy);
+	while(x <= xx)
+	{
+		yy = (HEIGHT - y);
+		while(y <=  yy)
+		{
+			my_pixel_put((int)x, (int)y, &maze->screen, COLOR_GREEN);
+			y++;
+		}
+		x++;
+		y = m * x + b;
+	}
+	printf("segment1end: x:%0.2f, y:%0.2f\n", x, y);
+	printf("segment2end: xx:%0.2f, yy:%0.2f\n", xx, yy);
 }
 
 void wall_segment(t_maze *maze, int i)
@@ -185,8 +233,13 @@ void wall_segment(t_maze *maze, int i)
 		}
 		else
 		{
-			//we found the end of the line
 			draw_wall_segment(maze);
+			maze->wall_seg[0] = maze->wall_seg[3];
+			maze->wall_seg[1] = maze->wall_seg[4];
+			maze->wall_seg[2] = maze->wall_seg[5];
+			maze->wall_seg[3] = maze->wall_seg[6];
+			maze->wall_seg[4] = maze->wall_seg[7];
+			maze->wall_seg[5] = maze->wall_seg[8];
 		}
 	}
 	else if (dy > dx)
@@ -200,6 +253,12 @@ void wall_segment(t_maze *maze, int i)
 		else
 		{
 			draw_wall_segment(maze);
+			maze->wall_seg[0] = maze->wall_seg[3];
+			maze->wall_seg[1] = maze->wall_seg[4];
+			maze->wall_seg[2] = maze->wall_seg[5];
+			maze->wall_seg[3] = maze->wall_seg[6];
+			maze->wall_seg[4] = maze->wall_seg[7];
+			maze->wall_seg[5] = maze->wall_seg[8];
 		}
 	}
 }
@@ -231,7 +290,6 @@ void	draw_rays(t_maze *maze, t_player *player)
 	double	angle_step;
 	int	i;
 	double	ray_angle;
-	double	wall_dst;
 
 	fov = 66 * M_PI / 180; // 66° Rad. Field of View
 	//num_rays = 6; // Num of rays
@@ -254,9 +312,8 @@ void	draw_rays(t_maze *maze, t_player *player)
 		//we need to compare if the ray is moving in x or in y
 		// we need to flag when it changing from one or the other.
 		//dprintf(maze->fd_log, "(x:%.2f, y:%.2f)\n",player->ray_x, player->ray_y);
-		wall_dst = get_wall_distance(player);
-		draw_wall(get_wall_distance(player), maze, i);
-		(void)wall_dst;
+		//wall_dst = get_wall_distance(player);
+		//draw_wall(get_wall_distance(player), maze, i);
 		i++;
 	}
 }
