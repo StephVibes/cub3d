@@ -190,8 +190,8 @@ void draw_wall_segment(t_maze *maze)
 	xx = maze->wall_seg[5] * col_w;
 	m = find_slope(x, y, xx, yy);
 	b = find_intercept(m, x, y);
-	printf("segment1: x:%0.2f, y:%0.2f\n", x, y);
-	printf("segment2: xx:%0.2f, yy:%0.2f\n", xx, yy);
+	/* printf("segment1: x:%0.2f, y:%0.2f\n", x, y);
+	printf("segment2: xx:%0.2f, yy:%0.2f\n", xx, yy); */
 	while(x <= xx)
 	{
 		yy = (HEIGHT - y);
@@ -203,8 +203,8 @@ void draw_wall_segment(t_maze *maze)
 		x++;
 		y = m * x + b;
 	}
-	printf("segment1end: x:%0.2f, y:%0.2f\n", x, y);
-	printf("segment2end: xx:%0.2f, yy:%0.2f\n", xx, yy);
+	/* printf("segment1end: x:%0.2f, y:%0.2f\n", x, y);
+	printf("segment2end: xx:%0.2f, yy:%0.2f\n", xx, yy); */
 }
 
 void wall_segment(t_maze *maze, int i)
