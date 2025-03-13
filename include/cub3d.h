@@ -17,6 +17,7 @@
 # define N_RAYS 300
 # define MIN_WALL 200
 # define MAX_DST 200
+# define W_SEGMENTS 100
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
@@ -64,6 +65,24 @@ typedef struct s_player
 
 } t_player;
 
+typedef struct s_point
+{
+	double	x;
+	double	y;
+	double	dst;
+	int		ray;
+} t_point;
+
+
+typedef struct s_wall
+{
+	t_point start;
+	t_point end;
+	double	m;
+	double	b;
+
+} t_wall;
+
 typedef struct s_maze
 {
 	void		*mlx_ptr;       // Pointer to the MLX instance
@@ -76,6 +95,7 @@ typedef struct s_maze
 	int			fd_log;			//File descriptor, log file.
 	t_player	player;         // Player info
 	double		wall_seg[9];	// coordinate that defines a wall segment
+	t_wall		walls[W_SEGMENTS];
 } t_maze;
 
 // Init
