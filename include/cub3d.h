@@ -76,7 +76,7 @@ typedef struct s_point
 
 typedef struct s_wall
 {
-	t_point start;
+	t_point st;
 	t_point end;
 	double	m;
 	double	b;
@@ -95,7 +95,8 @@ typedef struct s_maze
 	int			fd_log;			//File descriptor, log file.
 	t_player	player;         // Player info
 	double		wall_seg[9];	// coordinate that defines a wall segment
-	t_wall		walls[W_SEGMENTS];
+	t_wall		w[W_SEGMENTS];
+	int			segments;
 } t_maze;
 
 // Init

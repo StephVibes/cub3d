@@ -213,23 +213,26 @@ void wall_segment(t_maze *maze, int i)
 	double dy;
 	double dxx;
 	double dyy;
-	//double seg[9];
+	int *seg;
 
-	maze->wall_seg[6] = maze->player.ray_x;
-	maze->wall_seg[7] = maze->player.ray_y;
-	maze->wall_seg[8] = i;
-	dx = maze->wall_seg[3] - maze->wall_seg[0];
-	dy = maze->wall_seg[4] - maze->wall_seg[1];
-	dxx = maze->wall_seg[6] - maze->wall_seg[3];
-	dyy = maze->wall_seg[7] - maze->wall_seg[4];
+	seg = &maze->segments;
+	dx = maze->w[*seg].end.x - maze->w[*seg].st.x;
+	dy = maze->w[*seg].end.y - maze->w[*seg].st.y;
+	dxx = maze->player.ray_x - maze->w[*seg].end.x;
+	dyy = maze->player.ray_y - maze->w[*seg].end.y;
+
 	if(dx > dy)
 	{
 		if(dxx > dyy)
 		{
+			if(maze->player.ray_x - maze->w[*seg].end.x >= SQUARE)
+			{
+				//3rd point does not belong to the same line, is a new wall.
+				//3rd point is the start point of next segment.
+			}
 			//the 3rd point belongs to the same line
-			maze->wall_seg[3] = maze->wall_seg[6];
-			maze->wall_seg[4] = maze->wall_seg[7];
-			maze->wall_seg[5] = maze->wall_seg[8];
+			maze->w[*seg].end.x = maze->player.ray_x;
+			maze->w[*seg].end.y = maze->player.ray_y;
 		}
 		else
 		{
@@ -265,7 +268,25 @@ void wall_segment(t_maze *maze, int i)
 
 void wall_segment_init(t_maze *maze, int i)
 {
-	if(maze->wall_seg[0] == 0.0)
+	int *seg;
+
+	seg = &maze->segments;
+	//we need to have a different counter for wall segments, is not ray!
+	if(maze->w[*seg].st.x == 0)
+	{
+		maze->w[*seg].st.x = maze->player.ray_x;
+		maze->w[*seg].st.y = maze->player.ray_y;
+		maze->w[*seg].st.ray = i;
+		return;
+	}
+	else if(maze->w[i].end.x == 0)
+	{
+		maze->w[*seg].end.x = maze->player.ray_x;
+		maze->w[*seg].end.y = maze->player.ray_y;
+		maze->w[*seg].end.ray = i;
+		return;
+	}
+	/* if(maze->wall_seg[0] == 0.0)
 	{
 		maze->wall_seg[0] = maze->player.ray_x;
 		maze->wall_seg[1] = maze->player.ray_y;
@@ -278,7 +299,7 @@ void wall_segment_init(t_maze *maze, int i)
 		maze->wall_seg[4] = maze->player.ray_y;
 		maze->wall_seg[5] = i;
 		return;
-	}
+	} */
 	wall_segment(maze, i);
 }
 
