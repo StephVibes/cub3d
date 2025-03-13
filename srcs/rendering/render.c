@@ -249,6 +249,11 @@ void wall_segment(t_maze *maze, int i)
 	{
 		if(dyy > dx)
 		{
+			if(maze->player.ray_x - maze->w[*seg].end.x >= SQUARE)
+			{
+				//3rd point does not belong to the same line, is a new wall.
+				//3rd point is the start point of next segment.
+			}
 			maze->wall_seg[3] = maze->wall_seg[6];
 			maze->wall_seg[4] = maze->wall_seg[7];
 			maze->wall_seg[5] = maze->wall_seg[8];
