@@ -13,10 +13,16 @@ static void	data_init(t_maze *maze)
 	maze->player.angle = (3 * M_PI) / 2; // depending on N S W E in map
 	get_player_init_pos(maze);
 	get_player_angle(maze);
-//	maze->map->player_x = WIDTH / 2; //SACAR DEL MAPA
-//	maze->map->player_y = HEIGHT / 2; //SACAR DEL MAPA
-//	maze->player.x = WIDTH / 2; //sacar del mapa para inicializar
-//	maze->player.y = HEIGHT / 2; //sacar del mapa para inicializar
+	//maze->segments = 0;
+	i = 0;
+    /* while (i < W_SEGMENTS)
+	{
+        maze->w[i].st.x = 0.0;
+		maze->w[i].st.y = 0.0;
+		maze->w[i].end.x = 0.0;
+		maze->w[i].end.y = 0.0;
+		i++;
+	} */
 	maze->player.ray_x = maze->player.x;
 	maze->player.ray_y = maze->player.y;
 	i = 0;
@@ -51,9 +57,6 @@ static void	events_init(t_maze *maze)
 
 void	maze_init(t_maze *maze)
 {
-	int i;
-	i = 0;
-	
 	maze -> mlx_ptr = mlx_init(); // connect with the minilibx
 	if (maze -> mlx_ptr == NULL)
 		error("error initiliazing the minilibx"); // improve
@@ -76,12 +79,4 @@ void	maze_init(t_maze *maze)
 	data_init(maze);
 	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
 	events_init(maze);
-	maze->segments = 0;
-    while (i < W_SEGMENTS)
-	{
-        maze->w[i].st.x = 0.0;
-		maze->w[i].st.y = 0.0;
-		maze->w[i].end.x = 0.0;
-		maze->w[i].end.y = 0.0;
-	}
 }
