@@ -131,4 +131,8 @@ int		draw_loop(t_maze *maze);
 void	draw_map(t_maze *maze);
 int     touch(double px, double py, t_maze *maze);
 
+//walls
+void	wall_segment(t_maze *maze, int i);
+void	wall_segment_init(t_maze *maze, int i);
+
 #endif
