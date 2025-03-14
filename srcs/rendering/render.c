@@ -225,48 +225,55 @@ void wall_segment(t_maze *maze, int i)
 	{
 		if(dxx > dyy)
 		{
-			if(maze->player.ray_x - maze->w[*seg].end.x >= SQUARE)
+			if(maze->player.ray_y - maze->w[*seg].end.y >= SQUARE)
 			{
+				(*seg)++;
+				wall_segment_init(maze, i);
+				//Next wall segment is initialized with the last point.
 				//3rd point does not belong to the same line, is a new wall.
 				//3rd point is the start point of next segment.
 			}
-			//the 3rd point belongs to the same line
-			maze->w[*seg].end.x = maze->player.ray_x;
-			maze->w[*seg].end.y = maze->player.ray_y;
+			else
+			{
+				//the 3rd point belongs to the same line
+				maze->w[*seg].end.x = maze->player.ray_x;
+				maze->w[*seg].end.y = maze->player.ray_y;
+				maze->w[*seg].end.ray = i;
+			}
 		}
 		else
 		{
-			draw_wall_segment(maze);
-			maze->wall_seg[0] = maze->wall_seg[3];
-			maze->wall_seg[1] = maze->wall_seg[4];
-			maze->wall_seg[2] = maze->wall_seg[5];
-			maze->wall_seg[3] = maze->wall_seg[6];
-			maze->wall_seg[4] = maze->wall_seg[7];
-			maze->wall_seg[5] = maze->wall_seg[8];
+			(*seg)++;
+			wall_segment_init(maze, i);
 		}
 	}
 	else if (dy > dx)
 	{
 		if(dyy > dx)
 		{
-			if(maze->player.ray_y - maze->w[*seg].end.y >= SQUARE)
+			if(maze->player.ray_x - maze->w[*seg].end.x >= SQUARE)
 			{
+				(*seg)++;
+				wall_segment_init(maze, i);
+				//Next wall segment is initialized with the last point.
 				//3rd point does not belong to the same line, is a new wall.
 				//3rd point is the start point of next segment.
 			}
-			maze->wall_seg[3] = maze->wall_seg[6];
-			maze->wall_seg[4] = maze->wall_seg[7];
-			maze->wall_seg[5] = maze->wall_seg[8];
+			else
+			{
+				//the 3rd point belongs to the same line
+				maze->w[*seg].end.x = maze->player.ray_x;
+				maze->w[*seg].end.y = maze->player.ray_y;
+				maze->w[*seg].end.ray = i;
+			}
 		}
 		else
 		{
-			draw_wall_segment(maze);
-			maze->wall_seg[0] = maze->wall_seg[3];
-			maze->wall_seg[1] = maze->wall_seg[4];
-			maze->wall_seg[2] = maze->wall_seg[5];
-			maze->wall_seg[3] = maze->wall_seg[6];
-			maze->wall_seg[4] = maze->wall_seg[7];
-			maze->wall_seg[5] = maze->wall_seg[8];
+			(*seg)++;
+			wall_segment_init(maze, i);
+			//Next wall segment is initialized with the last point.
+			//3rd point does not belong to the same line, is a new wall.
+			//3rd point is the start point of next segment.
 		}
 	}
 }
