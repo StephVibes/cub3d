@@ -341,20 +341,20 @@ void	draw_rays(t_maze *maze, t_player *player)
 		while (!touch(player->ray_x, player->ray_y, maze))
 		{
 			
-			//my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->screen, COLOR_YELLOW); // Draw ray pixel
+			my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->screen, COLOR_YELLOW); // Draw ray pixel
 			player->ray_x += cos(ray_angle); // Move ray in x direction
 			player->ray_y += sin(ray_angle); // Move ray in y direction
 		}
 		wall_segment_init(maze, i);
 		//we need to compare if the ray is moving in x or in y
 		// we need to flag when it changing from one or the other.
-		dprintf(maze->fd_log, "%i, %.3f, %.3f\n",i, player->ray_x, player->ray_y);
+		dprintf(maze->fd_log, "%i, %f, %f, %f\n",i, player->ray_x, player->ray_y, get_wall_distance(player));
 		//wall_dst = get_wall_distance(player);
 		//draw_wall(get_wall_distance(player), maze, i);
 		i++;
 	}
 	//Could we create a print fn to see whats in the segments_?
-	draw_wall_segment(maze);
+	//draw_wall_segment(maze);
 }
 
 int	draw_loop(t_maze *maze)
@@ -362,8 +362,8 @@ int	draw_loop(t_maze *maze)
 	move_player(&maze->player);
 	clear_screen(&maze->screen);
 	draw_rays(maze, &maze->player);
-	//draw_map(maze); //Maze is in the back, player is in the front.
-	//draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
+	draw_map(maze); //Maze is in the back, player is in the front.
+	draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
 	//draw_map(maze); //Player is in the back, maze is in the front.
 	//draw_rays(maze, &maze->player);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
