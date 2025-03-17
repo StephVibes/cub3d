@@ -1,4 +1,4 @@
 *.o
 cub3D
 libft.a
-*.txt
+log.txt
