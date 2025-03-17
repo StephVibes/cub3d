@@ -18,6 +18,8 @@
 # define MIN_WALL 200
 # define MAX_DST 200
 # define W_SEGMENTS 100
+# define SPEED 5
+# define ANGLE_SPEED 0.3
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
@@ -78,10 +80,28 @@ typedef struct s_wall
 {
 	t_point st;
 	t_point end;
+	char	delta;
 	double	m;
 	double	b;
 
 } t_wall;
+
+typedef struct s_wall_delta
+{
+	t_point p1;
+	t_point p2;
+	t_point p3;
+	t_point p4;
+	//t_point p5;
+	//t_point p6;
+	double	dx1;
+	double	dx2;
+	double	dx3;
+	double	dy1;
+	double	dy2;
+	double	dy3;
+
+} t_w_delta;
 
 typedef struct s_maze
 {
@@ -94,8 +114,9 @@ typedef struct s_maze
 	t_map		*map;           // Pointer to the map info
 	int			fd_log;			//File descriptor, log file.
 	t_player	player;         // Player info
-	double		wall_seg[9];	// coordinate that defines a wall segment
+	//double		wall_seg[9];	// coordinate that defines a wall segment
 	t_wall		w[W_SEGMENTS];
+	t_w_delta	delta;
 	int			segments;
 } t_maze;
 
@@ -134,5 +155,10 @@ int     touch(double px, double py, t_maze *maze);
 //walls
 void	wall_segment(t_maze *maze, int i);
 void	wall_segment_init(t_maze *maze, int i);
-
+void 	init_wall_delta(t_maze *maze);
+void	touch_points(t_maze *maze, t_player *player);
+void	draw_walls(t_maze *maze, t_player *player);
+void	wall_deltas(t_maze *maze, int i);
+void	segment_end(t_maze *maze, t_point p);
+void	segment_init(t_maze *maze, t_point p);
 #endif

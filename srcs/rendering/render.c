@@ -35,8 +35,8 @@ void	move_player(t_player *player)
 	double	cos_angle;
 	double	sin_angle;
 
-	speed = 1;
-	angle_speed = 0.01;
+	speed = SPEED;
+	angle_speed = ANGLE_SPEED;
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	if (player->right_rotate)
@@ -210,95 +210,240 @@ void draw_wall_segment(t_maze *maze)
 	printf("segment2end: xx:%0.2f, yy:%0.2f\n", xx, yy); */
 }
 
-void wall_segment(t_maze *maze, int i)
+void segment_init(t_maze *maze, t_point p)
 {
-	double dx;
-	double dy;
-	double dxx;
-	double dyy;
 	int *seg;
+
+	seg = &maze->segments;
+	maze->w[*seg].st = p;
+}
+
+void segment_end(t_maze *maze, t_point p)
+{
+	int *seg;
+
+	seg = &maze->segments;
+	maze->w[*seg].end = p;
+	(*seg)++; //who should initializes the new segment? the start or the end?
+}
+
+void wall_segment_end(t_maze *maze, int i)
+{
+	int		*seg;
+	double	dx;
+	double	dy;
 
 	seg = &maze->segments;
 	dx = fabs(maze->w[*seg].end.x - maze->w[*seg].st.x);
 	dy = fabs(maze->w[*seg].end.y - maze->w[*seg].st.y);
-	dxx = fabs(maze->player.ray_x - maze->w[*seg].end.x);
-	dyy = fabs(maze->player.ray_y - maze->w[*seg].end.y);
-
 	if(dx > dy)
-	{
-		if(dxx > dyy)
-		{
-			/* if(maze->player.ray_y - maze->w[*seg].end.y >= SQUARE)
-			{
-				(*seg)++;
-				wall_segment_init(maze, i);
-				//Next wall segment is initialized with the last point.
-				//3rd point does not belong to the same line, is a new wall.
-				//3rd point is the start point of next segment.
-			}
-			else */
-			{
-				//the 3rd point belongs to the same line
-				maze->w[*seg].end.x = maze->player.ray_x;
-				maze->w[*seg].end.y = maze->player.ray_y;
-				maze->w[*seg].end.ray = i;
-			}
-		}
-		else
-		{
-			(*seg)++;
-			wall_segment_init(maze, i);
-		}
-	}
-	else if (dy > dx)
-	{
-		if(dyy > dx)
-		{
-			/* if(maze->player.ray_x - maze->w[*seg].end.x >= SQUARE)
-			{
-				(*seg)++;
-				wall_segment_init(maze, i);
-				//Next wall segment is initialized with the last point.
-				//3rd point does not belong to the same line, is a new wall.
-				//3rd point is the start point of next segment.
-			}
-			else */
-			{
-				//the 3rd point belongs to the same line
-				maze->w[*seg].end.x = maze->player.ray_x;
-				maze->w[*seg].end.y = maze->player.ray_y;
-				maze->w[*seg].end.ray = i;
-			}
-		}
-		else
-		{
-			(*seg)++;
-			wall_segment_init(maze, i);
-			//Next wall segment is initialized with the last point.
-			//3rd point does not belong to the same line, is a new wall.
-			//3rd point is the start point of next segment.
-		}
-	}
+		maze->w[*seg].delta = 'x';
+	maze->w[*seg].delta = 'y'; 
+	maze->w[*seg].end.x = maze->player.ray_x;
+	maze->w[*seg].end.y = maze->player.ray_y;
+	maze->w[*seg].end.ray = i;
+	maze->w[*seg].end.dst = get_wall_dst (&maze->player, maze->w[*seg].end.x, maze->w[*seg].end.y);
+	(*seg)++; //who should initializes the new segment? the start or the end?
 }
+
+int get_end_dst(t_maze *maze)
+{
+	if(maze->delta.p2.dst < 2)
+	{
+		if (maze->delta.p3.dst < 2)
+		{
+			if(maze->delta.p4.dst < 2)
+				return (0);
+			else
+				return (1);
+		}
+		return (3);
+	}
+	return(2);
+}
+
+void wall_deltas(t_maze *maze, int i)
+{
+	int *seg;
+
+	seg = &maze->segments;
+	maze->delta.p4.x = maze->player.ray_x;
+	maze->delta.p4.y = maze->player.ray_y;
+	maze->delta.p4.ray = i;
+	maze->delta.p4.dst = get_wall_dst(&maze->player, maze->delta.p4.x, maze->delta.p4.y);
+	
+	if(maze->delta.p1.dst < 2)
+	{
+		if(get_end_dst(maze))
+		{
+			//maze->w[maze->segments].end = maze->delta.p4;
+			wall_segment_end(maze, i);
+			segment_init(maze, maze->delta.p4);
+			//wall_segment_init(maze, i);
+			init_wall_delta(maze);
+			maze->delta.p1 = maze->w[*seg].st;
+			return ;
+		}
+		return;
+	}
+	maze->delta.dx1 = fabs(maze->delta.p2.x - maze->delta.p1.x);
+	maze->delta.dx2 = fabs(maze->delta.p3.x - maze->delta.p2.x);
+	maze->delta.dx3 = fabs(maze->delta.p4.x - maze->delta.p3.x);
+	maze->delta.dy1 = fabs(maze->delta.p2.y - maze->delta.p1.y);
+	maze->delta.dy2 = fabs(maze->delta.p3.y - maze->delta.p2.y);
+	maze->delta.dy3 = fabs(maze->delta.p4.y - maze->delta.p3.y);
+	
+	if(maze->delta.dx1 > maze->delta.dy1) // x 
+	{
+		if(maze->delta.dx2 > maze->delta.dy2) // xx
+		{
+			if(maze->delta.dx3 > maze->delta.dy3) // xxx
+			{
+				init_wall_delta(maze);
+				maze->w[(*seg)].delta = 'x';
+				//3 consecutive x deltas are bigger than y, then the 4 points belong to same x line.
+			}
+			else // xxy
+			{
+				maze->delta.p2 = maze->delta.p3;
+				maze->delta.p3 = maze->delta.p4;
+				ft_memset(&maze->delta.p4, 0, sizeof(t_point));
+				// p3 and p4 show a change in direction
+				// I can delete p1 and p2 and enter 2 more points to compare.
+			}
+		}
+		else //xy
+		{
+			if(maze->delta.dx3 < maze->delta.dy3) //xyy
+			{
+				if (maze->w[(*seg)].delta == 'y')
+					init_wall_delta(maze);
+				else
+				{
+					// start segment
+					//
+
+					(*seg)++;
+					segment_init(maze, maze->delta.p2);
+				}
+			}
+			else //xyx
+			{
+				init_wall_delta(maze);
+				//Make it more clear
+			}
+		}
+	}
+	else if(maze->delta.dx1 < maze->delta.dy1) // y 
+	{
+		if(maze->delta.dx2 < maze->delta.dy2) // yy
+		{
+			if(maze->delta.dx3 < maze->delta.dy3) // yyy
+			{
+				init_wall_delta(maze);
+				maze->w[(*seg)].delta = 'y';
+				//3 consecutive x deltas are bigger than y, then the 4 points belong to same x line.
+			}
+			else // yyx
+			{
+				maze->delta.p2 = maze->delta.p3;
+				maze->delta.p3 = maze->delta.p4;
+				ft_memset(&maze->delta.p4, 0, sizeof(t_point));
+				// p3 and p4 show a change in direction
+				// I can delete p1 and p2 and enter 2 more points to compare.
+			}
+		}
+		else //yx ray 175 started new segment, it should not.
+		{
+			if(maze->delta.dx3 > maze->delta.dy3) //yxx
+			{
+				if (maze->w[(*seg)].delta == 'x')
+					init_wall_delta(maze);
+				else
+				{
+					// start segment
+					//everytime we start a segment, we need to finish the previous one.
+					(*seg)++;
+					segment_init(maze, maze->delta.p2);
+				}
+			}
+			else //yxy
+			{
+				init_wall_delta(maze);
+				//Make it more clear
+			}
+		}
+	}
+	
+}
+
+void wall_segment(t_maze *maze, int i)
+{
+	if(maze->delta.p1.x == 0)
+	{
+		maze->delta.p1.x = maze->player.ray_x;
+		maze->delta.p1.y = maze->player.ray_y;
+		maze->delta.p1.ray = i;
+		maze->delta.p1.dst = get_wall_dst(&maze->player, maze->delta.p1.x, maze->delta.p1.y);
+		return ;
+	}
+	else if(maze->delta.p2.x == 0)
+	{
+		maze->delta.p2.x = maze->player.ray_x;
+		maze->delta.p2.y = maze->player.ray_y;
+		maze->delta.p2.ray = i;
+		maze->delta.p2.dst = get_wall_dst(&maze->player, maze->delta.p2.x, maze->delta.p2.y);
+		return ;
+	}
+	else if(maze->delta.p3.x == 0)
+	{
+		maze->delta.p3.x = maze->player.ray_x;
+		maze->delta.p3.y = maze->player.ray_y;
+		maze->delta.p3.ray = i;
+		maze->delta.p3.dst = get_wall_dst(&maze->player, maze->delta.p3.x, maze->delta.p3.y);
+		return ;
+	}
+/* 	else if(maze->delta.p4.x == 0)
+	{
+		maze->delta.p4.x = maze->player.ray_x;
+		maze->delta.p4.y = maze->player.ray_y;
+		maze->delta.p4.ray = i;
+		maze->delta.p4.dst = get_wall_dst(&maze->player, maze->delta.p4.x, maze->delta.p4.y);
+		return ;
+	}
+	else if(maze->delta.p5.x == 0)
+	{
+		maze->delta.p5.x = maze->player.ray_x;
+		maze->delta.p5.y = maze->player.ray_y;
+		maze->delta.p5.x = i;
+		maze->delta.p5.dst = get_wall_dst(&maze->player, maze->delta.p5.x, maze->delta.p5.y);
+		return ;
+	}
+	else if(maze->delta.p6.x == 0)
+	{
+		maze->delta.p6.x = maze->player.ray_x;
+		maze->delta.p6.y = maze->player.ray_y;
+		maze->delta.p6.x = i;
+		maze->delta.p6.dst = get_wall_dst(&maze->player, maze->delta.p6.x, maze->delta.p6.y);
+		return ;
+	} */
+	wall_deltas(maze, i);
+
+}
+
 
 void wall_segment_init(t_maze *maze, int i)
 {
 	int *seg;
 
 	seg = &maze->segments;
+	//we are going to save just the starting point.
 	if(maze->w[*seg].st.x == 0)
 	{
 		maze->w[*seg].st.x = maze->player.ray_x;
 		maze->w[*seg].st.y = maze->player.ray_y;
 		maze->w[*seg].st.ray = i;
-		return;
-	}
-	else if(maze->w[*seg].end.x == 0)
-	{
-		maze->w[*seg].end.x = maze->player.ray_x;
-		maze->w[*seg].end.y = maze->player.ray_y;
-		maze->w[*seg].end.ray = i;
-		return;
+		maze->w[*seg].st.dst = get_wall_dst (&maze->player, maze->w[*seg].st.x, maze->w[*seg].st.y);
 	}
 	wall_segment(maze, i);
 }
@@ -319,10 +464,14 @@ void init_wall_segments(t_maze *maze)
 	}
 }
 
-void	draw_rays(t_maze *maze, t_player *player)
+void init_wall_delta(t_maze *maze)
+{
+	ft_memset(&maze->delta, 0, sizeof(t_w_delta));
+}
+
+void	touch_points(t_maze *maze, t_player *player)
 {
 	double	fov;
-	//int	num_rays;
 	double	angle_step;
 	int	i;
 	double	ray_angle;
@@ -340,30 +489,57 @@ void	draw_rays(t_maze *maze, t_player *player)
         // Cast the ray
 		while (!touch(player->ray_x, player->ray_y, maze))
 		{
+			player->ray_x += cos(ray_angle); // Move ray in x direction
+			player->ray_y += sin(ray_angle); // Move ray in y direction
+		}
+		wall_segment_init(maze, i);
+		//dprintf(maze->fd_log, "%i, %f, %f, %f\n",i, player->ray_x, player->ray_y, get_wall_distance(player));
+		i++;
+	}
+}
+
+void draw_walls(t_maze *maze, t_player *player)
+{
+	touch_points(maze, player);
+}
+
+
+void	draw_rays(t_maze *maze, t_player *player)
+{
+	double	fov;
+	//int	num_rays;
+	double	angle_step;
+	int	i;
+	double	ray_angle;
+
+	fov = 66 * M_PI / 180; // 66° Rad. Field of View
+	//num_rays = 6; // Num of rays
+	angle_step = fov / (N_RAYS - 1); // angular increment
+	i = 0;
+	while (i <= N_RAYS)
+	{
+		ray_angle = player->angle - (fov / 2) + (i * angle_step); // Calculate ray angle
+		player->ray_x = player->x;
+		player->ray_y = player->y;
+		while (!touch(player->ray_x, player->ray_y, maze))
+		{
 			
 			my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->screen, COLOR_YELLOW); // Draw ray pixel
 			player->ray_x += cos(ray_angle); // Move ray in x direction
 			player->ray_y += sin(ray_angle); // Move ray in y direction
 		}
-		wall_segment_init(maze, i);
-		//we need to compare if the ray is moving in x or in y
-		// we need to flag when it changing from one or the other.
-		dprintf(maze->fd_log, "%i, %f, %f, %f\n",i, player->ray_x, player->ray_y, get_wall_distance(player));
-		//wall_dst = get_wall_distance(player);
-		//draw_wall(get_wall_distance(player), maze, i);
 		i++;
 	}
-	//Could we create a print fn to see whats in the segments_?
-	//draw_wall_segment(maze);
 }
 
 int	draw_loop(t_maze *maze)
 {
 	move_player(&maze->player);
 	clear_screen(&maze->screen);
-	draw_rays(maze, &maze->player);
-	draw_map(maze); //Maze is in the back, player is in the front.
-	draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
+	draw_walls(maze, &maze->player);
+	//draw_rays(maze, &maze->player);
+	//draw_map(maze); //Maze is in the back, player is in the front.
+	//draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
 	//draw_map(maze); //Player is in the back, maze is in the front.
 	//draw_rays(maze, &maze->player);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);

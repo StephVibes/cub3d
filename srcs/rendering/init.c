@@ -79,4 +79,5 @@ void	maze_init(t_maze *maze)
 	data_init(maze);
 	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
 	events_init(maze);
+	init_wall_delta(maze);
 }
