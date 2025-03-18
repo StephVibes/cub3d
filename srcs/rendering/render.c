@@ -293,7 +293,7 @@ void wall_deltas(t_maze *maze, int i)
 	maze->delta.dy2 = fabs(maze->delta.p3.y - maze->delta.p2.y);
 	maze->delta.dy3 = fabs(maze->delta.p4.y - maze->delta.p3.y);
 	
-	if(maze->delta.dx1 > maze->delta.dy1) // x 
+		if(maze->delta.dx1 > maze->delta.dy1) // x 
 	{
 		if(maze->delta.dx2 > maze->delta.dy2) // xx
 		{
@@ -322,9 +322,9 @@ void wall_deltas(t_maze *maze, int i)
 				{
 					// start segment
 					//
-
-					(*seg)++;
-					segment_init(maze, maze->delta.p2);
+					//Breakpoint here
+					segment_end(maze, maze->delta.p2);
+					segment_init(maze, maze->delta.p3);
 				}
 			}
 			else //xyx
@@ -363,8 +363,10 @@ void wall_deltas(t_maze *maze, int i)
 				{
 					// start segment
 					//everytime we start a segment, we need to finish the previous one.
-					(*seg)++;
+					segment_end(maze, maze->delta.p1);
 					segment_init(maze, maze->delta.p2);
+					maze->w[(*seg)].delta = 'y';
+					init_wall_delta(maze);
 				}
 			}
 			else //yxy
@@ -493,7 +495,7 @@ void	touch_points(t_maze *maze, t_player *player)
 			player->ray_y += sin(ray_angle); // Move ray in y direction
 		}
 		wall_segment_init(maze, i);
-		//dprintf(maze->fd_log, "%i, %f, %f, %f\n",i, player->ray_x, player->ray_y, get_wall_distance(player));
+		dprintf(maze->fd_log, "%i, %f, %f, %f\n",i, player->ray_x, player->ray_y, get_wall_distance(player));
 		i++;
 	}
 }
