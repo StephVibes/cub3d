@@ -299,12 +299,15 @@ void wall_deltas(t_maze *maze, int i)
 		{
 			if(maze->delta.dx3 > maze->delta.dy3) // xxx
 			{
+				if(i == N_RAYS)
+					segment_end(maze, maze->delta.p4);
 				init_wall_delta(maze);
 				maze->w[(*seg)].delta = 'x';
 				//3 consecutive x deltas are bigger than y, then the 4 points belong to same x line.
 			}
 			else // xxy
 			{
+				maze->delta.p1 = maze->delta.p2;
 				maze->delta.p2 = maze->delta.p3;
 				maze->delta.p3 = maze->delta.p4;
 				ft_memset(&maze->delta.p4, 0, sizeof(t_point));
@@ -325,6 +328,8 @@ void wall_deltas(t_maze *maze, int i)
 					//Breakpoint here
 					segment_end(maze, maze->delta.p2);
 					segment_init(maze, maze->delta.p3);
+					maze->w[(*seg)].delta = 'y';
+					init_wall_delta(maze);
 				}
 			}
 			else //xyx
@@ -363,9 +368,9 @@ void wall_deltas(t_maze *maze, int i)
 				{
 					// start segment
 					//everytime we start a segment, we need to finish the previous one.
-					segment_end(maze, maze->delta.p1);
-					segment_init(maze, maze->delta.p2);
-					maze->w[(*seg)].delta = 'y';
+					segment_end(maze, maze->delta.p2);
+					segment_init(maze, maze->delta.p3);
+					maze->w[(*seg)].delta = 'x';
 					init_wall_delta(maze);
 				}
 			}
@@ -495,7 +500,7 @@ void	touch_points(t_maze *maze, t_player *player)
 			player->ray_y += sin(ray_angle); // Move ray in y direction
 		}
 		wall_segment_init(maze, i);
-		dprintf(maze->fd_log, "%i, %f, %f, %f\n",i, player->ray_x, player->ray_y, get_wall_distance(player));
+		//dprintf(maze->fd_log, "%i, %f, %f, %f\n",i, player->ray_x, player->ray_y, get_wall_distance(player));
 		i++;
 	}
 }
@@ -503,6 +508,7 @@ void	touch_points(t_maze *maze, t_player *player)
 void draw_walls(t_maze *maze, t_player *player)
 {
 	touch_points(maze, player);
+	draw_wall_segment(maze);
 }
 
 

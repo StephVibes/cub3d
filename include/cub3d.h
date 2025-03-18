@@ -14,12 +14,12 @@
 # define WIDTH 1200
 # define HEIGHT 800
 # define SQUARE 35
-# define N_RAYS 100
+# define N_RAYS 300
 # define MIN_WALL 200
 # define MAX_DST 200
 # define W_SEGMENTS 100
-# define SPEED 5
-# define ANGLE_SPEED 0.3
+# define SPEED 1
+# define ANGLE_SPEED 0.01
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
