@@ -11,6 +11,10 @@ static void	data_init(t_maze *maze)
 	maze->player.right_rotate = 0;
 	maze->player.left_rotate = 0;
 	maze->player.angle = (3 * M_PI) / 2; // depending on N S W E in map
+	if (maze->map->width > maze->map->height)
+		maze->map->block= MAP_SIZE / maze->map->width;
+	else
+		maze->map->block = MAP_SIZE / maze->map->height;
 	get_player_init_pos(maze);
 	get_player_angle(maze);
 	//maze->segments = 0;

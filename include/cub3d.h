@@ -13,7 +13,6 @@
 
 # define WIDTH 1200
 # define HEIGHT 800
-# define SQUARE 12
 # define N_RAYS 300
 # define MIN_WALL 200
 # define MAX_DST 200
@@ -49,11 +48,10 @@ typedef struct s_map {
 	int		floor_color[3]; // RGB for floor color
 	int		ceiling_color[3]; // RGB for ceiling color
 	char	**layout; // 2D array for the map layout
-	int		map_width; // Width of the map
-	int		map_height; // Height of the map
+	int		width; // Width of the map
+	int		height; // Height of the map
 	char	player_dir; // Initial player direction (N, S, E, W)
-//	int		player_x; // Player's starting X coordinate
-//	int		player_y; // Player's starting Y coordinate
+	double	block;
 } t_map;
 
 typedef struct s_player
@@ -150,7 +148,9 @@ void	validate_textures(char *textures[]);
 
 // Draw
 void     my_pixel_put(int x, int y, t_image *img, int color);
-
+void    clear_screen(t_image *screen);
+void    move_player(t_player *player);
+void    draw_player(t_maze *maze);
 
 // Rendering
 void	draw_square(int x, int y, int size, int color, t_image *screen);

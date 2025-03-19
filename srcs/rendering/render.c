@@ -1,65 +1,5 @@
 #include "cub3d.h"
 
-
-
-void	move_player(t_player *player)
-{
-	int	speed;
-	double	angle_speed;
-	double	cos_angle;
-	double	sin_angle;
-
-	speed = SPEED;
-	angle_speed = ANGLE_SPEED;
-	cos_angle = cos(player->angle);
-	sin_angle = sin(player->angle);
-	if (player->right_rotate)
-		player->angle += angle_speed;
-	if (player->left_rotate)
-		player->angle -= angle_speed;
-	if (player->angle > 2 * M_PI)
-		player->angle = 0;
-	if (player->angle < 0)
-		player->angle = 2 * M_PI;
-	if (player->key_state[0])
-	{
-		player->x += cos_angle * speed;
-		player->y += sin_angle * speed;
-	}
-	if (player->key_state[1])
-	{
-		player->x -= cos_angle * speed;
-		player->y -= sin_angle * speed;
-	}
-	if (player->key_state[2])
-	{
-		player->x += sin_angle * speed;
-		player->y -= cos_angle * speed;
-	}
-	if (player->key_state[3])
-	{
-		player->x -= sin_angle * speed;
-		player->y += cos_angle * speed;
-	}
-}
-
-void	clear_screen(t_image *screen)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < WIDTH)
-	{
-		j = 0;
-		while (j < HEIGHT)
-		{
-			my_pixel_put(i, j, screen, 0x00000000);
-			j++;
-		}
-		i++;
-	}
-}
 double get_wall_distance(t_player *player)
 {
 	double dst;
@@ -522,7 +462,7 @@ int	draw_loop(t_maze *maze)
 	draw_walls(maze, &maze->player);
 	draw_rays(maze, &maze->player);
 	draw_map(maze); //Maze is in the back, player is in the front.
-	draw_square(maze->player.x, maze->player.y, 4, 0x00FF0000, &maze->img_2d);
+	draw_player(maze);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_3d.img_ptr, 0, 0);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
 	return (0);

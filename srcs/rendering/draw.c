@@ -21,7 +21,8 @@ void	draw_square(int x, int y, int size, int color, t_image *img)
 		j = 0;
 		while (j < size)
 		{
-			my_pixel_put(x + i, y + j, img, color);
+			if (x + i < MAP_SIZE && y + j < MAP_SIZE)
+				my_pixel_put(x + i, y + j, img, color);
 			j++;
 		}
 		i++;
@@ -30,14 +31,11 @@ void	draw_square(int x, int y, int size, int color, t_image *img)
 
 void	draw_map(t_maze *maze)
 {
-/*	for (int y = 0; y < MAP_SIZE; y++)
-    		for (int x = 0; x < MAP_SIZE; x++)
-        		my_pixel_put(x, y, &maze->img_2d, 0x00FF00);
-*/	char	**map;
+	char	**map;
 	int 	color;
 	int		y;
 	int		x;
-	
+
 	map = maze->map->layout;
 	color = 0x000000FF;
 	y = 0;
@@ -47,7 +45,7 @@ void	draw_map(t_maze *maze)
 		while(map[y][x])
 		{
 			if (map[y][x] == '1')
-				draw_square(x * SQUARE, y * SQUARE, SQUARE, color, &maze->img_2d);
+				draw_square(x * maze->map->block, y * maze->map->block, maze->map->block, color, &maze->img_2d);
 			x++;
 		}
 		y++;
@@ -59,12 +57,83 @@ int	touch(double px, double py, t_maze *maze)
 	int	x;
 	int	y;
 
-	x = px / SQUARE;
-	y = py / SQUARE;
+	x = px / maze->map->block;
+	y = py / maze->map->block;
 	
-	if (x < 0 || y < 0 || x >= maze->map->map_width || y >= maze->map->map_height)
+	if (x < 0 || y < 0 || x >= maze->map->width || y >= maze->map->height)
 		return (1);
 	if (maze->map->layout[y][x] == '1')
 		return (1);
 	return (0);
+}
+
+void	move_player(t_player *player)
+{
+	int	speed;
+	double	angle_speed;
+	double	cos_angle;
+	double	sin_angle;
+
+	speed = SPEED;
+	angle_speed = ANGLE_SPEED;
+	cos_angle = cos(player->angle);
+	sin_angle = sin(player->angle);
+	if (player->right_rotate)
+		player->angle += angle_speed;
+	if (player->left_rotate)
+		player->angle -= angle_speed;
+	if (player->angle > 2 * M_PI)
+		player->angle = 0;
+	if (player->angle < 0)
+		player->angle = 2 * M_PI;
+	if (player->key_state[0])
+	{
+		player->x += cos_angle * speed;
+		player->y += sin_angle * speed;
+	}
+	if (player->key_state[1])
+	{
+		player->x -= cos_angle * speed;
+		player->y -= sin_angle * speed;
+	}
+	if (player->key_state[2])
+	{
+		player->x += sin_angle * speed;
+		player->y -= cos_angle * speed;
+	}
+	if (player->key_state[3])
+	{
+		player->x -= sin_angle * speed;
+		player->y += cos_angle * speed;
+	}
+}
+
+void	draw_player(t_maze *maze)
+{
+	int	player_size;
+	int	player_x;
+	int	player_y;
+
+	player_size = maze->map->block / 3;
+	player_x = maze->player.x - (player_size / 2);
+	player_y = maze->player.y - (player_size / 2);
+	draw_square(player_x, player_y, player_size, 0xFF0000, &maze->img_2d);
+}
+
+void	clear_screen(t_image *screen)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < WIDTH)
+	{
+		j = 0;
+		while (j < HEIGHT)
+		{
+			my_pixel_put(i, j, screen, 0x00000000);
+			j++;
+		}
+		i++;
+	}
 }

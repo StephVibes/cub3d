@@ -153,26 +153,26 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 
 	i = map_start;
 //	printf("***map start = %d\n", i);
-	map->map_height = 0;
-	map->map_width = 0;
+	map->height = 0;
+	map->width = 0;
 	while (lines[i] && lines[i][0] != '\n')
 	{
 		line_len = ft_strlen(lines[i]);
 		if (lines[i][line_len - 1] == '\n')
 			line_len--;
-		if (line_len > map->map_width)
-			map->map_width = line_len;
-		map->map_height++;
+		if (line_len > map->width)
+			map->width = line_len;
+		map->height++;
 		i++;
 	}
 	i = 0;
-	map->layout = malloc(sizeof(char *) * (map->map_height + 1));
+	map->layout = malloc(sizeof(char *) * (map->height + 1));
 	while (lines[map_start + i])
 	{
 		map->layout[i] = ft_strdup(lines[map_start + i]);
 		i++;
 	}
-	map->layout[map->map_height] = NULL;
+	map->layout[map->height] = NULL;
 }
 
 /*int	validate_map(char **lines, int map_start)
