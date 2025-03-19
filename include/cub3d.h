@@ -13,13 +13,14 @@
 
 # define WIDTH 1200
 # define HEIGHT 800
-# define SQUARE 35
+# define SQUARE 12
 # define N_RAYS 300
 # define MIN_WALL 200
 # define MAX_DST 200
 # define W_SEGMENTS 100
 # define SPEED 1
 # define ANGLE_SPEED 0.01
+# define MAP_SIZE 290
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
@@ -30,10 +31,12 @@
 # define COLOR_CYAN    0x0000FFFF  // Cyan
 # define COLOR_WHITE   0x00FFFFFF  // White
 
+
+
 typedef struct s_image
 {
 	void	*img_ptr;      // Pointer to the image
-	char	*data;         // Pointer to the pixel data
+	char	*data;		//Pointer to the pixel data
 	int 	width;         // Image width
 	int		height;        // Image height
 	int		bpp;           // Bits per pixel
@@ -108,7 +111,8 @@ typedef struct s_maze
 	void		*mlx_ptr;       // Pointer to the MLX instance
 	void		*win_ptr;       // Pointer to the window
 	//t_image		textures[4];     // Array for wall textures (e.g., north, south, east, west)
-	t_image		screen;         // For rendering the screen buffer
+	t_image		img_3d;         // For rendering the screen buffer
+	t_image		img_2d;
 //	double		plane_x;        // Camera plane X
 //	double		plane_y;        // Camera plane Y
 	t_map		*map;           // Pointer to the map info
@@ -144,8 +148,11 @@ void	get_player_angle (t_maze *maze);
 // Validation
 void	validate_textures(char *textures[]);
 
-// Rendering
+// Draw
+void     my_pixel_put(int x, int y, t_image *img, int color);
 
+
+// Rendering
 void	draw_square(int x, int y, int size, int color, t_image *screen);
 void	maze_render(t_maze *maze);
 int		draw_loop(t_maze *maze);

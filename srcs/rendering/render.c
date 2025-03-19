@@ -1,32 +1,6 @@
 #include "cub3d.h"
 
-static void	my_pixel_put(int x, int y, t_image *screen, int color)
-{
-	if (x >= WIDTH || y >= HEIGHT || x < 0 || y < 0)
-		return;
-	int	offset;
 
-	offset = (y * screen->line_len) + (x * (screen->bpp / 8));
-	*(unsigned int *)(screen->data + offset) = color;
-}
-
-void	draw_square(int x, int y, int size, int color, t_image *screen)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < size)
-	{
-		j = 0;
-		while (j < size)
-		{
-			my_pixel_put(x + i, y + j, screen, color);
-			j++;
-		}
-		i++;
-	}
-}
 
 void	move_player(t_player *player)
 {
@@ -123,7 +97,7 @@ void draw_wall( double dst, t_maze *maze, int ray)
 	{
 		while (y < h + y_offset)
 		{
-			my_pixel_put((int)x, (int)y, &maze->screen, COLOR_RED);
+			my_pixel_put((int)x, (int)y, &maze->img_3d, COLOR_RED);
 			y++;
 		}
 		x++;
@@ -198,7 +172,7 @@ void draw_wall_segment(t_maze *maze)
 			yy = (HEIGHT - y);
 			while(y <=  yy)
 			{
-				my_pixel_put((int)x, (int)y, &maze->screen, COLOR_GREEN);
+				my_pixel_put((int)x, (int)y, &maze->img_3d, COLOR_GREEN);
 				y++;
 			}
 			x++;
@@ -532,7 +506,7 @@ void	draw_rays(t_maze *maze, t_player *player)
 		while (!touch(player->ray_x, player->ray_y, maze))
 		{
 			
-			my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->screen, COLOR_YELLOW); // Draw ray pixel
+			my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_YELLOW); // Draw ray pixel
 			player->ray_x += cos(ray_angle); // Move ray in x direction
 			player->ray_y += sin(ray_angle); // Move ray in y direction
 		}
@@ -543,13 +517,13 @@ void	draw_rays(t_maze *maze, t_player *player)
 int	draw_loop(t_maze *maze)
 {
 	move_player(&maze->player);
-	clear_screen(&maze->screen);
+	clear_screen(&maze->img_3d);
+	clear_screen(&maze->img_2d);
 	draw_walls(maze, &maze->player);
-	//draw_rays(maze, &maze->player);
-	//draw_map(maze); //Maze is in the back, player is in the front.
-	//draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
-	//draw_map(maze); //Player is in the back, maze is in the front.
-	//draw_rays(maze, &maze->player);
-	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
+	draw_rays(maze, &maze->player);
+	draw_map(maze); //Maze is in the back, player is in the front.
+	draw_square(maze->player.x, maze->player.y, 4, 0x00FF0000, &maze->img_2d);
+	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_3d.img_ptr, 0, 0);
+	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
 	return (0);
 }
