@@ -14,7 +14,7 @@
 # define WIDTH 1200
 # define HEIGHT 800
 # define SQUARE 35
-# define N_RAYS 300
+# define N_RAYS 100
 # define MIN_WALL 200
 # define MAX_DST 200
 # define W_SEGMENTS 100
@@ -161,4 +161,5 @@ void	draw_walls(t_maze *maze, t_player *player);
 void	wall_deltas(t_maze *maze, int i);
 void	segment_end(t_maze *maze, t_point p);
 void	segment_init(t_maze *maze, t_point p);
+int		last_end_point(t_maze *maze);
 #endif

@@ -262,6 +262,19 @@ int get_end_dst(t_maze *maze)
 	return(2);
 }
 
+int last_end_point(t_maze *maze)
+{
+	if(maze->delta.p1.ray == N_RAYS)
+		return(segment_end(maze, maze->delta.p1), 1);
+	if(maze->delta.p2.ray == N_RAYS)
+		return(segment_end(maze, maze->delta.p2), 1);
+	if(maze->delta.p3.ray == N_RAYS)
+		return(segment_end(maze, maze->delta.p3), 1);
+	if(maze->delta.p4.ray == N_RAYS)
+		return(segment_end(maze, maze->delta.p4), 1);
+	return (0);
+}
+
 void wall_deltas(t_maze *maze, int i)
 {
 	int *seg;
@@ -292,21 +305,31 @@ void wall_deltas(t_maze *maze, int i)
 	maze->delta.dy1 = fabs(maze->delta.p2.y - maze->delta.p1.y);
 	maze->delta.dy2 = fabs(maze->delta.p3.y - maze->delta.p2.y);
 	maze->delta.dy3 = fabs(maze->delta.p4.y - maze->delta.p3.y);
-	
-		if(maze->delta.dx1 > maze->delta.dy1) // x 
+	//here we can include a check end function. like if (i=N_RAYS)...
+	if (last_end_point(maze))
+	{
+		maze->segments--;
+		return;
+	}
+	if(maze->delta.dx1 > maze->delta.dy1) // x 
 	{
 		if(maze->delta.dx2 > maze->delta.dy2) // xx
 		{
 			if(maze->delta.dx3 > maze->delta.dy3) // xxx
 			{
-				if(i == N_RAYS)
-					segment_end(maze, maze->delta.p4);
+				if (maze->w[(*seg)].delta == 'y')
+				{
+					segment_end(maze, maze->delta.p2);
+					segment_init(maze, maze->delta.p3);
+				}
 				init_wall_delta(maze);
 				maze->w[(*seg)].delta = 'x';
 				//3 consecutive x deltas are bigger than y, then the 4 points belong to same x line.
 			}
 			else // xxy
 			{
+				//Here we also can put delta = x and put y at the begining.
+				//maze->w[(*seg)].delta = 'x';
 				maze->delta.p1 = maze->delta.p2;
 				maze->delta.p2 = maze->delta.p3;
 				maze->delta.p3 = maze->delta.p4;
@@ -334,6 +357,11 @@ void wall_deltas(t_maze *maze, int i)
 			}
 			else //xyx
 			{
+				maze->delta.p1 = maze->delta.p4;
+				//Here should I keep p4, moving it to p1?
+				ft_memset(&maze->delta.p2, 0, sizeof(t_point));
+				ft_memset(&maze->delta.p3, 0, sizeof(t_point));
+				ft_memset(&maze->delta.p4, 0, sizeof(t_point));
 				init_wall_delta(maze);
 				//Make it more clear
 			}
@@ -345,17 +373,21 @@ void wall_deltas(t_maze *maze, int i)
 		{
 			if(maze->delta.dx3 < maze->delta.dy3) // yyy
 			{
+				if (maze->w[(*seg)].delta == 'x')
+				{
+					segment_end(maze, maze->delta.p2);
+					segment_init(maze, maze->delta.p3);
+				}
 				init_wall_delta(maze);
 				maze->w[(*seg)].delta = 'y';
 				//3 consecutive x deltas are bigger than y, then the 4 points belong to same x line.
 			}
 			else // yyx
 			{
+				maze->delta.p1 = maze->delta.p2;
 				maze->delta.p2 = maze->delta.p3;
 				maze->delta.p3 = maze->delta.p4;
 				ft_memset(&maze->delta.p4, 0, sizeof(t_point));
-				// p3 and p4 show a change in direction
-				// I can delete p1 and p2 and enter 2 more points to compare.
 			}
 		}
 		else //yx ray 175 started new segment, it should not.
@@ -376,6 +408,11 @@ void wall_deltas(t_maze *maze, int i)
 			}
 			else //yxy
 			{
+				maze->delta.p1 = maze->delta.p4;
+				//Here should I keep p4, moving it to p1?
+				ft_memset(&maze->delta.p2, 0, sizeof(t_point));
+				ft_memset(&maze->delta.p3, 0, sizeof(t_point));
+				ft_memset(&maze->delta.p4, 0, sizeof(t_point));
 				init_wall_delta(maze);
 				//Make it more clear
 			}
