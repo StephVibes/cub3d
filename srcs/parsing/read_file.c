@@ -84,8 +84,8 @@ void	print_debug(t_map *map)
 		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color[i]);
 		i++;
 	}
-	printf("map height = %d\n", map->map_height);
-	printf("map_width = %d\n", map->map_width);
+	printf("map height = %d\n", map->height);
+	printf("map_width = %d\n", map->width);
 	i = 0;
 	while(map->layout[i])
 	{
