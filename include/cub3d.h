@@ -29,7 +29,7 @@
 # define COLOR_MAGENTA 0x00FF00FF  // Magenta
 # define COLOR_CYAN    0x0000FFFF  // Cyan
 # define COLOR_WHITE   0x00FFFFFF  // White
-
+# define COLOR_BLACK   0x00000000  // Black
 
 
 typedef struct s_image

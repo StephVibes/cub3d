@@ -29,42 +29,39 @@ void	draw_square(int x, int y, int size, int color, t_image *img)
 	}
 }
 
-void draw_map_cell(int x, int y, t_maze *maze)
+void	draw_map_cell(int x, int y, t_maze *maze)
 {
-    int start_x;
-    int start_y;
-    int color;
+	int	start_x;
+	int	start_y;
+	t_map	*map;
 
-    color = 0x000000FF;  // Wall color
+	map = maze->map;
+	start_x = (maze->img_2d.width - (map->width * map->block)) / 2;
+	start_y = (maze->img_2d.height - (map->height * map->block)) / 2;
 
-    // Calculate offsets to center the map
-    start_x = (maze->img_2d.width - (maze->map->width * maze->map->block)) / 2;
-    start_y = (maze->img_2d.height - (maze->map->height * maze->map->block)) / 2;
-
-    if (maze->map->layout[y][x] == '1')
-        draw_square(start_x + (x * maze->map->block),
-                    start_y + (y * maze->map->block),
-                    maze->map->block, color, &maze->img_2d);
+    if (map->layout[y][x] == '1')
+        draw_square(start_x + (x * map->block),
+                    start_y + (y * map->block),
+                    map->block, COLOR_BLUE, &maze->img_2d);
 }
 
-void draw_map(t_maze *maze)
+void	draw_map(t_maze *maze)
 {
-    int y;
-    int x;
+	int	y;
+	int	x;
 
-    y = 0;
-    while (y < maze->map->height)
-    {
-        x = 0;
-        while (x < maze->map->width)
-        {
-            draw_map_cell(x, y, maze);
-            x++;
-        }
-        y++;
-    }
+	y = 0;
+	while (y < maze->map->height)
+	{
+		x = 0;
+		while (x < maze->map->width)
+		{
+			draw_map_cell(x, y, maze);
+			x++;
+		}
+		y++;
+	}
 }
-
 
 int	touch(double px, double py, t_maze *maze)
 {
@@ -131,7 +128,7 @@ void	draw_player(t_maze *maze)
 	player_size = maze->map->block / 3;
 	player_x = maze->player.x - (player_size / 2);
 	player_y = maze->player.y - (player_size / 2);
-	draw_square(player_x, player_y, player_size, 0xFF0000, &maze->img_2d);
+	draw_square(player_x, player_y, player_size, COLOR_RED, &maze->img_2d);
 }
 
 void	clear_screen(t_image *screen)
@@ -145,7 +142,7 @@ void	clear_screen(t_image *screen)
 		j = 0;
 		while (j < HEIGHT)
 		{
-			my_pixel_put(i, j, screen, 0x00000000);
+			my_pixel_put(i, j, screen, COLOR_BLACK);
 			j++;
 		}
 		i++;
