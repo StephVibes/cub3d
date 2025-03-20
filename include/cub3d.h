@@ -52,6 +52,8 @@ typedef struct s_map {
 	int		height; // Height of the map
 	char	player_dir; // Initial player direction (N, S, E, W)
 	double	block;
+	int	offset_2dx;
+	int	offset_2dy;
 } t_map;
 
 typedef struct s_player

@@ -11,10 +11,16 @@ static void	data_init(t_maze *maze)
 	maze->player.right_rotate = 0;
 	maze->player.left_rotate = 0;
 	maze->player.angle = (3 * M_PI) / 2; // depending on N S W E in map
+	maze->img_3d.width = WIDTH;
+	maze->img_3d.height = HEIGHT;
+	maze->img_2d.width = MAP_SIZE;
+	maze->img_2d.height = MAP_SIZE;
 	if (maze->map->width > maze->map->height)
 		maze->map->block= MAP_SIZE / maze->map->width;
 	else
 		maze->map->block = MAP_SIZE / maze->map->height;
+	maze->map->offset_2dx = (maze->img_2d.width - (maze->map->width * maze->map->block)) / 2;
+	maze->map->offset_2dy = (maze->img_2d.height - (maze->map->height * maze->map->block)) / 2;
 	get_player_init_pos(maze);
 	get_player_angle(maze);
 	//maze->segments = 0;
@@ -32,10 +38,6 @@ static void	data_init(t_maze *maze)
 	i = 0;
 	while (i < 4)
 		maze->map->textures[i++] = NULL;
-	maze->img_3d.width = WIDTH;
-	maze->img_3d.height = HEIGHT;
-	maze->img_2d.width = MAP_SIZE;
-	maze->img_2d.height = MAP_SIZE;
 }
 
 static void	events_init(t_maze *maze)

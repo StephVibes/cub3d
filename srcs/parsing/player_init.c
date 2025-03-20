@@ -15,8 +15,8 @@ void	get_player_init_pos(t_maze *maze)
 		{
 			if(maze->map->layout[i][j] != '0' && maze->map->layout[i][j] != '1')
 				{
-					maze->player.x = (j * maze->map->block) + (maze->map->block / 2);
-					maze->player.y = (i * maze->map->block) + (maze->map->block / 2);
+					maze->player.x = maze->map->offset_2dx + (j * maze->map->block) + (maze->map->block / 2);
+					maze->player.y = maze->map->offset_2dy + (i * maze->map->block) + (maze->map->block / 2);
 					maze->player.dir = maze->map->layout[i][j];
 					return;
 				}

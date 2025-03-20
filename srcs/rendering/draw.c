@@ -29,36 +29,50 @@ void	draw_square(int x, int y, int size, int color, t_image *img)
 	}
 }
 
-void	draw_map(t_maze *maze)
+void draw_map_cell(int x, int y, t_maze *maze)
 {
-	char	**map;
-	int 	color;
-	int		y;
-	int		x;
+    int start_x;
+    int start_y;
+    int color;
 
-	map = maze->map->layout;
-	color = 0x000000FF;
-	y = 0;
-	while(map[y])
-	{
-		x = 0;
-		while(map[y][x])
-		{
-			if (map[y][x] == '1')
-				draw_square(x * maze->map->block, y * maze->map->block, maze->map->block, color, &maze->img_2d);
-			x++;
-		}
-		y++;
-	}
+    color = 0x000000FF;  // Wall color
+
+    // Calculate offsets to center the map
+    start_x = (maze->img_2d.width - (maze->map->width * maze->map->block)) / 2;
+    start_y = (maze->img_2d.height - (maze->map->height * maze->map->block)) / 2;
+
+    if (maze->map->layout[y][x] == '1')
+        draw_square(start_x + (x * maze->map->block),
+                    start_y + (y * maze->map->block),
+                    maze->map->block, color, &maze->img_2d);
 }
+
+void draw_map(t_maze *maze)
+{
+    int y;
+    int x;
+
+    y = 0;
+    while (y < maze->map->height)
+    {
+        x = 0;
+        while (x < maze->map->width)
+        {
+            draw_map_cell(x, y, maze);
+            x++;
+        }
+        y++;
+    }
+}
+
 
 int	touch(double px, double py, t_maze *maze)
 {
 	int	x;
 	int	y;
 
-	x = px / maze->map->block;
-	y = py / maze->map->block;
+	x = (px - maze->map->offset_2dx) / maze->map->block;
+	y = (py - maze->map->offset_2dy) / maze->map->block;
 	
 	if (x < 0 || y < 0 || x >= maze->map->width || y >= maze->map->height)
 		return (1);
