@@ -11,16 +11,14 @@
 # include <fcntl.h>
 # include "../libft/libft.h"
 
-# define WIDTH 1200
-# define HEIGHT 800
-# define HEIGHT 800
-# define N_RAYS 300
+# define WIDTH (float)1600
+# define HEIGHT (float)800 
+# define N_RAYS 1600
 # define MIN_WALL 200
 # define MAX_DST 200
-# define W_SEGMENTS 100
-# define SPEED 1
-# define ANGLE_SPEED 0.01
-# define MAP_SIZE 290
+# define SPEED 8
+# define ANGLE_SPEED 0.02
+# define MAP_SIZE 2000
 # define WALL '1'
 # define EMPTY '0'
 
@@ -71,8 +69,6 @@ typedef struct s_player
 	double	ray_y;
 	char	dir;
 
-	char	dir;
-
 } t_player;
 
 typedef struct s_point
@@ -113,36 +109,16 @@ typedef struct s_wall_delta
 
 typedef struct s_maze
 {
-	void		*mlx_ptr;       // Pointer to the MLX instance
 	void		*win_ptr;       // Pointer to the window
 	void		*mlx_ptr;       // Pointer to the MLX instance
-	void		*win_ptr;       // Pointer to the window
 	//t_image		textures[4];     // Array for wall textures (e.g., north, south, east, west)
 	t_image		img_3d;         // For rendering the screen buffer
 	t_image		img_2d;
-//	double		plane_x;        // Camera plane X
-//	double		plane_y;        // Camera plane Y
-	t_map		*map;           // Pointer to the map info
 	int			fd_log;			//File descriptor, log file.
 	t_player	player;         // Player info
 	double		wall_seg[9];	// coordinate that defines a wall segment
 	t_image		screen;         // For rendering the screen buffer
-//	double		plane_x;        // Camera plane X
-//	double		plane_y;        // Camera plane Y
 	t_map		*map;           // Pointer to the map info
-	int			fd_log;			//File descriptor, log file.
-	t_player	player;         // Player info
-	double		wall_seg[9];	// coordinate that defines a wall segment
-	t_image		screen;         // For rendering the screen buffer
-//	double		plane_x;        // Camera plane X
-//	double		plane_y;        // Camera plane Y
-	t_map		*map;           // Pointer to the map info
-	int			fd_log;			//File descriptor, log file.
-	t_player	player;         // Player info
-	double		wall_seg[9];	// coordinate that defines a wall segment
-	t_wall		w[W_SEGMENTS];
-	t_w_delta	delta;
-	int			segments;
 } t_maze;
 
 // Init

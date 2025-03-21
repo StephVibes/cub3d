@@ -98,7 +98,5 @@ void	maze_init(t_maze *maze)
 	maze -> img_2d.data = mlx_get_data_addr(maze -> img_2d.img_ptr, &maze -> img_2d.bpp,
 			&maze -> img_2d.line_len, &maze -> img_2d.endian);
 	data_init(maze);
-	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
 	events_init(maze);
-	init_wall_delta(maze);
 }
