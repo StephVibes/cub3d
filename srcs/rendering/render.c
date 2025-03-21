@@ -86,6 +86,32 @@ void	clear_screen(t_image *screen)
 		i++;
 	}
 }
+
+double perp_wall_dst(t_player *player, double ray_angle)
+{
+    double ray_dir_x, ray_dir_y;
+    double ray_length;
+    double correction_angle;
+    
+    // Calculate ray direction vector
+    ray_dir_x = player->ray_x - player->x;
+    ray_dir_y = player->ray_y - player->y;
+    
+    // Calculate ray length (straight-line distance)
+    ray_length = sqrt(ray_dir_x * ray_dir_x + ray_dir_y * ray_dir_y);
+    
+    // Calculate angle difference for fisheye correction
+    // This is the angle between the ray and the player's viewing direction
+    correction_angle = ray_angle - player->angle;
+    
+    // Normalize correction_angle to be between -π and π
+    while (correction_angle > M_PI) correction_angle -= 2 * M_PI;
+    while (correction_angle < -M_PI) correction_angle += 2 * M_PI;
+    
+    // Apply fisheye correction by multiplying by cosine of the angle difference
+    return ray_length * cos(correction_angle);
+}
+
 double get_wall_distance(t_player *player)
 {
 	double dst;
@@ -109,19 +135,24 @@ double dst_to_h(double dst)
 void draw_wall( double dst, t_maze *maze, int ray)
 {
 	double col_w;
-	double y_offset;
 	double h;
-	double x;
-	double y;
+	int x;
+	int xx;
+	int y;
+	int yy;
+	int orig_y;
 
 	col_w = WIDTH / N_RAYS;
-	h = dst_to_h(dst);
-	y_offset = (HEIGHT - h) / 2; //for a given h, how much space is free up and down?
-	x = ray * col_w; //For a given ray, we know the x valu by multiplying ray by col width.
-	y = y_offset;
-	while(x < ray * col_w + col_w)
-	{
-		while (y < h + y_offset)
+	//h = dst_to_h(dst);
+	h = (SQUARE / dst) * (WIDTH / 2);
+	orig_y = (HEIGHT - h) / 2; //for a given h, how much space is free up and down?
+	x = ray * col_w;
+	xx =  x + col_w;//For a given ray, we know the x valu by multiplying ray by col width.
+	yy = h + orig_y;
+	while(x < xx)
+	{	
+		y = orig_y;
+		while (y < yy)
 		{
 			my_pixel_put((int)x, (int)y, &maze->screen, COLOR_RED);
 			y++;
@@ -137,72 +168,6 @@ double get_wall_dst(t_player *player ,double x, double y)
 	return (dst);
 }
 
-void draw_wall_segment(t_maze *maze)
-{
-	(void)maze;
-	/* double col_w;
-	double y_offset;
-	double h;
-	double x;
-	double y;
-	double wall_dst;
-
-	wall_dst = get_wall_dst(maze->player, )
-	col_w = WIDTH / N_RAYS;
-	h = dst_to_h(dst);
-	y_offset = (HEIGHT - h) / 2; //for a given h, how much space is free up and down?
-	x = ray * col_w; //For a given ray, we know the x valu by multiplying ray by col width.
-	y = y_offset; */
-
-
-
-	//p2 is the vertice
-}
-
-void wall_segment(t_maze *maze, int i)
-{
-	double dx;
-	double dy;
-	double dxx;
-	double dyy;
-	//double seg[9];
-
-	maze->wall_seg[6] = maze->player.ray_x;
-	maze->wall_seg[7] = maze->player.ray_y;
-	maze->wall_seg[8] = i;
-	dx = maze->wall_seg[3] - maze->wall_seg[0];
-	dy = maze->wall_seg[4] - maze->wall_seg[1];
-	dxx = maze->wall_seg[6] - maze->wall_seg[3];
-	dyy = maze->wall_seg[7] - maze->wall_seg[4];
-	if(dx > dy)
-	{
-		if(dxx > dyy)
-		{
-			//the 3rd point belongs to the same line
-			maze->wall_seg[3] = maze->wall_seg[6];
-			maze->wall_seg[4] = maze->wall_seg[7];
-			maze->wall_seg[5] = maze->wall_seg[8];
-		}
-		else
-		{
-			//we found the end of the line
-			draw_wall_segment(maze);
-		}
-	}
-	else if (dy > dx)
-	{
-		if(dyy > dx)
-		{
-			maze->wall_seg[3] = maze->wall_seg[6];
-			maze->wall_seg[4] = maze->wall_seg[7];
-			maze->wall_seg[5] = maze->wall_seg[8];
-		}
-		else
-		{
-			draw_wall_segment(maze);
-		}
-	}
-}
 
 void wall_segment_init(t_maze *maze, int i)
 {
@@ -246,17 +211,18 @@ void	draw_rays(t_maze *maze, t_player *player)
 		while (!touch(player->ray_x, player->ray_y, maze))
 		{
 			
-			my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->screen, COLOR_YELLOW); // Draw ray pixel
+			//my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->screen, COLOR_YELLOW); // Draw ray pixel
 			player->ray_x += cos(ray_angle); // Move ray in x direction
 			player->ray_y += sin(ray_angle); // Move ray in y direction
 		}
-		wall_segment_init(maze, i);
+		//wall_segment_init(maze, i);
 		//we need to compare if the ray is moving in x or in y
 		// we need to flag when it changing from one or the other.
 		//dprintf(maze->fd_log, "(x:%.2f, y:%.2f)\n",player->ray_x, player->ray_y);
-		wall_dst = get_wall_distance(player);
-		draw_wall(get_wall_distance(player), maze, i);
-		(void)wall_dst;
+		wall_dst = perp_wall_dst(player, ray_angle);
+		draw_wall(wall_dst, maze, i);
+		//wall_dst = get_wall_distance(player);
+		//draw_wall(wall_dst, maze, i);
 		i++;
 	}
 }
@@ -265,8 +231,8 @@ int	draw_loop(t_maze *maze)
 {
 	move_player(&maze->player);
 	clear_screen(&maze->screen);
-	draw_map(maze); //Maze is in the back, player is in the front.
-	draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
+	//draw_map(maze); //Maze is in the back, player is in the front.
+	//draw_square(maze->player.x, maze->player.y, 10, 0x00FF0000, &maze->screen);
 	//draw_map(maze); //Player is in the back, maze is in the front.
 	draw_rays(maze, &maze->player);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);

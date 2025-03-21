@@ -14,7 +14,7 @@
 # define WIDTH 1200
 # define HEIGHT 800
 # define SQUARE 35
-# define N_RAYS 300
+# define N_RAYS 200
 # define MIN_WALL 200
 # define MAX_DST 200
 
@@ -109,5 +109,6 @@ void	maze_render(t_maze *maze);
 int		draw_loop(t_maze *maze);
 void	draw_map(t_maze *maze);
 int     touch(double px, double py, t_maze *maze);
+double	perp_wall_dst(t_player *player, double ray_angle);
 
 #endif
