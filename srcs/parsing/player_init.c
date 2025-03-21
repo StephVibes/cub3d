@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void get_player_init_pos(t_maze *maze)
+void	get_player_init_pos(t_maze *maze)
 {
 	int i;
 	int j;
@@ -8,15 +8,15 @@ void get_player_init_pos(t_maze *maze)
 	i = 0;
 	
 
-	while(i < maze->map->map_height)
+	while(i < maze->map->height)
 	{
 		j = 0;
-		while(j < maze->map->map_width)
+		while(j < maze->map->width)
 		{
 			if(maze->map->layout[i][j] != '0' && maze->map->layout[i][j] != '1')
 				{
-					maze->player.x = j * SQUARE;
-					maze->player.y = i * SQUARE;
+					maze->player.x = maze->map->offset_2dx + (j * maze->map->block) + (maze->map->block / 2);
+					maze->player.y = maze->map->offset_2dy + (i * maze->map->block) + (maze->map->block / 2);
 					maze->player.dir = maze->map->layout[i][j];
 					return;
 				}
@@ -27,7 +27,7 @@ void get_player_init_pos(t_maze *maze)
 
 }
 
-void get_player_angle (t_maze *maze)
+void	get_player_angle (t_maze *maze)
 {
 	if(maze->player.dir == 'N')
 		maze->player.angle = (3 * M_PI) / 2;

@@ -14,10 +14,15 @@
 # define WIDTH 1200
 # define HEIGHT 800
 # define HEIGHT 800
-# define SQUARE 35
-# define N_RAYS 200
+# define N_RAYS 300
 # define MIN_WALL 200
 # define MAX_DST 200
+# define W_SEGMENTS 100
+# define SPEED 1
+# define ANGLE_SPEED 0.01
+# define MAP_SIZE 290
+# define WALL '1'
+# define EMPTY '0'
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
@@ -27,11 +32,13 @@
 # define COLOR_MAGENTA 0x00FF00FF  // Magenta
 # define COLOR_CYAN    0x0000FFFF  // Cyan
 # define COLOR_WHITE   0x00FFFFFF  // White
+# define COLOR_BLACK   0x00000000  // Black
+
 
 typedef struct s_image
 {
 	void	*img_ptr;      // Pointer to the image
-	char	*data;         // Pointer to the pixel data
+	char	*data;		//Pointer to the pixel data
 	int 	width;         // Image width
 	int		height;        // Image height
 	int		bpp;           // Bits per pixel
@@ -44,11 +51,12 @@ typedef struct s_map {
 	int		floor_color[3]; // RGB for floor color
 	int		ceiling_color[3]; // RGB for ceiling color
 	char	**layout; // 2D array for the map layout
-	int		map_width; // Width of the map
-	int		map_height; // Height of the map
+	int		width; // Width of the map
+	int		height; // Height of the map
 	char	player_dir; // Initial player direction (N, S, E, W)
-//	int		player_x; // Player's starting X coordinate
-//	int		player_y; // Player's starting Y coordinate
+	double	block;
+	int	offset_2dx;
+	int	offset_2dy;
 } t_map;
 
 typedef struct s_player
@@ -67,6 +75,42 @@ typedef struct s_player
 
 } t_player;
 
+typedef struct s_point
+{
+	double	x;
+	double	y;
+	double	dst;
+	int		ray;
+} t_point;
+
+
+typedef struct s_wall
+{
+	t_point st;
+	t_point end;
+	char	delta;
+	double	m;
+	double	b;
+
+} t_wall;
+
+typedef struct s_wall_delta
+{
+	t_point p1;
+	t_point p2;
+	t_point p3;
+	t_point p4;
+	//t_point p5;
+	//t_point p6;
+	double	dx1;
+	double	dx2;
+	double	dx3;
+	double	dy1;
+	double	dy2;
+	double	dy3;
+
+} t_w_delta;
+
 typedef struct s_maze
 {
 	void		*mlx_ptr;       // Pointer to the MLX instance
@@ -74,7 +118,8 @@ typedef struct s_maze
 	void		*mlx_ptr;       // Pointer to the MLX instance
 	void		*win_ptr;       // Pointer to the window
 	//t_image		textures[4];     // Array for wall textures (e.g., north, south, east, west)
-	t_image		screen;         // For rendering the screen buffer
+	t_image		img_3d;         // For rendering the screen buffer
+	t_image		img_2d;
 //	double		plane_x;        // Camera plane X
 //	double		plane_y;        // Camera plane Y
 	t_map		*map;           // Pointer to the map info
@@ -88,6 +133,16 @@ typedef struct s_maze
 	int			fd_log;			//File descriptor, log file.
 	t_player	player;         // Player info
 	double		wall_seg[9];	// coordinate that defines a wall segment
+	t_image		screen;         // For rendering the screen buffer
+//	double		plane_x;        // Camera plane X
+//	double		plane_y;        // Camera plane Y
+	t_map		*map;           // Pointer to the map info
+	int			fd_log;			//File descriptor, log file.
+	t_player	player;         // Player info
+	double		wall_seg[9];	// coordinate that defines a wall segment
+	t_wall		w[W_SEGMENTS];
+	t_w_delta	delta;
+	int			segments;
 } t_maze;
 
 // Init
@@ -116,8 +171,13 @@ void	get_player_angle (t_maze *maze);
 // Validation
 void	validate_textures(char *textures[]);
 
-// Rendering
+// Draw
+void     my_pixel_put(int x, int y, t_image *img, int color);
+void    clear_screen(t_image *screen);
+void    move_player(t_player *player);
+void    draw_player(t_maze *maze);
 
+// Rendering
 void	draw_square(int x, int y, int size, int color, t_image *screen);
 void	maze_render(t_maze *maze);
 int		draw_loop(t_maze *maze);
@@ -126,4 +186,13 @@ void	draw_map(t_maze *maze);
 int     touch(double px, double py, t_maze *maze);
 double	perp_wall_dst(t_player *player, double ray_angle);
 
+//walls
+void	wall_segment(t_maze *maze, int i);
+void	wall_segment_init(t_maze *maze, int i);
+void 	init_wall_delta(t_maze *maze);
+void	touch_points(t_maze *maze, t_player *player);
+void	draw_walls(t_maze *maze, t_player *player);
+void	wall_deltas(t_maze *maze, int i);
+void	segment_end(t_maze *maze, t_point p);
+void	segment_init(t_maze *maze, t_point p);
 #endif

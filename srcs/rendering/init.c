@@ -11,12 +11,28 @@ static void	data_init(t_maze *maze)
 	maze->player.right_rotate = 0;
 	maze->player.left_rotate = 0;
 	maze->player.angle = (3 * M_PI) / 2; // depending on N S W E in map
+	maze->img_3d.width = WIDTH;
+	maze->img_3d.height = HEIGHT;
+	maze->img_2d.width = MAP_SIZE;
+	maze->img_2d.height = MAP_SIZE;
+	if (maze->map->width > maze->map->height)
+		maze->map->block= MAP_SIZE / maze->map->width;
+	else
+		maze->map->block = MAP_SIZE / maze->map->height;
+	maze->map->offset_2dx = (maze->img_2d.width - (maze->map->width * maze->map->block)) / 2;
+	maze->map->offset_2dy = (maze->img_2d.height - (maze->map->height * maze->map->block)) / 2;
 	get_player_init_pos(maze);
 	get_player_angle(maze);
-//	maze->map->player_x = WIDTH / 2; //SACAR DEL MAPA
-//	maze->map->player_y = HEIGHT / 2; //SACAR DEL MAPA
-//	maze->player.x = WIDTH / 2; //sacar del mapa para inicializar
-//	maze->player.y = HEIGHT / 2; //sacar del mapa para inicializar
+	//maze->segments = 0;
+	i = 0;
+    /* while (i < W_SEGMENTS)
+	{
+        maze->w[i].st.x = 0.0;
+		maze->w[i].st.y = 0.0;
+		maze->w[i].end.x = 0.0;
+		maze->w[i].end.y = 0.0;
+		i++;
+	} */
 	maze->player.ray_x = maze->player.x;
 	maze->player.ray_y = maze->player.y;
 	i = 0;
@@ -51,9 +67,6 @@ static void	events_init(t_maze *maze)
 
 void	maze_init(t_maze *maze)
 {
-	int i;
-	i = 0;
-	
 	maze -> mlx_ptr = mlx_init(); // connect with the minilibx
 	if (maze -> mlx_ptr == NULL)
 		error("error initiliazing the minilibx"); // improve
@@ -64,18 +77,28 @@ void	maze_init(t_maze *maze)
 		free(maze -> mlx_ptr);
 		error("error creating the window with the minilibx"); // improve
 	}
-	maze -> screen.img_ptr = mlx_new_image(maze -> mlx_ptr, WIDTH, HEIGHT); // create image
-	if (maze -> screen.img_ptr == NULL)
+	maze -> img_3d.img_ptr = mlx_new_image(maze -> mlx_ptr, WIDTH, HEIGHT); // create 3d image
+	if (maze -> img_3d.img_ptr == NULL)
 	{
 		mlx_destroy_window(maze -> mlx_ptr, maze -> win_ptr);
 		mlx_destroy_display(maze -> mlx_ptr);
 		free(maze -> mlx_ptr);
 		error("error creating the image with minilibx"); // improve
 	}
-	maze -> screen.data = mlx_get_data_addr(maze -> screen.img_ptr, &maze -> screen.bpp, &maze -> screen.line_len, &maze -> screen.endian);
+	maze -> img_2d.img_ptr = mlx_new_image(maze -> mlx_ptr, MAP_SIZE, MAP_SIZE); // create 2d image
+ 	if (maze -> img_2d.img_ptr == NULL)
+ 	{
+		mlx_destroy_window(maze -> mlx_ptr, maze -> win_ptr);
+		mlx_destroy_display(maze -> mlx_ptr);
+		free(maze -> mlx_ptr);
+		error("error creating the image with minilibx"); // improve
+	}
+	maze -> img_3d.data = mlx_get_data_addr(maze -> img_3d.img_ptr, &maze -> img_3d.bpp, 
+			&maze -> img_3d.line_len, &maze -> img_3d.endian);
+	maze -> img_2d.data = mlx_get_data_addr(maze -> img_2d.img_ptr, &maze -> img_2d.bpp,
+			&maze -> img_2d.line_len, &maze -> img_2d.endian);
 	data_init(maze);
 	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->screen.img_ptr, 0, 0);
 	events_init(maze);
-    while (i < 9)
-        maze->wall_seg[i++] = 0.0;
+	init_wall_delta(maze);
 }

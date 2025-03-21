@@ -27,11 +27,16 @@ char	**read_file(const char *file_name)
 	int	fd;
 	char	**lines;
 	int	i;
+	char	*ext;
 
 	i = 0;
 	num_lines = count_lines(file_name);
 	lines = malloc((num_lines + 1) * sizeof(char *));
-
+	ext = ft_strrchr(file_name, '.');
+	if (!ext)
+		error("Missing map file extension");
+	if (ft_strncmp(ext, ".cub", 4))
+		error("Invalid map file extension\n");
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
 		error("error opening the file"); // improve
@@ -79,8 +84,8 @@ void	print_debug(t_map *map)
 		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color[i]);
 		i++;
 	}
-	printf("map height = %d\n", map->map_height);
-	printf("map_width = %d\n", map->map_width);
+	printf("map height = %d\n", map->height);
+	printf("map_width = %d\n", map->width);
 	i = 0;
 	while(map->layout[i])
 	{
@@ -105,7 +110,7 @@ t_map	*load_map(const char *file_name)
 	parse_textures(lines, map);
 	parse_colors(lines, map);
 	parse_map(lines, map);
-	//print_debug(map);
+	print_debug(map);
 	//validate_map(map);
 	ft_free_split(lines); // Free the file lines
 	return (map);

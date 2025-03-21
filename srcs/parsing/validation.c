@@ -16,7 +16,7 @@ void	check_file(char *file)
 		error("Can't read file\n");
 	close(fd);
 	if (ft_strncmp(ext, ".xpm", 4))
-		error("Invalid texture file extension\n");
+		error("Invalid texture file extension");
 }
 
 void	remove_newline(char *str)
