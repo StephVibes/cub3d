@@ -47,7 +47,7 @@ int	validate_color(char *color, t_map *map, int index, int type)
 	int	i;
 
 	i = 0;
-	while (color[i] && color[i] != 10)
+	while (color[i])
 	{
 		if (!ft_isdigit(color[i]) && color[i] != 32 && color[i] != 9)
 		{
@@ -86,7 +86,7 @@ void	parse_colors(char **lines, t_map *map)
 		{
 			floor_color = ft_split(line + 2, ',');
 			j = 0;
-			while (floor_color[j])
+			while (floor_color[j] && j < 3)
 			{
 				if (validate_color(floor_color[j], map, j, 0))
 					error("Invalid color floor");
@@ -100,7 +100,7 @@ void	parse_colors(char **lines, t_map *map)
 		{
 			ceiling_color = ft_split(line + 2, ',');
 			j = 0;
-			while (ceiling_color[j])
+			while (ceiling_color[j] && j < 3)
 			{
 				if (validate_color(ceiling_color[j], map, j, 1))
 					error("Invalid color ceiling");
