@@ -176,7 +176,7 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 		map->height++;
 		i++;
 	}
-	if (map->map_height < 3 || map->map_width < 3)
+	if (map->height < 3 || map->width < 3)
 		error("Map is too small");
 	i = 0;
 	map->layout = malloc(sizeof(char *) * (map->height + 1));
@@ -188,85 +188,103 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 	map->layout[map->height] = NULL;
 }
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#define WALL '1'
-#define EMPTY '0'
-
-// Helper function to check if a cell is a player (N, S, W, or E)
-int is_player(char c) {
-    return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
+int	is_player(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
 }
 
-// Recursive flood fill to check if an open space reaches the map boundary
-int flood_fill(char **map, int **visited, int rows, int cols, int x, int y) {
-    // If we reach the edge of the map, it's open
-    if (x < 0 || y < 0 || x >= rows || y >= cols)
-        return 1;
-    
-    // If it's a wall or already visited, stop
-    if (map[x][y] == WALL || visited[x][y])
-        return 0;
-
-    // Mark the cell as visited
-    visited[x][y] = 1;
-
-    // Check all 4 directions
-    return flood_fill(map, visited, rows, cols, x + 1, y) ||
-           flood_fill(map, visited, rows, cols, x - 1, y) ||
-           flood_fill(map, visited, rows, cols, x, y + 1) ||
-           flood_fill(map, visited, rows, cols, x, y - 1);
+int	flood_fill(char **map, int **visited, int rows, int cols, int x, int y)
+{
+	if (x < 0 || y < 0 || x >= rows || y >= cols)
+		return 1;
+	if (map[x][y] == WALL || visited[x][y])
+		return 0;
+	visited[x][y] = 1;
+	return (flood_fill(map, visited, rows, cols, x + 1, y) ||
+			flood_fill(map, visited, rows, cols, x - 1, y) ||
+			flood_fill(map, visited, rows, cols, x, y + 1) ||
+			flood_fill(map, visited, rows, cols, x, y - 1));
 }
 
-// Function to check if the map is fully enclosed
-int is_map_closed(char **map, int rows, int cols) {
-    // Allocate a visited array
-    int **visited = (int **)malloc(rows * sizeof(int *));
-    if (!visited)
-        return -1; // Memory allocation failure
-
-    int i = 0;
-    while (i < rows) {
-        visited[i] = (int *)calloc(cols, sizeof(int));
-        if (!visited[i]) {
-            while (--i >= 0) // Free already allocated rows if allocation fails
-                free(visited[i]);
-            free(visited);
-            return -1;
-        }
-        i++;
-    }
-
+int	**allocate_visited_array(int rows, int cols)
+{
+	int	**visited;
+	int	i;
+	visited = (int **)malloc(rows * sizeof(int *));
+	if (!visited)
+		return NULL;
     i = 0;
-    int j, result = 1; // Assume the map is closed
-
-    while (i < rows) {
-        j = 0;
-        while (j < cols) {
-            if (map[i][j] == EMPTY || is_player(map[i][j])) {
-                if (flood_fill(map, visited, rows, cols, i, j)) {
-                    result = 0; // Found an open path to the outside
-                    break;
-                }
-            }
-            j++;
-        }
-        if (!result) break;
-        i++;
-    }
-
-    // Free allocated memory
-    i = 0;
-    while (i < rows) {
-        free(visited[i]);
-        i++;
-    }
-    free(visited);
-
-    return result;
+	while (i < rows)
+	{
+		visited[i] = (int *)calloc(cols, sizeof(int));
+		if (!visited[i])
+		{
+			while (--i >= 0) 
+				free(visited[i]);
+			free(visited);
+			return NULL;
+		}
+		i++;
+	}
+	return (visited);
 }
 
+void	free_visited_array(int **visited, int rows)
+{
+	int	i;
+
+	i = 0;
+	while (i < rows)
+	{
+		free(visited[i]);
+		i++;
+	}
+	free(visited);
+}
+
+int	is_map_closed(char **map, int rows, int cols)
+{
+	int **visited;
+	int	i;
+	int	j;
+	int	result;
+
+	visited = allocate_visited_array(rows, cols);
+	if (!visited)
+		return (-1);
+	i = 0;
+	result = 1;
+	while (i < rows && result)
+	{
+		j = 0;
+		while (j < cols)
+		{
+			if (map[i][j] == EMPTY || is_player(map[i][j]))
+			{
+				if (flood_fill(map, visited, rows, cols, i, j))
+				{
+					result = 0;
+					break;
+				}
+			}
+			j++;
+		}
+		i++;
+	}
+	free_visited_array(visited, rows);
+	return (result);
+}
+
+int	accept_valid(char c)
+{
+	return (c == EMPTY || c == WALL || c == 'N' || c == 'S' ||
+		c == 'E' || c == 'W' || c == ' ');
+}
+
+int	accept_coord(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
+}
 
 void	validate_map(char **layout, t_map *map)
 {
@@ -281,20 +299,17 @@ void	validate_map(char **layout, t_map *map)
 		j = 0;
 		while (layout[i][j] != '\n')
 		{
-			if (!is_map_closed(layout, map->map_height, map->map_width))
+			if (!is_map_closed(layout, map->height, map->width))
 				error("Map needs to be enclosed by walls");
-			if (!(layout[i][j] == '0' || layout[i][j] == '1' || layout[i][j] == ' ' 
-				|| layout[i][j] == 'N' || layout[i][j] == 'S' || layout[i][j] == 'E' || layout[i][j] == 'W'))
+			if (!accept_valid(layout[i][j]))
 				error("Wrong value in the map");
-			if ((layout[i][j] == 'N' || layout[i][j] == 'S' 
-				|| layout[i][j] == 'E' || layout[i][j] == 'W') && player_set == 0)
+			if (accept_coord(layout[i][j]) && player_set == 0)
 			{
 				player_set = 1;
-				if (i == 0 || i == map->map_height - 1 || j == 0 || j == map->map_width - 1)
+				if (i == 0 || i == map->height - 1 || j == 0 || j == map->width - 1)
 					error("Player on the edge");
 			}
-			else if ((layout[i][j] == 'N' || layout[i][j] == 'S'
-				|| layout[i][j] == 'E' || layout[i][j] == 'W') && player_set == 1)
+			else if (accept_coord(layout[i][j]) && player_set == 1)
 				error("More than one player");
 			j++;
 		}

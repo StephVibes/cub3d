@@ -20,6 +20,8 @@
 # define SPEED 1
 # define ANGLE_SPEED 0.01
 # define MAP_SIZE 290
+# define WALL '1'
+# define EMPTY '0'
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
