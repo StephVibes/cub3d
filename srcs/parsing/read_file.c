@@ -94,6 +94,26 @@ void	print_debug(t_map *map)
 	}
 }
 
+void wall_map(map)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while(map->layout[i] && i < map->width)
+	{
+		j = 0;
+		while(map->layout[i][j] && j < map->height)
+		{
+			if()
+			{
+				
+			}
+
+		}
+	}
+}
+
 t_map	*load_map(const char *file_name)
 {
 	char	**lines;
@@ -110,7 +130,7 @@ t_map	*load_map(const char *file_name)
 	parse_textures(lines, map);
 	parse_colors(lines, map);
 	parse_map(lines, map);
-	//wall_map(map);
+	wall_map(map);
 	print_debug(map);
 	//validate_map(map);
 	ft_free_split(lines); // Free the file lines
