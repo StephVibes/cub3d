@@ -105,6 +105,12 @@ void wall_map(map)
 		j = 0;
 		while(map->layout[i][j] && j < map->height)
 		{
+			//The 4 points rounding a point are:
+			//map->layout[i-1][j]
+			//map->layout[i+1][j]
+			//map->layout[i][j-1]
+			//map->layout[i][j+1]
+			
 			if()
 			{
 				
