@@ -37,6 +37,8 @@ void	move_player(t_player *player)
 
 	speed = 1;
 	angle_speed = 0.01;
+	speed = 1;
+	angle_speed = 0.01;
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	if (player->right_rotate)
@@ -193,15 +195,21 @@ void	draw_rays(t_maze *maze, t_player *player)
 {
 	double	fov;
 	//int	num_rays;
+	//int	num_rays;
 	double	angle_step;
 	int	i;
 	double	ray_angle;
+	double	wall_dst;
 	double	wall_dst;
 
 	fov = 66 * M_PI / 180; // 66° Rad. Field of View
 	//num_rays = 6; // Num of rays
 	angle_step = fov / (N_RAYS - 1); // angular increment
+	fov = 66 * M_PI / 180; // 66° Rad. Field of View
+	//num_rays = 6; // Num of rays
+	angle_step = fov / (N_RAYS - 1); // angular increment
 	i = 0;
+	while (i < N_RAYS)
 	while (i < N_RAYS)
 	{
 		ray_angle = player->angle - (fov / 2) + (i * angle_step); // Calculate ray angle

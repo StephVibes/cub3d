@@ -14,7 +14,11 @@
 # define WIDTH 1200
 # define HEIGHT 800
 # define SQUARE 35
+<<<<<<< HEAD
 # define N_RAYS 200
+=======
+# define N_RAYS 300
+>>>>>>> f3b1615a01cad26348a2d7f8e9b592ff4c1386f5
 # define MIN_WALL 200
 # define MAX_DST 200
 
