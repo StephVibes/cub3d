@@ -13,12 +13,9 @@
 
 # define WIDTH 1200
 # define HEIGHT 800
+# define HEIGHT 800
 # define SQUARE 35
-<<<<<<< HEAD
 # define N_RAYS 200
-=======
-# define N_RAYS 300
->>>>>>> f3b1615a01cad26348a2d7f8e9b592ff4c1386f5
 # define MIN_WALL 200
 # define MAX_DST 200
 
@@ -66,13 +63,24 @@ typedef struct s_player
 	double	ray_y;
 	char	dir;
 
+	char	dir;
+
 } t_player;
 
 typedef struct s_maze
 {
 	void		*mlx_ptr;       // Pointer to the MLX instance
 	void		*win_ptr;       // Pointer to the window
+	void		*mlx_ptr;       // Pointer to the MLX instance
+	void		*win_ptr;       // Pointer to the window
 	//t_image		textures[4];     // Array for wall textures (e.g., north, south, east, west)
+	t_image		screen;         // For rendering the screen buffer
+//	double		plane_x;        // Camera plane X
+//	double		plane_y;        // Camera plane Y
+	t_map		*map;           // Pointer to the map info
+	int			fd_log;			//File descriptor, log file.
+	t_player	player;         // Player info
+	double		wall_seg[9];	// coordinate that defines a wall segment
 	t_image		screen;         // For rendering the screen buffer
 //	double		plane_x;        // Camera plane X
 //	double		plane_y;        // Camera plane Y
@@ -102,6 +110,8 @@ void	parse_colors(char **lines, t_map *map);
 void	parse_map(char **lines, t_map *map);
 void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
+void	get_player_init_pos(t_maze *maze);
+void	get_player_angle (t_maze *maze);
 
 // Validation
 void	validate_textures(char *textures[]);
@@ -110,6 +120,7 @@ void	validate_textures(char *textures[]);
 
 void	draw_square(int x, int y, int size, int color, t_image *screen);
 void	maze_render(t_maze *maze);
+int		draw_loop(t_maze *maze);
 int		draw_loop(t_maze *maze);
 void	draw_map(t_maze *maze);
 int     touch(double px, double py, t_maze *maze);
