@@ -13,7 +13,7 @@ void	get_player_init_pos(t_maze *maze)
 		j = 0;
 		while(j < maze->map->width)
 		{
-			if(maze->map->layout[i][j] != '0' && maze->map->layout[i][j] != '1')
+			if(maze->map->layout[i][j] != '0' && maze->map->layout[i][j] != '1' && maze->map->layout[i][j] != 'x' && maze->map->layout[i][j] != 'y')
 				{
 					maze->player.x = maze->map->offset_2dx + (j * maze->map->block) + (maze->map->block / 2);
 					maze->player.y = maze->map->offset_2dy + (i * maze->map->block) + (maze->map->block / 2);

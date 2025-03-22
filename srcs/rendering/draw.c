@@ -39,7 +39,7 @@ void	draw_map_cell(int x, int y, t_maze *maze)
 	start_x = (maze->img_2d.width - (map->width * map->block)) / 2;
 	start_y = (maze->img_2d.height - (map->height * map->block)) / 2;
 
-    if (map->layout[y][x] == '1')
+    if (map->layout[y][x] == '1' || map->layout[y][x] == 'x' || map->layout[y][x] == 'y')
         draw_square(start_x + (x * map->block),
                     start_y + (y * map->block),
                     map->block, COLOR_BLUE, &maze->img_2d);
@@ -75,6 +75,10 @@ int	touch(double px, double py, t_maze *maze)
 		return (1);
 	if (maze->map->layout[y][x] == '1')
 		return (1);
+	if (maze->map->layout[y][x] == 'x')
+		return (2);
+	if (maze->map->layout[y][x] == 'y')
+		return (3);
 	return (0);
 }
 

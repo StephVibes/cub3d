@@ -94,7 +94,7 @@ void	print_debug(t_map *map)
 	}
 }
 
-void wall_map(map)
+void wall_map(t_map *map)
 {
 	int i;
 	int j;
@@ -103,20 +103,53 @@ void wall_map(map)
 	while(map->layout[i] && i < map->width)
 	{
 		j = 0;
-		while(map->layout[i][j] && j < map->height)
+		while(map->layout[i][j] && j < map->height && i < map->width)
 		{
+			if(map->layout[i][j] == '1')
+			{
+				//edge cases
+				//i= 0 and j = 0
+				//i = W and j = H
+				//i = 0 and j = H
+				//i = w and j = 0
+				if (i == map->width - 1)
+				{
+					if(map->layout[i-1][j] == '0' || map->layout[i-1][j] == 'N')
+						map->layout[i][j] = 'x';
+				}
+				if(j> 0 && i> 0 && i < map->width - 1)
+				{
+					//x_wall
+					if(map->layout[i+1][j] == '0' || map->layout[i-1][j] == '0')
+						map->layout[i][j] = 'x';
+					//y_wall
+					if(map->layout[i][j+1] == '0' || map->layout[i][j-1] == '0')
+						map->layout[i][j] = 'y';
+					//column
+				}
+				else if(j == 0 && i != 0 && i < map->width - 1)
+				{
+					if(map->layout[i+1][j] == '0' || map->layout[i-1][j] == '0')
+						map->layout[i][j] = 'x';
+					if(map->layout[i][j+1] == '0' || map->layout[i][j+1] == 'N')
+						map->layout[i][j] = 'y';
+				}
+				else if(j != 0 && i == 0 && i < map->width - 1) 
+				{
+					if(map->layout[i+1][j] == '0')
+						map->layout[i][j] = 'x';
+					if(map->layout[i][j+1] == '0' || map->layout[i][j-1] == '0')
+						map->layout[i][j] = 'y';
+				}
+			}
+			j++;
 			//The 4 points rounding a point are:
 			//map->layout[i-1][j]
 			//map->layout[i+1][j]
 			//map->layout[i][j-1]
 			//map->layout[i][j+1]
-			
-			if()
-			{
-				
-			}
-
 		}
+		i++;
 	}
 }
 

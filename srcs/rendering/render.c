@@ -45,13 +45,14 @@ double dst_to_h(double dst)
 	return (h);
 }
 
-void draw_wall( double dst, t_maze *maze, int ray)
+void draw_wall( double dst, t_maze *maze, int ray, int wall_ax)
 {
 	double h;
 	double y;
 	double yy;
 	double orig_y;
 
+	(void)wall_ax;
 	//h = dst_to_h(dst);
 	h = (maze->map->block / dst) * (WIDTH / 2);
 	orig_y = (HEIGHT - h) / 2; //for a given h, how much space is free up and down?
@@ -59,39 +60,16 @@ void draw_wall( double dst, t_maze *maze, int ray)
 	y = orig_y;
 	while (y < yy)
 	{
-		my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_RED);
+		if (wall_ax == 1)
+			my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_GREEN);
+		if (wall_ax == 2)
+			my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_RED);
+		if (wall_ax == 3)
+			my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_MAGENTA);
 		y++;
 	}
 }
 
-/* void draw_wall( double dst, t_maze *maze, int ray)
-{
-	double col_w;
-	double h;
-	int x;
-	int xx;
-	int y;
-	int yy;
-	int orig_y;
-
-	col_w = WIDTH / N_RAYS;
-	//h = dst_to_h(dst);
-	h = (maze->map->block / dst) * (WIDTH / 2);
-	orig_y = (HEIGHT - h) / 2; //for a given h, how much space is free up and down?
-	x = ray * col_w;
-	xx =  x + col_w;//For a given ray, we know the x valu by multiplying ray by col width.
-	yy = h + orig_y;
-	while(x < xx)
-	{	
-		y = orig_y;
-		while (y < yy)
-		{
-			my_pixel_put((int)x, (int)y, &maze->img_3d, COLOR_RED);
-			y++;
-		}
-		x++;
-	}
-} */
 double get_wall_dst(t_player *player ,double x, double y)
 {
 	double dst;
@@ -103,6 +81,7 @@ double get_wall_dst(t_player *player ,double x, double y)
 void	draw_rays(t_maze *maze, t_player *player)
 {
 	double	fov;
+	int		wall_ax;
 	//int	num_rays;
 	//int	num_rays;
 	double	angle_step;
@@ -122,16 +101,16 @@ void	draw_rays(t_maze *maze, t_player *player)
 		ray_angle = player->angle - (fov / 2) + (i * angle_step); // Calculate ray angle
 		player->ray_x = player->x;
 		player->ray_y = player->y;
-		while (!touch(player->ray_x, player->ray_y, maze))
+		while (!(wall_ax = touch(player->ray_x, player->ray_y, maze)))
 		{
 			
-			//my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_YELLOW); // Draw ray pixel
+			my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_YELLOW); // Draw ray pixel
 			player->ray_x += cos(ray_angle); // Move ray in x direction
 			player->ray_y += sin(ray_angle); // Move ray in y direction
 		}
 		//dprintf(maze->fd_log, "(x:%.2f, y:%.2f)\n",player->ray_x, player->ray_y);
 		wall_dst = perp_wall_dst(player, ray_angle);
-		draw_wall(wall_dst, maze, i);
+		draw_wall(wall_dst, maze, i, wall_ax);
 		//wall_dst = get_wall_distance(player);
 		//draw_wall(wall_dst, maze, i);
 		i++;
@@ -147,6 +126,6 @@ int	draw_loop(t_maze *maze)
 	draw_map(maze); //Maze is in the back, player is in the front.
 	draw_player(maze);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_3d.img_ptr, 0, 0);
-	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
+	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
 	return (0);
 }

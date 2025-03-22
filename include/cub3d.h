@@ -18,7 +18,7 @@
 # define MAX_DST 200
 # define SPEED 8
 # define ANGLE_SPEED 0.02
-# define MAP_SIZE 2000
+# define MAP_SIZE 600
 # define WALL '1'
 # define EMPTY '0'
 
