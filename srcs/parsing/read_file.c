@@ -100,10 +100,10 @@ void wall_map(t_map *map)
 	int j;
 
 	i = 0;
-	while(map->layout[i] && i < map->width)
+	while(map->layout[i] && i < map->height)
 	{
 		j = 0;
-		while(map->layout[i][j] && j < map->height && i < map->width)
+		while(map->layout[i][j] && j < map->width)
 		{
 			if(map->layout[i][j] == '1')
 			{
@@ -112,12 +112,12 @@ void wall_map(t_map *map)
 				//i = W and j = H
 				//i = 0 and j = H
 				//i = w and j = 0
-				if (i == map->width - 1)
+				if (i == map->height - 1)
 				{
 					if(map->layout[i-1][j] == '0' || map->layout[i-1][j] == 'N')
 						map->layout[i][j] = 'x';
 				}
-				if(j> 0 && i> 0 && i < map->width - 1)
+				if(j> 0 && i> 0 && i < map->height - 1)
 				{
 					//x_wall
 					if(map->layout[i+1][j] == '0' || map->layout[i-1][j] == '0')
@@ -127,14 +127,14 @@ void wall_map(t_map *map)
 						map->layout[i][j] = 'y';
 					//column
 				}
-				else if(j == 0 && i != 0 && i < map->width - 1)
+				else if(j == 0 && i != 0 && i < map->height - 1)
 				{
 					if(map->layout[i+1][j] == '0' || map->layout[i-1][j] == '0')
 						map->layout[i][j] = 'x';
 					if(map->layout[i][j+1] == '0' || map->layout[i][j+1] == 'N')
 						map->layout[i][j] = 'y';
 				}
-				else if(j != 0 && i == 0 && i < map->width - 1) 
+				else if(j != 0 && i == 0 && i < map->height - 1) 
 				{
 					if(map->layout[i+1][j] == '0')
 						map->layout[i][j] = 'x';
