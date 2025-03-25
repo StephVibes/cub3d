@@ -10,6 +10,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include "../libft/libft.h"
+#include <stdbool.h>
 
 # define WIDTH (float)1600
 # define HEIGHT (float)800 
