@@ -82,7 +82,54 @@ double get_wall_dst(t_player *player ,double x, double y)
 	return (dst);
 }
 
+void hit_compass(t_ray *ray, t_maze *maze)
+{
+    ray->compass[0] = touch(ray->hit_point.x, ray->hit_point.y - 1, maze);
+    ray->compass[1] = touch(ray->hit_point.x, ray->hit_point.y + 1, maze);
+    ray->compass[2] = touch(ray->hit_point.x + 1, ray->hit_point.y, maze);
+    ray->compass[3] = touch(ray->hit_point.x - 1, ray->hit_point.y, maze);
+}
+
 void draw_rays(t_maze *maze, t_player *player)
+{
+    double fov;
+    int wall_ax;
+    double angle_step;
+    int i;
+    double ray_angle;
+    int corner_detected;
+
+    fov = 66 * M_PI / 180;
+    angle_step = fov / (N_RAYS - 1); // angular increment
+    i = 0;
+    while (i < N_RAYS)
+    {
+        ray_angle = player->angle - (fov / 2) + (i * angle_step); // Calculate ray angle
+        player->ray_x = player->x;
+        player->ray_y = player->y;
+        corner_detected = 0;
+
+        // Check for internal corners while raycasting
+        while (!(wall_ax = touch(player->ray_x, player->ray_y, maze)))
+        {
+            my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_YELLOW);
+            player->ray_x = player->ray_x + cos(ray_angle);
+            player->ray_y = player->ray_y + sin(ray_angle);
+        }
+        maze->ray[i]->hit_point.x = player->ray_x;
+        maze->ray[i]->hit_point.y = player->ray_y;
+        maze->ray[i]->angle = ray_angle;
+        maze->ray[i]->dst = perp_wall_dst(player, ray_angle);
+        hit_compass(maze->ray[i], maze);
+        if (!corner_detected && wall_ax > 0)
+        {
+            draw_wall(maze->ray[i]->dst, maze, i, wall_ax); // Normal wall
+        }
+        i++;
+    }
+}
+
+/* void draw_rays(t_maze *maze, t_player *player)
 {
     double fov;
     int wall_ax;
@@ -108,9 +155,6 @@ void draw_rays(t_maze *maze, t_player *player)
             my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_YELLOW);
             double next_x = player->ray_x + cos(ray_angle);
             double next_y = player->ray_y + sin(ray_angle);
-
-            
-            
             // Check for internal corners
             if (touch(next_x, player->ray_y, maze) && touch(player->ray_x, next_y, maze))
             {
@@ -144,7 +188,7 @@ void draw_rays(t_maze *maze, t_player *player)
         
         i++;
     }
-}
+} */
 
 
 /* void draw_rays(t_maze *maze, t_player *player)
