@@ -22,7 +22,8 @@
 # define MAP_SIZE 600
 # define WALL '1'
 # define EMPTY '0'
-#define TEXTURE_WIDTH 64
+# define TEXTURE_WIDTH 64
+# define MAX_COLORS 256
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
@@ -46,8 +47,18 @@ typedef struct s_image
 	int		endian;        // Endianness
 } t_image;
 
+typedef struct s_xpm {
+    int     width;
+    int     height;
+    int     num_colors;
+    int     chars_per_pixel;
+    char    **pixels;
+    char    color_map[MAX_COLORS][8];
+}   t_xpm;
+
 typedef struct s_map {
 	char	*textures[4]; // Paths for NO, SO, WE, EA
+	t_xpm	*textures_xpm[4]; //Textures parsed for NO, SO, WE, EA
 	int		floor_color[3]; // RGB for floor color
 	int		ceiling_color[3]; // RGB for ceiling color
 	char	**layout; // 2D array for the map layout
@@ -124,7 +135,6 @@ typedef struct s_maze
 {
 	void		*win_ptr;       // Pointer to the window
 	void		*mlx_ptr;       // Pointer to the MLX instance
-	//t_image		textures[4];     // Array for wall textures (e.g., north, south, east, west)
 	t_image		img_3d;         // For rendering the screen buffer
 	t_image		img_2d;
 	int			fd_log;			//File descriptor, log file.
@@ -157,6 +167,8 @@ void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
 void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
+
+void parse_xpm_textures(t_map *map);
 
 // Validation
 void	validate_textures(char *textures[]);

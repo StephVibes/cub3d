@@ -43,7 +43,6 @@ char	**read_file(const char *file_name)
 	while(i < num_lines)
 	{
 		lines[i] = get_next_line(fd);
-		//printf("line[%d]: %s\n", i, lines[i]);
 		i++;
 	}
 	lines[i] = NULL;
