@@ -72,17 +72,6 @@ typedef struct s_player
 
 } t_player;
 
-typedef struct s_ray
-{
-	t_point hit_point;
-	int		ray_id;
-	double	dst;
-	double 	angle;
-	int		compass[4];
-	int		dir;
-	char 	*txt_path;
-} t_ray;
-
 typedef struct s_point
 {
 	double	x;
@@ -91,6 +80,17 @@ typedef struct s_point
 	int		ray;
 } t_point;
 
+typedef struct s_ray
+{
+	t_point hit_point;
+	int		ray_id;
+	double	dst;
+	double 	angle;
+	int		compass[4];
+	int		coord;
+	char 	*txt_path;
+	double	txt_x;
+} t_ray;
 
 typedef struct s_wall
 {
@@ -131,6 +131,7 @@ typedef struct s_maze
 	double		wall_seg[9];	// coordinate that defines a wall segment
 	t_image		screen;         // For rendering the screen buffer
 	t_map		*map;           // Pointer to the map info
+	t_ray		*ray[N_RAYS];
 } t_maze;
 
 // Init
