@@ -53,7 +53,7 @@ typedef struct s_xpm {
     int     num_colors;
     int     chars_per_pixel;
     char    **pixels;
-    char    color_map[MAX_COLORS][8];
+    char	**color_map;
 }   t_xpm;
 
 typedef struct s_map {
