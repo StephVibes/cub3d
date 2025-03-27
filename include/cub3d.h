@@ -72,6 +72,17 @@ typedef struct s_player
 
 } t_player;
 
+typedef struct s_ray
+{
+	t_point hit_point;
+	int		ray_id;
+	double	dst;
+	double 	angle;
+	int		compass[4];
+	int		dir;
+	char 	*txt_path;
+} t_ray;
+
 typedef struct s_point
 {
 	double	x;

@@ -108,9 +108,6 @@ void draw_rays(t_maze *maze, t_player *player)
             my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_YELLOW);
             double next_x = player->ray_x + cos(ray_angle);
             double next_y = player->ray_y + sin(ray_angle);
-
-            
-            
             // Check for internal corners
             if (touch(next_x, player->ray_y, maze) && touch(player->ray_x, next_y, maze))
             {
