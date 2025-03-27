@@ -127,7 +127,7 @@ void draw_rays(t_maze *maze, t_player *player)
     double angle_step;
     int i;
     double ray_angle;
-    int corner_detected;
+    //int corner_detected;
 
     fov = 66 * M_PI / 180;
     angle_step = fov / (N_RAYS - 1); // angular increment
@@ -137,7 +137,7 @@ void draw_rays(t_maze *maze, t_player *player)
         ray_angle = player->angle - (fov / 2) + (i * angle_step); // Calculate ray angle
         player->ray_x = player->x;
         player->ray_y = player->y;
-        corner_detected = 0;
+        //corner_detected = 0;
 
         // Check for internal corners while raycasting
         while (!(wall_ax = touch(player->ray_x, player->ray_y, maze)))
@@ -148,14 +148,16 @@ void draw_rays(t_maze *maze, t_player *player)
         }
         maze->ray[i].hit_point.x = player->ray_x;
         maze->ray[i].hit_point.y = player->ray_y;
+        maze->ray[i].angle = 0.0;
         maze->ray[i].angle = ray_angle;
         maze->ray[i].dst = perp_wall_dst(player, ray_angle);
         hit_compass(&maze->ray[i], maze);
         def_coord(&maze->ray[i]);
-        if (!corner_detected && wall_ax > 0)
+        draw_wall(maze->ray[i].dst, maze, i, wall_ax); // Normal wall
+        /* if (!corner_detected && wall_ax > 0)
         {
             draw_wall(maze->ray[i].dst, maze, i, wall_ax); // Normal wall
-        }
+        } */
         i++;
     }
 }
@@ -269,6 +271,6 @@ int	draw_loop(t_maze *maze)
 	draw_map(maze); //Maze is in the back, player is in the front.
 	draw_player(maze);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_3d.img_ptr, 0, 0);
-	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
+	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
 	return (0);
 }

@@ -12,14 +12,14 @@
 # include "../libft/libft.h"
 #include <stdbool.h>
 
-# define WIDTH (float)1600
-# define HEIGHT (float)800 
-# define N_RAYS 1600
+# define WIDTH (float)1200
+# define HEIGHT (float)600 
+# define N_RAYS 1200
 # define MIN_WALL 200
 # define MAX_DST 200
-# define SPEED 8
+# define SPEED 1
 # define ANGLE_SPEED 0.02
-# define MAP_SIZE 600
+# define MAP_SIZE 200
 # define WALL '1'
 # define EMPTY '0'
 
