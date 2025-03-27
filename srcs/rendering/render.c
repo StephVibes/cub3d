@@ -102,10 +102,10 @@ void def_coord(t_ray *ray)
         //east
         if(ray->compass[2] == 0 || ray->compass[3] == 0)
         {
-            ray->coord = 2;
+            ray->coord = 3;
         }
         else
-            ray->coord = 2;
+            ray->coord = 4;
         //west
     }
     else
