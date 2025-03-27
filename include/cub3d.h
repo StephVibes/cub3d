@@ -53,7 +53,7 @@ typedef struct s_map {
 	int		width; // Width of the map
 	int		height; // Height of the map
 	char	player_dir; // Initial player direction (N, S, E, W)
-	double	block;
+	int	block;
 	int	offset_2dx;
 	int	offset_2dy;
 } t_map;
@@ -120,6 +120,7 @@ typedef struct s_maze
 	double		wall_seg[9];	// coordinate that defines a wall segment
 	t_image		screen;         // For rendering the screen buffer
 	t_map		*map;           // Pointer to the map info
+	int			text_x;			// Value in x of the texture to apply
 } t_maze;
 
 // Init
