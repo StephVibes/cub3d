@@ -131,7 +131,7 @@ typedef struct s_maze
 	double		wall_seg[9];	// coordinate that defines a wall segment
 	t_image		screen;         // For rendering the screen buffer
 	t_map		*map;           // Pointer to the map info
-	t_ray		*ray[N_RAYS];
+	t_ray		ray[N_RAYS];
 } t_maze;
 
 // Init

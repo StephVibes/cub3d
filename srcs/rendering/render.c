@@ -146,15 +146,15 @@ void draw_rays(t_maze *maze, t_player *player)
             player->ray_x = player->ray_x + cos(ray_angle);
             player->ray_y = player->ray_y + sin(ray_angle);
         }
-        maze->ray[i]->hit_point.x = player->ray_x;
-        maze->ray[i]->hit_point.y = player->ray_y;
-        maze->ray[i]->angle = ray_angle;
-        maze->ray[i]->dst = perp_wall_dst(player, ray_angle);
-        hit_compass(maze->ray[i], maze);
-        def_coord(maze->ray[i]);
+        maze->ray[i].hit_point.x = player->ray_x;
+        maze->ray[i].hit_point.y = player->ray_y;
+        maze->ray[i].angle = ray_angle;
+        maze->ray[i].dst = perp_wall_dst(player, ray_angle);
+        hit_compass(&maze->ray[i], maze);
+        def_coord(&maze->ray[i]);
         if (!corner_detected && wall_ax > 0)
         {
-            draw_wall(maze->ray[i]->dst, maze, i, wall_ax); // Normal wall
+            draw_wall(maze->ray[i].dst, maze, i, wall_ax); // Normal wall
         }
         i++;
     }
