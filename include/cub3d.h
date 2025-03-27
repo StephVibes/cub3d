@@ -22,6 +22,7 @@
 # define MAP_SIZE 600
 # define WALL '1'
 # define EMPTY '0'
+#define TEXTURE_WIDTH 64
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
@@ -184,4 +185,7 @@ void	draw_walls(t_maze *maze, t_player *player);
 void	wall_deltas(t_maze *maze, int i);
 void	segment_end(t_maze *maze, t_point p);
 void	segment_init(t_maze *maze, t_point p);
+
+//textures
+void	determine_text(t_ray *ray, t_maze *maze);
 #endif

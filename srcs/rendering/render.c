@@ -123,6 +123,7 @@ void draw_rays(t_maze *maze, t_player *player)
         hit_compass(maze->ray[i], maze);
         if (!corner_detected && wall_ax > 0)
         {
+            determine_text(maze->ray[i], maze);
             draw_wall(maze->ray[i]->dst, maze, i, wall_ax); // Normal wall
         }
         i++;
