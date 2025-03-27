@@ -82,32 +82,50 @@ double get_wall_dst(t_player *player ,double x, double y)
 	return (dst);
 }
 
+int array_equals(int arr[], int expected[])
+{
+    int i;
+    
+    i = 0;
+    while (i < 4)
+    {
+        if (arr[i] != expected[i])
+            return 0;
+        i++;
+    }
+    return 1;
+}
+
 void def_coord(t_ray *ray)
 {
-    //x axis
-    if(ray->compass[2] > 0 || ray->compass[3] > 0)
-    {
-        //south
-        if(ray->compass[0] == 0 || ray->compass[1] == 0)
-        {
-            ray->coord = 2;
-        }
-        else
-            ray->coord = 1;
-        //north
-    }
-    // y axis
-    else if(ray->compass[0] > 0 || ray->compass[1] > 0)
-    {
-        //east
-        if(ray->compass[2] == 0 || ray->compass[3] == 0)
-        {
-            ray->coord = 3;
-        }
-        else
-            ray->coord = 4;
-        //west
-    }
+    // Corner patterns
+    int top_right_corner[4] = {1, 0, 1, 0};     // Wall to North and East
+    int top_left_corner[4] = {1, 0, 0, 1};      // Wall to North and West
+    int bottom_right_corner[4] = {0, 1, 1, 0};  // Wall to South and East  
+    int bottom_left_corner[4] = {0, 1, 0, 1};   // Wall to South and West
+
+    // Wall facing patterns
+    int wall_facing_north[4] = {0, 1, 1, 1};    // Only North wall
+    int wall_facing_south[4] = {1, 0, 1, 1};    // Only South wall
+    int wall_facing_east[4] = {1, 1, 0, 1};     // Only East wall
+    int wall_facing_west[4] = {1, 1, 1, 0};     // Only West wall
+
+    if (array_equals(ray->compass, wall_facing_north))
+        ray->coord = 1;
+    else if (array_equals(ray->compass, wall_facing_south))
+        ray->coord = 2;
+    else if (array_equals(ray->compass, wall_facing_east))
+        ray->coord = 3;
+    else if (array_equals(ray->compass, wall_facing_west))
+        ray->coord = 4;
+    else if (array_equals(ray->compass, top_right_corner))
+        ray->coord = 5;
+    else if (array_equals(ray->compass, top_left_corner))
+        ray->coord = 6;
+    else if (array_equals(ray->compass, bottom_right_corner))
+        ray->coord = 7;
+    else if (array_equals(ray->compass, bottom_left_corner))
+        ray->coord = 8;
     else
         ray->coord = -1;
 }
