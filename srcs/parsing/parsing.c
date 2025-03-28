@@ -40,7 +40,6 @@ void	parse_textures(char **lines, t_map *map)
 		i++;
 	}
 	validate_textures(map->textures);
-	parse_xpm_textures(map);
 }
 
 int	validate_color(char *color, t_map *map, int index, int type)

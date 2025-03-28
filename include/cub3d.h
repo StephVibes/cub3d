@@ -22,7 +22,6 @@
 # define MAP_SIZE 200
 # define WALL '1'
 # define EMPTY '0'
-# define TEXTURE_WIDTH 64
 # define MAX_COLORS 256
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
@@ -47,27 +46,19 @@ typedef struct s_image
 	int		endian;        // Endianness
 } t_image;
 
-typedef struct s_xpm {
-    int     width;
-    int     height;
-    int     num_colors;
-    int     chars_per_pixel;
-    char    **pixels;
-    char	**color_map;
-}   t_xpm;
 
 typedef struct s_map {
 	char	*textures[4]; // Paths for NO, SO, WE, EA
-	t_xpm	*textures_xpm[4]; //Textures parsed for NO, SO, WE, EA
+	t_image	*txt_imgs[4]; // Images of the textures after parsing the xpm files with mlx_xpm_file_to_image()
 	int		floor_color[3]; // RGB for floor color
 	int		ceiling_color[3]; // RGB for ceiling color
 	char	**layout; // 2D array for the map layout
 	int		width; // Width of the map
 	int		height; // Height of the map
 	char	player_dir; // Initial player direction (N, S, E, W)
-	int	block;
-	int	offset_2dx;
-	int	offset_2dy;
+	int		block;
+	int		offset_2dx;
+	int		offset_2dy;
 } t_map;
 
 typedef struct s_player
@@ -102,6 +93,7 @@ typedef struct s_ray
 	int		coord;
 	char 	*txt_path;
 	double	txt_x;
+	int		txt_type; // 0 -> NO, 1 -> SO, 2 -> E, 3 -> W
 } t_ray;
 
 typedef struct s_wall
@@ -167,8 +159,8 @@ void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
 void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
+void	get_images_xpm(t_map *map, t_maze *maze);
 
-void parse_xpm_textures(t_map *map);
 
 // Validation
 void	validate_textures(char *textures[]);

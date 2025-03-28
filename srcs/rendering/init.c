@@ -35,9 +35,10 @@ static void	data_init(t_maze *maze)
 	} */
 	maze->player.ray_x = maze->player.x;
 	maze->player.ray_y = maze->player.y;
-	i = 0;
-	while (i < 4)
-		maze->map->textures[i++] = NULL;
+	// i = 0;
+	// while (i < 4)
+	// 	maze->map->textures[i++] = NULL;
+	get_images_xpm(maze->map, maze);
 }
 
 static void	events_init(t_maze *maze)
@@ -69,13 +70,13 @@ void	maze_init(t_maze *maze)
 {
 	maze -> mlx_ptr = mlx_init(); // connect with the minilibx
 	if (maze -> mlx_ptr == NULL)
-		error("error initiliazing the minilibx"); // improve
+		error("error initiliazing the minilibx"); // TODO improve
 	maze -> win_ptr = mlx_new_window(maze -> mlx_ptr, WIDTH, HEIGHT, "Cub3D"); // create new window
 	if (maze -> win_ptr == NULL)
 	{
 		mlx_destroy_display(maze -> mlx_ptr);
 		free(maze -> mlx_ptr);
-		error("error creating the window with the minilibx"); // improve
+		error("error creating the window with the minilibx"); // TODO improve
 	}
 	maze -> img_3d.img_ptr = mlx_new_image(maze -> mlx_ptr, WIDTH, HEIGHT); // create 3d image
 	if (maze -> img_3d.img_ptr == NULL)
@@ -83,7 +84,7 @@ void	maze_init(t_maze *maze)
 		mlx_destroy_window(maze -> mlx_ptr, maze -> win_ptr);
 		mlx_destroy_display(maze -> mlx_ptr);
 		free(maze -> mlx_ptr);
-		error("error creating the image with minilibx"); // improve
+		error("error creating the image with minilibx"); // TODO improve
 	}
 	maze -> img_2d.img_ptr = mlx_new_image(maze -> mlx_ptr, MAP_SIZE, MAP_SIZE); // create 2d image
  	if (maze -> img_2d.img_ptr == NULL)
@@ -91,7 +92,7 @@ void	maze_init(t_maze *maze)
 		mlx_destroy_window(maze -> mlx_ptr, maze -> win_ptr);
 		mlx_destroy_display(maze -> mlx_ptr);
 		free(maze -> mlx_ptr);
-		error("error creating the image with minilibx"); // improve
+		error("error creating the image with minilibx"); // TODO improve
 	}
 	maze -> img_3d.data = mlx_get_data_addr(maze -> img_3d.img_ptr, &maze -> img_3d.bpp, 
 			&maze -> img_3d.line_len, &maze -> img_3d.endian);
