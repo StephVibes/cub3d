@@ -35,10 +35,36 @@ static void	data_init(t_maze *maze)
 	} */
 	maze->player.ray_x = maze->player.x;
 	maze->player.ray_y = maze->player.y;
-	// i = 0;
-	// while (i < 4)
-	// 	maze->map->textures[i++] = NULL;
+	init_textures(maze->map);
 	get_images_xpm(maze->map, maze);
+}
+
+void	init_textures(t_map *map)
+{
+	int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    while (i < 4)
+    {
+        map->txt_imgs[i] = (t_image *)malloc(sizeof(t_image));
+        if (map->txt_imgs[i] == NULL)
+        {
+            error("Memory allocation failed");
+            while (j < i)
+            {
+                if(map->txt_imgs[j])
+                {
+                    free(map->txt_imgs[j]);
+                    map->txt_imgs[j] = NULL;
+                }
+                j++;
+            }
+            return;
+        }
+		i++;
+	}
 }
 
 static void	events_init(t_maze *maze)

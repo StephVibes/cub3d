@@ -3,8 +3,11 @@
 void	free_xpm(t_image *img, t_maze *maze)
 {
 	if (img)
+	{
 		mlx_destroy_image(maze->mlx_ptr, img);
-		// TODO MEJORAR LOS DESTROY Y REVISAR A QUE HACERLE FREE
+		free(img->img_ptr);
+		free(img);
+	}
 }
 
 void	init_txt_image(t_maze *maze, t_image *img, char *path)
@@ -19,7 +22,6 @@ void	init_txt_image(t_maze *maze, t_image *img, char *path)
 		error("error creating texture image with minilibx"); // TODO improve
 	}
 	img->data = mlx_get_data_addr(img->img_ptr, &img->bpp, &img->line_len, &img->endian);
-	//img->data = mlx_get_data_addr(img->img_ptr, &img->bpp, &img->line_len, &img->endian);
 	return ;
 }
 
@@ -32,9 +34,6 @@ void	get_images_xpm(t_map *map, t_maze *maze)
 	j = 0;
     while (i < 4)
 	{
-		t_image img;
-		map->txt_imgs[i] = &img;
-		printf("--> path %s", map->textures[i]);
         init_txt_image(maze, map->txt_imgs[i], map->textures[i]);
         if (!map->txt_imgs[i])
 		{

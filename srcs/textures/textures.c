@@ -1,11 +1,11 @@
 #include "cub3d.h"
 
+double reescale(int value, int block) {
+    double	new;
 
-double	reescale(int value, int block) {
-	double	new;
-
-	new = value / (block - value);
-
+	if (block == 0)
+		return (0.0);
+	new = (double)value / (double)block;
 	return (new);
 }
 
@@ -26,11 +26,13 @@ void	determine_text(t_ray *ray, t_maze *maze)
 	double	mod; // Value 
 	double	val;
 
-	if (ray->coord == 1 || ray->coord == 2)
+	if (ray->coord == 0 || ray->coord == 1)
 		mod = ((int)ray->hit_point.x - maze->map->offset_2dx) % maze->map->block;
 	else
 		mod = ((int)ray->hit_point.x - maze->map->offset_2dy) % maze->map->block;
 	val = reescale(mod, maze->map->block);
-	printf("val de 0 a 1 = %f", val);
+	//printf("ray id = %d val de 0 a 1 = %f",ray->ray_id, val);
 	ray->txt_x = get_text_x(val, maze->map->txt_imgs[ray->coord]->width); // According to the type of texture we get the width of the parsed xpm
+	if (ray->ray_id == 200)
+		printf("\n%f\n", ray->txt_x);
 }

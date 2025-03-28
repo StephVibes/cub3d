@@ -93,7 +93,6 @@ typedef struct s_ray
 	int		coord;
 	char 	*txt_path;
 	double	txt_x;
-	int		txt_type; // 0 -> NO, 1 -> SO, 2 -> E, 3 -> W
 } t_ray;
 
 typedef struct s_wall
@@ -139,6 +138,7 @@ typedef struct s_maze
 
 // Init
 void	maze_init(t_maze *maze);
+void	init_textures(t_map *map);
 
 // Main
 void	error(char *message);
@@ -192,4 +192,5 @@ void	segment_init(t_maze *maze, t_point p);
 
 //textures
 void	determine_text(t_ray *ray, t_maze *maze);
+void	free_xpm(t_image *img, t_maze *maze);
 #endif

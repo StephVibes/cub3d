@@ -172,6 +172,7 @@ void draw_rays(t_maze *maze, t_player *player)
         maze->ray[i].dst = perp_wall_dst(player, ray_angle);
         hit_compass(&maze->ray[i], maze);
         def_coord(&maze->ray[i]);
+        determine_text(&maze->ray[i], maze);
         draw_wall(maze->ray[i].dst, maze, i, wall_ax); // Normal wall
         /* if (!corner_detected && wall_ax > 0)
         {
