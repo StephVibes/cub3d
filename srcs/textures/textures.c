@@ -31,8 +31,5 @@ void	determine_text(t_ray *ray, t_maze *maze)
 	else
 		mod = ((int)ray->hit_point.x - maze->map->offset_2dy) % maze->map->block;
 	val = reescale(mod, maze->map->block);
-	//printf("ray id = %d val de 0 a 1 = %f",ray->ray_id, val);
 	ray->txt_x = get_text_x(val, maze->map->txt_imgs[ray->coord]->width); // According to the type of texture we get the width of the parsed xpm
-	if (ray->ray_id == 200)
-		printf("\n%f\n", ray->txt_x);
 }

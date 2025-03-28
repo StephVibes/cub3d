@@ -4,8 +4,7 @@ void	free_xpm(t_image *img, t_maze *maze)
 {
 	if (img)
 	{
-		mlx_destroy_image(maze->mlx_ptr, img);
-		free(img->img_ptr);
+		mlx_destroy_image(maze->mlx_ptr, img->img_ptr);
 		free(img);
 	}
 }

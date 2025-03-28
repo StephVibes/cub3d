@@ -119,13 +119,13 @@ void def_coord(t_ray *ray)
     else if (array_equals(ray->compass, wall_facing_west))
         ray->coord = 3;
     else if (array_equals(ray->compass, top_right_corner))
-        ray->coord = 4;
+        ray->coord = 0; // 4
     else if (array_equals(ray->compass, top_left_corner))
-        ray->coord = 5;
+        ray->coord = 0;
     else if (array_equals(ray->compass, bottom_right_corner))
-        ray->coord = 6;
+        ray->coord = 1;
     else if (array_equals(ray->compass, bottom_left_corner))
-        ray->coord = 7;
+        ray->coord = 1;
     else
         ray->coord = -1;
 }
