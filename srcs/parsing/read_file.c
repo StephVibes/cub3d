@@ -63,7 +63,7 @@ void	ft_free_split(char **split)
 	free(split);
 }
 
-void	print_debug(t_map *map)
+/* void	print_debug(t_map *map)
 {
 	int i = 0;
 	while (i < 4)
@@ -91,7 +91,7 @@ void	print_debug(t_map *map)
 		printf("[%d] = %s", i, map->layout[i]);
 		i++;
 	}
-}
+} */
 
 void wall_map(t_map *map)
 {
@@ -169,7 +169,7 @@ t_map	*load_map(const char *file_name)
 	parse_colors(lines, map);
 	parse_map(lines, map);
 	//wall_map(map);
-	print_debug(map);
+	//print_debug(map);
 	//validate_map(map);
 	ft_free_split(lines); // Free the file lines
 	return (map);

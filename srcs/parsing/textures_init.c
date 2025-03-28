@@ -10,7 +10,7 @@ void	free_xpm(t_image *img, t_maze *maze)
 void	init_txt_image(t_maze *maze, t_image *img, char *path)
 {
 	
-	img = mlx_xpm_file_to_image(maze->mlx_ptr, path, &img->width, &img->height);
+	img->img_ptr = mlx_xpm_file_to_image(maze->mlx_ptr, path, &img->width, &img->height);
 	if (!img)
 	{
 		mlx_destroy_window(maze -> mlx_ptr, maze -> win_ptr);
@@ -19,6 +19,7 @@ void	init_txt_image(t_maze *maze, t_image *img, char *path)
 		error("error creating texture image with minilibx"); // TODO improve
 	}
 	img->data = mlx_get_data_addr(img->img_ptr, &img->bpp, &img->line_len, &img->endian);
+	//img->data = mlx_get_data_addr(img->img_ptr, &img->bpp, &img->line_len, &img->endian);
 	return ;
 }
 

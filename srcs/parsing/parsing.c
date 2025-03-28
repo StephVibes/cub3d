@@ -319,6 +319,36 @@ void	validate_map(char **layout, t_map *map)
 		error("No player found in the map");
 }
 
+void	print_debug(t_map *map)
+{
+	int i = 0;
+	while (i < 4)
+	{
+		printf("texture[%d] = %s\n", i, map->textures[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		printf("floor_color[%d]: %d\n", i, map->floor_color[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color[i]);
+		i++;
+	}
+	printf("map height = %d\n", map->height);
+	printf("map_width = %d\n", map->width);
+	i = 0;
+	while(map->layout[i])
+	{
+		printf("[%d] = %s", i, map->layout[i]);
+		i++;
+	}
+}
+
 void	parse_map(char **lines, t_map *map)
 {
 	int	map_start;
@@ -329,4 +359,5 @@ void	parse_map(char **lines, t_map *map)
 	else
 		error("map not found");
 	validate_map(map->layout, map);
+	print_debug(map);
 }

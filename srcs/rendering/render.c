@@ -164,6 +164,7 @@ void draw_rays(t_maze *maze, t_player *player)
             player->ray_x = player->ray_x + cos(ray_angle);
             player->ray_y = player->ray_y + sin(ray_angle);
         }
+        maze->ray[i].ray_id = i;
         maze->ray[i].hit_point.x = player->ray_x;
         maze->ray[i].hit_point.y = player->ray_y;
         maze->ray[i].angle = 0.0;
@@ -293,6 +294,6 @@ int	draw_loop(t_maze *maze)
 	draw_map(maze); //Maze is in the back, player is in the front.
 	draw_player(maze);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_3d.img_ptr, 0, 0);
-	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
+	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
 	return (0);
 }
