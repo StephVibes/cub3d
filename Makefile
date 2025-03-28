@@ -22,7 +22,9 @@ SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/parsing/read_file.c \
 	   $(SRC_DIR)/parsing/parsing.c \
 	   $(SRC_DIR)/parsing/player_init.c \
-	   $(SRC_DIR)/parsing/validation.c
+	   $(SRC_DIR)/parsing/validation.c \
+	   $(SRC_DIR)/parsing/textures_init.c \
+	   $(SRC_DIR)/textures/textures.c
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 
@@ -48,6 +50,7 @@ $(MLX_LIB):
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)/rendering
 	@mkdir -p $(OBJ_DIR)/parsing
+	@mkdir -p $(OBJ_DIR)/textures
 	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
 clean:

@@ -174,6 +174,7 @@ void draw_rays(t_maze *maze, t_player *player)
         draw_wall(maze->ray[i].dst, maze, i, wall_ax); // Normal wall
         /* if (!corner_detected && wall_ax > 0)
         {
+            determine_text(maze->ray[i], maze);
             draw_wall(maze->ray[i].dst, maze, i, wall_ax); // Normal wall
         } */
         i++;
@@ -210,6 +211,7 @@ void draw_rays(t_maze *maze, t_player *player)
             if (touch(next_x, player->ray_y, maze) && touch(player->ray_x, next_y, maze))
             {
                 wall_dst = perp_wall_dst(player, ray_angle);
+                determine_text(player->ray_x, player->ray_x, maze, 1);
                 draw_wall(wall_dst, maze, i, 4); // Internal corner
                 corner_detected = 1;
                 break; // Exit the ray casting loop since we found a corner
@@ -223,6 +225,7 @@ void draw_rays(t_maze *maze, t_player *player)
         if (!touch(prev_x, player->ray_y, maze) && !touch(player->ray_x, prev_y, maze))
             {
                 wall_dst = perp_wall_dst(player, ray_angle);
+                determine_text(player->ray_x, player->ray_x, maze, 1);
                 draw_wall(wall_dst, maze, i, 5); // Internal corner
                 corner_detected = 1;
             }
@@ -231,6 +234,7 @@ void draw_rays(t_maze *maze, t_player *player)
         if (!corner_detected && wall_ax > 0)
         {
             wall_dst = perp_wall_dst(player, ray_angle);
+            determine_text(player->ray_x, player->ray_x, maze, 1);
             draw_wall(wall_dst, maze, i, wall_ax); // Normal wall
         }
         

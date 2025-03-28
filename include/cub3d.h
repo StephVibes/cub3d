@@ -22,6 +22,7 @@
 # define MAP_SIZE 200
 # define WALL '1'
 # define EMPTY '0'
+# define MAX_COLORS 256
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
@@ -45,17 +46,19 @@ typedef struct s_image
 	int		endian;        // Endianness
 } t_image;
 
+
 typedef struct s_map {
 	char	*textures[4]; // Paths for NO, SO, WE, EA
+	t_image	*txt_imgs[4]; // Images of the textures after parsing the xpm files with mlx_xpm_file_to_image()
 	int		floor_color[3]; // RGB for floor color
 	int		ceiling_color[3]; // RGB for ceiling color
 	char	**layout; // 2D array for the map layout
 	int		width; // Width of the map
 	int		height; // Height of the map
 	char	player_dir; // Initial player direction (N, S, E, W)
-	double	block;
-	int	offset_2dx;
-	int	offset_2dy;
+	int		block;
+	int		offset_2dx;
+	int		offset_2dy;
 } t_map;
 
 typedef struct s_player
@@ -90,6 +93,7 @@ typedef struct s_ray
 	int		coord;
 	char 	*txt_path;
 	double	txt_x;
+	int		txt_type; // 0 -> NO, 1 -> SO, 2 -> E, 3 -> W
 } t_ray;
 
 typedef struct s_wall
@@ -123,7 +127,6 @@ typedef struct s_maze
 {
 	void		*win_ptr;       // Pointer to the window
 	void		*mlx_ptr;       // Pointer to the MLX instance
-	//t_image		textures[4];     // Array for wall textures (e.g., north, south, east, west)
 	t_image		img_3d;         // For rendering the screen buffer
 	t_image		img_2d;
 	int			fd_log;			//File descriptor, log file.
@@ -156,6 +159,8 @@ void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
 void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
+void	get_images_xpm(t_map *map, t_maze *maze);
+
 
 // Validation
 void	validate_textures(char *textures[]);
@@ -184,4 +189,7 @@ void	draw_walls(t_maze *maze, t_player *player);
 void	wall_deltas(t_maze *maze, int i);
 void	segment_end(t_maze *maze, t_point p);
 void	segment_init(t_maze *maze, t_point p);
+
+//textures
+void	determine_text(t_ray *ray, t_maze *maze);
 #endif
