@@ -45,34 +45,59 @@ double dst_to_h(double dst)
 	return (h);
 }
 
-void draw_wall( double dst, t_maze *maze, int ray, int wall_ax)
+void draw_wall(t_ray *ray, t_maze *maze, int wall_ax)
 {
-	double h;
+	//double h;
 	double y;
 	double yy;
 	double orig_y;
+    int color;
+    t_image *txt_img;
+
+    txt_img = maze->map->txt_imgs[ray->coord];
 
 	(void)wall_ax;
 	//h = dst_to_h(dst);
-	h = (maze->map->block / dst) * (WIDTH / 2);
-	orig_y = (HEIGHT - h) / 2; //for a given h, how much space is free up and down?
-	yy = h + orig_y;
+//	h = (maze->map->block / ray->dst) * (WIDTH / 2);
+	orig_y = (HEIGHT - ray->h) / 2; //for a given h, how much space is free up and down?
+	yy = ray->h + orig_y;
+    double ceiling = 0;
+    double floor = yy;
 	y = orig_y;
+    while (ceiling < orig_y)
+    {
+        int ceiling_color = (maze->map->ceiling_color[0] << 16) | (maze->map->ceiling_color[1] << 8) | maze->map->ceiling_color[2];
+        my_pixel_put(ray->ray_id, (int)ceiling, &maze->img_3d, ceiling_color);
+        ceiling++;
+    }
 	while (y < yy)
 	{
-		if (wall_ax == 1)
-			my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_GREEN);
-		else if (wall_ax == 2)
-			my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_RED);
-		else if (wall_ax == 3)
-			my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_MAGENTA);
-		else if (wall_ax == 4) // Corner
-            my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_YELLOW);
-		else if (wall_ax == 5) // External Corner
-            my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_CYAN);
+		if (ray->coord != -1)
+        {
+            int tex_y = (y - orig_y) / ray->factor_y;
+            color = *(unsigned int *)(txt_img->data + txt_img->line_len * tex_y + (int)ray->txt_x * (txt_img->bpp / 8));
+            my_pixel_put(ray->ray_id, (int)y, &maze->img_3d, color);
+
+			
+		// else if (wall_ax == 2)
+		// 	my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_RED);
+		// else if (wall_ax == 3)
+		// 	my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_MAGENTA);
+		// else if (wall_ax == 4) // Corner
+        //     my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_YELLOW);
+		// else if (wall_ax == 5) // External Corner
+        //     my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_CYAN);
+        }
 		y++;
 	}
+    while (floor < HEIGHT)
+    {
+        int floor_color = (maze->map->floor_color[0] << 16) | (maze->map->floor_color[1] << 8) | maze->map->floor_color[2];
+        my_pixel_put(ray->ray_id, (int)floor, &maze->img_3d, floor_color);
+        floor++;
+    }
 }
+
 
 double get_wall_dst(t_player *player ,double x, double y)
 {
@@ -150,7 +175,7 @@ void draw_rays(t_maze *maze, t_player *player)
     fov = 66 * M_PI / 180;
     angle_step = fov / (N_RAYS - 1); // angular increment
     i = 0;
-    while (i < N_RAYS)
+    while (i < WIDTH)
     {
         ray_angle = player->angle - (fov / 2) + (i * angle_step); // Calculate ray angle
         player->ray_x = player->x;
@@ -170,10 +195,11 @@ void draw_rays(t_maze *maze, t_player *player)
         maze->ray[i].angle = 0.0;
         maze->ray[i].angle = ray_angle;
         maze->ray[i].dst = perp_wall_dst(player, ray_angle);
+        maze->ray[i].h = (maze->map->block / maze->ray[i].dst) * (HEIGHT / 2);
         hit_compass(&maze->ray[i], maze);
         def_coord(&maze->ray[i]);
         determine_text(&maze->ray[i], maze);
-        draw_wall(maze->ray[i].dst, maze, i, wall_ax); // Normal wall
+        draw_wall(&maze->ray[i], maze, wall_ax); // Normal wall
         /* if (!corner_detected && wall_ax > 0)
         {
             determine_text(maze->ray[i], maze);
@@ -295,6 +321,6 @@ int	draw_loop(t_maze *maze)
 	draw_map(maze); //Maze is in the back, player is in the front.
 	draw_player(maze);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_3d.img_ptr, 0, 0);
-	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
+	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
 	return (0);
 }

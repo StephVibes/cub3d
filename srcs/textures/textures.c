@@ -21,15 +21,18 @@ double get_text_x(double val, int txt_width)
 	return (text_x);
 }
 
+
+
 void	determine_text(t_ray *ray, t_maze *maze)
 {
 	double	mod; // Value 
-	double	val;
+	double	val_x;
 
 	if (ray->coord == 0 || ray->coord == 1)
 		mod = ((int)ray->hit_point.x - maze->map->offset_2dx) % maze->map->block;
 	else
-		mod = ((int)ray->hit_point.x - maze->map->offset_2dy) % maze->map->block;
-	val = reescale(mod, maze->map->block);
-	ray->txt_x = get_text_x(val, maze->map->txt_imgs[ray->coord]->width); // According to the type of texture we get the width of the parsed xpm
+		mod = ((int)ray->hit_point.y - maze->map->offset_2dy) % maze->map->block;
+	val_x = reescale(mod, maze->map->block);
+	ray->txt_x = get_text_x(val_x, maze->map->txt_imgs[ray->coord]->width); // According to the type of texture we get the width of the parsed xpm
+	ray->factor_y = ray->h / maze->map->txt_imgs[ray->coord]->height;
 }

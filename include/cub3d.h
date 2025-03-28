@@ -19,7 +19,7 @@
 # define MAX_DST 200
 # define SPEED 1
 # define ANGLE_SPEED 0.02
-# define MAP_SIZE 200
+# define MAP_SIZE 600
 # define WALL '1'
 # define EMPTY '0'
 # define MAX_COLORS 256
@@ -91,8 +91,10 @@ typedef struct s_ray
 	double 	angle;
 	int		compass[4];
 	int		coord;
-	char 	*txt_path;
+	//char 	*txt_path;
 	double	txt_x;
+	double	factor_y;
+	double	h;
 } t_ray;
 
 typedef struct s_wall
