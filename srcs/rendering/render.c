@@ -149,10 +149,20 @@ int array_equals(int arr[], int expected[])
 }*/
 void def_coord(t_ray *ray, t_maze *maze)
 {
-    double prev_x = ray->hit_point.x - cos(ray->angle);
-    double prev_y = ray->hit_point.y - sin(ray->angle);
+    if (ray->angle >= 0 && ray->angle < M_PI/2)
+            ray->coord = 3;
+        else if(ray->angle >= M_PI/2 && ray->angle < M_PI)
+            ray->coord = 2;
+        else if (ray->angle >= M_PI && ray->angle < 3 * M_PI / 2)
+            ray->coord = 1;
+        else if (ray->angle >= 3 * M_PI / 2 && ray->angle < 2 * M_PI)
+            ray->coord = 0;
 
-    int wall_facing_north[4] = {0, 1, 1, 1};    // Only North wall
+    (void)maze;
+    //double prev_x = ray->hit_point.x - cos(ray->angle);
+    //double prev_y = ray->hit_point.y - sin(ray->angle);
+
+    /* int wall_facing_north[4] = {0, 1, 1, 1};    // Only North wall
     int wall_facing_south[4] = {1, 0, 1, 1};    // Only South wall
     int wall_facing_east[4] = {1, 1, 0, 1};     // Only East wall
     int wall_facing_west[4] = {1, 1, 1, 0};     // Only West wall
@@ -164,18 +174,18 @@ void def_coord(t_ray *ray, t_maze *maze)
     else if (array_equals(ray->compass, wall_facing_east))
         ray->coord = 2;
     else if (array_equals(ray->compass, wall_facing_west))
-        ray->coord = 3;
-    else if (touch(prev_x, ray->hit_point.y, maze) && touch(ray->hit_point.x, prev_y, maze))
+        ray->coord = 3; */
+    /* if (!touch(prev_x, ray->hit_point.y, maze) && !touch(ray->hit_point.x, prev_y, maze))
     {
         if (ray->angle >= 0 && ray->angle < M_PI/2)
-            ray->coord = 0;
-        if (ray->angle >= M_PI/2 && ray->angle < M_PI)
+            ray->coord = 3;
+        else if(ray->angle >= M_PI/2 && ray->angle < M_PI)
+            ray->coord = 2;
+        else if (ray->angle >= M_PI && ray->angle < 3 * M_PI / 2)
             ray->coord = 1;
-        if (ray->angle >= M_PI && ray->angle < 3 * M_PI / 2)
-            ray->coord = 2;
-        if (ray->angle >= 3 * M_PI / 2 && ray->angle < 2 * M_PI)
-            ray->coord = 2;
-    }
+        else if (ray->angle >= 3 * M_PI / 2 && ray->angle < 2 * M_PI)
+            ray->coord = 0;
+    } */
 }
 
 
@@ -227,7 +237,7 @@ void draw_rays(t_maze *maze, t_player *player)
                 hit_compass(&maze->ray[i], maze);
                 def_coord(&maze->ray[i], maze);
                 determine_text(&maze->ray[i], maze);
-                draw_wall(&maze->ray[i], maze, wall_ax); // Internal corner
+                draw_wall(&maze->ray[i], maze, wall_ax);
                 break; // Exit the ray casting loop since we found a corner
             }
             player->ray_x = next_x;
