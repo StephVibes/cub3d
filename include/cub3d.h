@@ -12,14 +12,14 @@
 # include "../libft/libft.h"
 #include <stdbool.h>
 
-# define WIDTH (float)1200
-# define HEIGHT (float)600 
-# define N_RAYS 1200
+# define WIDTH (float)1920
+# define HEIGHT (float)1080 
+# define N_RAYS 1920
 # define MIN_WALL 200
 # define MAX_DST 200
-# define SPEED 1
-# define ANGLE_SPEED 0.02
-# define MAP_SIZE 600
+# define SPEED 9
+# define ANGLE_SPEED 0.08
+# define MAP_SIZE 1920
 # define WALL '1'
 # define EMPTY '0'
 # define MAX_COLORS 256
@@ -162,6 +162,7 @@ void	get_player_angle (t_maze *maze);
 void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
 void	get_images_xpm(t_map *map, t_maze *maze);
+int		is_player(char c);
 
 
 // Validation

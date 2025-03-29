@@ -54,11 +54,12 @@ void draw_wall(t_ray *ray, t_maze *maze, int wall_ax)
     int color;
     t_image *txt_img;
 
+
     txt_img = maze->map->txt_imgs[ray->coord];
 
 	(void)wall_ax;
 	//h = dst_to_h(dst);
-//	h = (maze->map->block / ray->dst) * (WIDTH / 2);
+    //h = (maze->map->block / ray->dst) * (WIDTH / 2);
 	orig_y = (HEIGHT - ray->h) / 2; //for a given h, how much space is free up and down?
 	yy = ray->h + orig_y;
     double ceiling = 0;
@@ -77,16 +78,6 @@ void draw_wall(t_ray *ray, t_maze *maze, int wall_ax)
             int tex_y = (y - orig_y) / ray->factor_y;
             color = *(unsigned int *)(txt_img->data + txt_img->line_len * tex_y + (int)ray->txt_x * (txt_img->bpp / 8));
             my_pixel_put(ray->ray_id, (int)y, &maze->img_3d, color);
-
-			
-		// else if (wall_ax == 2)
-		// 	my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_RED);
-		// else if (wall_ax == 3)
-		// 	my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_MAGENTA);
-		// else if (wall_ax == 4) // Corner
-        //     my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_YELLOW);
-		// else if (wall_ax == 5) // External Corner
-        //     my_pixel_put(ray, (int)y, &maze->img_3d, COLOR_CYAN);
         }
 		y++;
 	}
@@ -121,7 +112,7 @@ int array_equals(int arr[], int expected[])
     return 1;
 }
 
-void def_coord(t_ray *ray)
+/*void def_coord(t_ray *ray)
 {
     // Corner patterns
     int top_right_corner[4] = {1, 0, 1, 0};     // Wall to North and East
@@ -146,14 +137,47 @@ void def_coord(t_ray *ray)
     else if (array_equals(ray->compass, top_right_corner))
         ray->coord = 0; // 4
     else if (array_equals(ray->compass, top_left_corner))
-        ray->coord = 0;
+        ray->coord = 0; //before was 1
     else if (array_equals(ray->compass, bottom_right_corner))
         ray->coord = 1;
     else if (array_equals(ray->compass, bottom_left_corner))
+        ray->coord = 1; //before was 0.
+    else if (ray->angle > 0 && ray->angle < M_PI)
         ray->coord = 1;
     else
-        ray->coord = -1;
+        ray->coord = 0;
+}*/
+void def_coord(t_ray *ray, t_maze *maze)
+{
+    double prev_x = ray->hit_point.x - cos(ray->angle);
+    double prev_y = ray->hit_point.y - sin(ray->angle);
+
+    int wall_facing_north[4] = {0, 1, 1, 1};    // Only North wall
+    int wall_facing_south[4] = {1, 0, 1, 1};    // Only South wall
+    int wall_facing_east[4] = {1, 1, 0, 1};     // Only East wall
+    int wall_facing_west[4] = {1, 1, 1, 0};     // Only West wall
+
+    if (array_equals(ray->compass, wall_facing_north))
+        ray->coord = 0;
+    else if (array_equals(ray->compass, wall_facing_south))
+        ray->coord = 1;
+    else if (array_equals(ray->compass, wall_facing_east))
+        ray->coord = 2;
+    else if (array_equals(ray->compass, wall_facing_west))
+        ray->coord = 3;
+    else if (touch(prev_x, ray->hit_point.y, maze) && touch(ray->hit_point.x, prev_y, maze))
+    {
+        if (ray->angle >= 0 && ray->angle < M_PI/2)
+            ray->coord = 0;
+        if (ray->angle >= M_PI/2 && ray->angle < M_PI)
+            ray->coord = 1;
+        if (ray->angle >= M_PI && ray->angle < 3 * M_PI / 2)
+            ray->coord = 2;
+        if (ray->angle >= 3 * M_PI / 2 && ray->angle < 2 * M_PI)
+            ray->coord = 2;
+    }
 }
+
 
 void hit_compass(t_ray *ray, t_maze *maze)
 {
@@ -186,8 +210,28 @@ void draw_rays(t_maze *maze, t_player *player)
         while (!(wall_ax = touch(player->ray_x, player->ray_y, maze)))
         {
             my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_YELLOW);
-            player->ray_x = player->ray_x + cos(ray_angle);
-            player->ray_y = player->ray_y + sin(ray_angle);
+
+
+            double next_x = player->ray_x + cos(ray_angle);
+            double next_y = player->ray_y + sin(ray_angle);
+            // Check for internal corners
+             if (touch(next_x, player->ray_y, maze) && touch(player->ray_x, next_y, maze))
+            {
+                maze->ray[i].ray_id = i;
+                maze->ray[i].hit_point.x = player->ray_x;
+                maze->ray[i].hit_point.y = player->ray_y;
+                maze->ray[i].angle = 0.0;
+                maze->ray[i].angle = ray_angle;
+                maze->ray[i].dst = perp_wall_dst(player, ray_angle);
+                maze->ray[i].h = (maze->map->block / maze->ray[i].dst) * (HEIGHT / 2);
+                hit_compass(&maze->ray[i], maze);
+                def_coord(&maze->ray[i], maze);
+                determine_text(&maze->ray[i], maze);
+                draw_wall(&maze->ray[i], maze, wall_ax); // Internal corner
+                break; // Exit the ray casting loop since we found a corner
+            }
+            player->ray_x = next_x;
+            player->ray_y = next_y;
         }
         maze->ray[i].ray_id = i;
         maze->ray[i].hit_point.x = player->ray_x;
@@ -197,14 +241,9 @@ void draw_rays(t_maze *maze, t_player *player)
         maze->ray[i].dst = perp_wall_dst(player, ray_angle);
         maze->ray[i].h = (maze->map->block / maze->ray[i].dst) * (HEIGHT / 2);
         hit_compass(&maze->ray[i], maze);
-        def_coord(&maze->ray[i]);
+        def_coord(&maze->ray[i], maze);
         determine_text(&maze->ray[i], maze);
         draw_wall(&maze->ray[i], maze, wall_ax); // Normal wall
-        /* if (!corner_detected && wall_ax > 0)
-        {
-            determine_text(maze->ray[i], maze);
-            draw_wall(maze->ray[i].dst, maze, i, wall_ax); // Normal wall
-        } */
         i++;
     }
 }
