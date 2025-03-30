@@ -221,6 +221,7 @@ void draw_rays(t_maze *maze, t_player *player)
              if (touch(next_x, player->ray_y, maze) && touch(player->ray_x, next_y, maze))
             {
                 maze->ray[i].ray_id = i;
+                maze->ray[i].coord = -1;
                 maze->ray[i].hit_point.x = player->ray_x;
                 maze->ray[i].hit_point.y = player->ray_y;
                 maze->ray[i].angle = 0.0;
@@ -237,6 +238,7 @@ void draw_rays(t_maze *maze, t_player *player)
             player->ray_y = next_y;
         }
         maze->ray[i].ray_id = i;
+        maze->ray[i].coord = -1;
         maze->ray[i].hit_point.x = player->ray_x;
         maze->ray[i].hit_point.y = player->ray_y;
         maze->ray[i].angle = 0.0;

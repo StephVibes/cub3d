@@ -180,12 +180,14 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 		error("Map is too small");
 	i = 0;
 	map->layout = malloc(sizeof(char *) * (map->height + 1));
-	while (lines[map_start + i])
+	while (lines[map_start + i] && lines[map_start + i][0] != '\n') // ERA ESTA CONDICION!!
 	{
 		map->layout[i] = ft_strdup(lines[map_start + i]);
+		//printf("%d -> %s", i, map->layout[i]);
 		i++;
 	}
-	map->layout[map->height] = NULL;
+	map->layout[i] = NULL;
+	//printf("%d -> %s\n", map->height, map->layout[map->height]);
 }
 
 int	is_player(char c)
@@ -355,7 +357,15 @@ void	parse_map(char **lines, t_map *map)
 
 	map_start = find_map_start(lines);
 	if (map_start > 0)
+	{
+		// int j = 0;
+		// while(lines[j])
+		// {
+		// 	printf("%d: %s", j, lines[j]);
+		// 	j++;
+		// }
 		get_map_info(lines, map, map_start);
+	}
 	else
 		error("map not found");
 	validate_map(map->layout, map);

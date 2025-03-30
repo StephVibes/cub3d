@@ -16,6 +16,20 @@ int	close_handler(t_maze *maze)
 	mlx_destroy_window(maze->mlx_ptr, maze->win_ptr);
 	mlx_destroy_display(maze->mlx_ptr);
 	free(maze->mlx_ptr);
+	i = 0;
+    while (maze->map->layout[i])
+    {
+        free(maze->map->layout[i]);
+        i++;
+    }
+	free(maze->map->layout);
+	i = 0;
+	while (maze->map->textures[i])
+    {
+        free(maze->map->textures[i]);
+        i++;
+    }
+	free(maze->map);
 	exit(0); // TODO improve
 }
 
