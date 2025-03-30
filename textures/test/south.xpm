@@ -1,7 +1,7 @@
 /* XPM */
 static char * south_xpm[] = {
 "64 64 127 2",
-"  	c #303030",
+"  	c #ea899a",
 ". 	c #333333",
 "+ 	c #7B7B7B",
 "@ 	c #AEAEAE",

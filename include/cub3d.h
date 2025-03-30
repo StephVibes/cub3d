@@ -138,6 +138,7 @@ typedef struct s_maze
 	t_image		screen;         // For rendering the screen buffer
 	t_map		*map;           // Pointer to the map info
 	t_ray		ray[N_RAYS];
+	int			show_minimap;
 } t_maze;
 
 // Init

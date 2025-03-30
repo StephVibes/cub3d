@@ -7,8 +7,8 @@ int	get_texture_index(char *line)
 
 	coord[0] = "NO";
 	coord[1] = "SO";
-	coord[2] = "WE";
-	coord[3] = "EA";
+	coord[2] = "EA";
+	coord[3] = "WE";
 	j = 0;
 	while (j < 4)
 	{
