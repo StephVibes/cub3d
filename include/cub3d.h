@@ -50,8 +50,10 @@ typedef struct s_image
 typedef struct s_map {
 	char	*textures[4]; // Paths for NO, SO, WE, EA
 	t_image	*txt_imgs[4]; // Images of the textures after parsing the xpm files with mlx_xpm_file_to_image()
-	int		floor_color[3]; // RGB for floor color
-	int		ceiling_color[3]; // RGB for ceiling color
+	int		floor_color_rgb[3]; // RGB for floor color
+	int		floor_color;
+	int		ceiling_color_rgb[3]; // RGB for ceiling color
+	int		ceiling_color;
 	char	**layout; // 2D array for the map layout
 	int		width; // Width of the map
 	int		height; // Height of the map
@@ -163,6 +165,7 @@ void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
 void	get_images_xpm(t_map *map, t_maze *maze);
 int		is_player(char c);
+void	rgb_to_int(t_map *map);
 
 
 // Validation
@@ -182,6 +185,12 @@ int		draw_loop(t_maze *maze);
 void	draw_map(t_maze *maze);
 int     touch(double px, double py, t_maze *maze);
 double	perp_wall_dst(t_player *player, double ray_angle);
+void	ray_data (t_maze *maze, int i, double ray_angle, t_player *player);
+void	hit_compass(t_ray *ray, t_maze *maze);
+void	def_coord(t_ray *ray, t_maze *maze);
+void 	draw_ceiling (t_maze *maze, t_ray *ray, double orig_y);
+void	draw_floor (t_maze *maze, t_ray *ray);
+void	draw_line (t_maze *maze, t_ray *ray, double orig_y, double yy);
 
 //walls
 void	wall_segment(t_maze *maze, int i);

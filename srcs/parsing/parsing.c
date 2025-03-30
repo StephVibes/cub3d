@@ -62,9 +62,9 @@ int	validate_color(char *color, t_map *map, int index, int type)
 		return (1);
 	}
 	if (type == 0)
-		map->floor_color[index] = ft_atoi(color);
+		map->floor_color_rgb[index] = ft_atoi(color);
 	else
-		map->ceiling_color[index] = ft_atoi(color);
+		map->ceiling_color_rgb[index] = ft_atoi(color);
 	return (0);
 }
 
@@ -119,6 +119,12 @@ void	parse_colors(char **lines, t_map *map)
 			error("Color incomplete");
 
 	}
+}
+
+void rgb_to_int(t_map *map)
+{
+    map->ceiling_color = (map->ceiling_color_rgb[0] << 16) | (map->ceiling_color_rgb[1] << 8) | map->ceiling_color_rgb[2];
+    map->floor_color = (map->floor_color_rgb[0] << 16) | (map->floor_color_rgb[1] << 8) | map->floor_color_rgb[2];
 }
 int	is_map_line(char *line)
 {
@@ -330,13 +336,13 @@ void	print_debug(t_map *map)
 	i = 0;
 	while (i < 3)
 	{
-		printf("floor_color[%d]: %d\n", i, map->floor_color[i]);
+		printf("floor_color[%d]: %d\n", i, map->floor_color_rgb[i]);
 		i++;
 	}
 	i = 0;
 	while (i < 3)
 	{
-		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color[i]);
+		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color_rgb[i]);
 		i++;
 	}
 	printf("map height = %d\n", map->height);

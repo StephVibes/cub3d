@@ -167,6 +167,7 @@ t_map	*load_map(const char *file_name)
 	ft_memset(map, 0, sizeof(t_map)); // Initialize map to zero
 	parse_textures(lines, map);
 	parse_colors(lines, map);
+	rgb_to_int(map);
 	parse_map(lines, map);
 	//wall_map(map);
 	//print_debug(map);
