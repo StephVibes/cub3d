@@ -103,6 +103,7 @@ void hit_compass(t_ray *ray, t_maze *maze)
 void ray_data (t_maze *maze, int i, double ray_angle, t_player *player)
 {
     maze->ray[i].ray_id = i;
+    maze->ray[i].coord = -1;
     maze->ray[i].hit_point.x = player->ray_x;
     maze->ray[i].hit_point.y = player->ray_y;
     maze->ray[i].angle = 0.0;

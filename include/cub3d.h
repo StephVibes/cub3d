@@ -190,7 +190,7 @@ void	ray_data (t_maze *maze, int i, double ray_angle, t_player *player);
 void	hit_compass(t_ray *ray, t_maze *maze);
 void	def_coord(t_ray *ray, t_maze *maze);
 void 	draw_ceiling (t_maze *maze, t_ray *ray, double orig_y);
-void	draw_floor (t_maze *maze, t_ray *ray);
+void	draw_floor (t_maze *maze, t_ray *ray, double floor);
 void	draw_line (t_maze *maze, t_ray *ray, double orig_y, double yy);
 
 //walls

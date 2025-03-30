@@ -39,6 +39,7 @@ void	parse_textures(char **lines, t_map *map)
 		}
 		i++;
 	}
+	map->textures[4] = NULL;
 	validate_textures(map->textures);
 }
 
@@ -191,7 +192,7 @@ void	get_map_info(char **lines, t_map *map, int map_start)
 		map->layout[i] = ft_strdup(lines[map_start + i]);
 		i++;
 	}
-	map->layout[map->height] = NULL;
+	map->layout[i] = NULL;
 }
 
 int	is_player(char c)
@@ -364,6 +365,6 @@ void	parse_map(char **lines, t_map *map)
 		get_map_info(lines, map, map_start);
 	else
 		error("map not found");
-	validate_map(map->layout, map);
-	print_debug(map);
+	//validate_map(map->layout, map);
+	//print_debug(map);
 }
