@@ -35,6 +35,13 @@ int	key_press_handler(int keycode, t_maze *maze)
 		maze->player.right_rotate = 1;
 	if (keycode == XK_Left)
 		maze->player.left_rotate = 1;
+	if (keycode == XK_space)
+	{	
+		if (maze->show_minimap == 0)
+			maze->show_minimap = 1;
+		else
+			maze->show_minimap = 0;
+	}
 	return (0);
 }
 

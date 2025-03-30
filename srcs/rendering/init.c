@@ -6,6 +6,7 @@ static void	data_init(t_maze *maze)
 	int	i;
 
 	i = 0;
+	maze->show_minimap = 0;
 	while (i < 4)
 		maze->player.key_state[i++] = 0;
 	maze->player.right_rotate = 0;

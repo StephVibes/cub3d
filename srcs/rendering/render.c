@@ -177,7 +177,7 @@ void def_coord(t_ray *ray, t_maze *maze)
             ray->coord = 2;
         else if (ray->angle >= M_PI && ray->angle < 3 * M_PI / 2)
             ray->coord = 1;
-        else if (ray->angle >= 3 * M_PI / 2 && ray->angle < 2 * M_PI)
+        else if (ray->angle >= 3 * M_PI / 2 && ray->angle <= 2 * M_PI)
             ray->coord = 0;
     }
 }
@@ -363,6 +363,10 @@ int	draw_loop(t_maze *maze)
 	draw_map(maze); //Maze is in the back, player is in the front.
 	draw_player(maze);
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_3d.img_ptr, 0, 0);
-	//mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
+    if (maze->show_minimap)
+    {
+        clear_screen(&maze->img_2d);
+	    mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
+    }
 	return (0);
 }
