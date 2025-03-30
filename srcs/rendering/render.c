@@ -171,15 +171,17 @@ void def_coord(t_ray *ray, t_maze *maze)
         ray->coord = 3;
     else if (!touch(prev_x, ray->hit_point.y, maze) && !touch(ray->hit_point.x, prev_y, maze))
     {
-        if (ray->angle >= 0 && ray->angle < M_PI/2)
+        if (ray->angle >= 0 && ray->angle <= M_PI/2)
             ray->coord = 3;
-        else if(ray->angle >= M_PI/2 && ray->angle < M_PI)
+        else if(ray->angle >= M_PI/2 && ray->angle <= M_PI)
             ray->coord = 2;
-        else if (ray->angle >= M_PI && ray->angle < 3 * M_PI / 2)
+        else if (ray->angle >= M_PI && ray->angle <= 3 * M_PI / 2)
             ray->coord = 1;
         else if (ray->angle >= 3 * M_PI / 2 && ray->angle <= 2 * M_PI)
             ray->coord = 0;
     }
+    else
+        ray->coord = maze->ray[ray->ray_id - 1].coord;
 }
 
 void hit_compass(t_ray *ray, t_maze *maze)
@@ -238,7 +240,7 @@ void draw_rays(t_maze *maze, t_player *player)
             player->ray_y = next_y;
         }
         maze->ray[i].ray_id = i;
-        maze->ray[i].coord = -1;
+        maze->ray[i].coord = -1; // Revisar porque esto borra la esquina
         maze->ray[i].hit_point.x = player->ray_x;
         maze->ray[i].hit_point.y = player->ray_y;
         maze->ray[i].angle = 0.0;
