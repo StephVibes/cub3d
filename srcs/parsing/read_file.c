@@ -36,7 +36,7 @@ char	**read_file(const char *file_name)
 	if (!ext)
 		error("Missing map file extension");
 	if (ft_strncmp(ext, ".cub", 4))
-		error("Invalid map file extension\n");
+		error("Invalid map file extension");
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
 		error("error opening the file"); // improve

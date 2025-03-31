@@ -312,7 +312,7 @@ void	validate_map(char **layout, t_map *map)
 					error("Player on the edge");
 			}
 			else if (accept_coord(layout[i][j]) && player_set == 1)
-				error("More than one player");
+				error("More than one player in the map");
 			j++;
 		}
 		i++;
