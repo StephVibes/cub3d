@@ -153,8 +153,8 @@ void def_coord(t_ray *ray, t_maze *maze)
 {
 
     (void)maze;
-    double prev_x = ray->hit_point.x - cos(ray->angle);
-    double prev_y = ray->hit_point.y - sin(ray->angle);
+    // double prev_x = ray->hit_point.x - cos(ray->angle);
+    // double prev_y = ray->hit_point.y - sin(ray->angle);
 
     int wall_facing_north[4] = {0, 1, 1, 1};    // Only North wall
     int wall_facing_south[4] = {1, 0, 1, 1};    // Only South wall
@@ -169,17 +169,17 @@ void def_coord(t_ray *ray, t_maze *maze)
         ray->coord = 2;
     else if (array_equals(ray->compass, wall_facing_west))
         ray->coord = 3;
-    else if (!touch(prev_x, ray->hit_point.y, maze) && !touch(ray->hit_point.x, prev_y, maze))
-    {
-        if (ray->angle >= 0 && ray->angle <= M_PI/2)
-            ray->coord = 3;
-        else if(ray->angle >= M_PI/2 && ray->angle <= M_PI)
-            ray->coord = 2;
-        else if (ray->angle >= M_PI && ray->angle <= 3 * M_PI / 2)
-            ray->coord = 1;
-        else if (ray->angle >= 3 * M_PI / 2 && ray->angle <= 2 * M_PI)
-            ray->coord = 0;
-    }
+    // else if (!touch(prev_x, ray->hit_point.y, maze) && !touch(ray->hit_point.x, prev_y, maze))
+    // {
+    //     if (ray->angle >= 0 && ray->angle <= M_PI/2)
+    //         ray->coord = 3;
+    //     else if(ray->angle >= M_PI/2 && ray->angle <= M_PI)
+    //         ray->coord = 2;
+    //     else if (ray->angle >= M_PI && ray->angle <= 3 * M_PI / 2)
+    //         ray->coord = 1;
+    //     else if (ray->angle >= 3 * M_PI / 2 && ray->angle <= 2 * M_PI)
+    //         ray->coord = 0;
+    // }
     else
         ray->coord = maze->ray[ray->ray_id - 1].coord;
 }
