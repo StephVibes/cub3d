@@ -36,19 +36,37 @@ int	close_handler(t_maze *maze)
 int	key_press_handler(int keycode, t_maze *maze)
 {
 	if (keycode == XK_w)
+	{
 		maze->player.key_state[0] = 1;
+		maze->map->mini_player.key_state[0] = 1;
+	}
 	if (keycode == XK_s)
+	{
 		maze->player.key_state[1] = 1;
+		maze->map->mini_player.key_state[1] = 1;
+	}
 	if (keycode == XK_a)
+	{
 		maze->player.key_state[2] = 1;
+		maze->map->mini_player.key_state[2] = 1;
+	}
 	if (keycode == XK_d)
+	{
 		maze->player.key_state[3] = 1;
+		maze->map->mini_player.key_state[3] = 1;
+	}
 	if (keycode == XK_Escape)
 		close_handler(maze);
 	if (keycode == XK_Right)
+	{
 		maze->player.right_rotate = 1;
+		maze->map->mini_player.right_rotate = 1;
+	}
 	if (keycode == XK_Left)
+	{
 		maze->player.left_rotate = 1;
+		maze->map->mini_player.left_rotate = 1;
+	}
 	if (keycode == XK_space)
 	{	
 		if (maze->show_minimap == 0)
@@ -62,16 +80,34 @@ int	key_press_handler(int keycode, t_maze *maze)
 int	key_release_handler(int keycode, t_maze *maze)
 {
 	if (keycode == XK_w)
+	{
 		maze->player.key_state[0] = 0;
+		maze->map->mini_player.key_state[0] = 0;
+	}
 	if (keycode == XK_s)
+	{
 		maze->player.key_state[1] = 0;
+		maze->map->mini_player.key_state[1] = 0;
+	}
 	if (keycode == XK_a)
+	{
 		maze->player.key_state[2] = 0;
+		maze->map->mini_player.key_state[2] = 0;
+	}
 	if (keycode == XK_d)
+	{
 		maze->player.key_state[3] = 0;
+		maze->map->mini_player.key_state[3] = 0;
+	}
 	if (keycode == XK_Right)
+	{
 		maze->player.right_rotate = 0;
+		maze->map->mini_player.right_rotate = 0;
+	}
 	if (keycode == XK_Left)
+	{
 		maze->player.left_rotate = 0;
+		maze->map->mini_player.left_rotate = 0;
+	}
 	return (0);
 }

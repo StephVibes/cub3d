@@ -19,10 +19,11 @@
 # define MAX_DST 200
 # define SPEED 9
 # define ANGLE_SPEED 0.08
-# define MAP_SIZE 1920
+# define MAP_SIZE 400
 # define WALL '1'
 # define EMPTY '0'
 # define MAX_COLORS 256
+# define BLOCK 60
 
 # define COLOR_GREEN_1 0x00FFAA00  // Light green
 # define COLOR_RED     0x00FF0000  // Red
@@ -46,21 +47,6 @@ typedef struct s_image
 	int		endian;        // Endianness
 } t_image;
 
-
-typedef struct s_map {
-	char	*textures[4]; // Paths for NO, SO, WE, EA
-	t_image	*txt_imgs[4]; // Images of the textures after parsing the xpm files with mlx_xpm_file_to_image()
-	int		floor_color[3]; // RGB for floor color
-	int		ceiling_color[3]; // RGB for ceiling color
-	char	**layout; // 2D array for the map layout
-	int		width; // Width of the map
-	int		height; // Height of the map
-	char	player_dir; // Initial player direction (N, S, E, W)
-	int		block;
-	int		offset_2dx;
-	int		offset_2dy;
-} t_map;
-
 typedef struct s_player
 {
 	int	key_state[4];    // For tracking key presses WASD
@@ -74,6 +60,21 @@ typedef struct s_player
 	char	dir;
 
 } t_player;
+
+typedef struct s_map {
+	char	*textures[4]; // Paths for NO, SO, WE, EA
+	t_image	*txt_imgs[4]; // Images of the textures after parsing the xpm files with mlx_xpm_file_to_image()
+	int		floor_color[3]; // RGB for floor color
+	int		ceiling_color[3]; // RGB for ceiling color
+	char	**layout; // 2D array for the map layout
+	int		width; // Width of the map
+	int		height; // Height of the map
+	char	player_dir; // Initial player direction (N, S, E, W)
+	int		block;
+	int		offset_2dx;
+	int		offset_2dy;
+	t_player	mini_player;
+} t_map;
 
 typedef struct s_point
 {
@@ -161,6 +162,7 @@ void	parse_map(char **lines, t_map *map);
 void	get_player_init_pos(t_maze *maze);
 void	get_player_angle (t_maze *maze);
 void	get_player_init_pos(t_maze *maze);
+void	get_player_init_pos_minimap(t_maze *maze);
 void	get_player_angle (t_maze *maze);
 void	get_images_xpm(t_map *map, t_maze *maze);
 int		is_player(char c);
@@ -170,9 +172,10 @@ int		is_player(char c);
 void	validate_textures(char *textures[]);
 
 // Draw
-void     my_pixel_put(int x, int y, t_image *img, int color);
+void    my_pixel_put(int x, int y, t_image *img, int color);
 void    clear_screen(t_image *screen);
 void    move_player(t_player *player);
+void	move_player_minimap(t_player *player, int block_map);
 void    draw_player(t_maze *maze);
 
 // Rendering
@@ -182,6 +185,7 @@ int		draw_loop(t_maze *maze);
 int		draw_loop(t_maze *maze);
 void	draw_map(t_maze *maze);
 int     touch(double px, double py, t_maze *maze);
+int		touch_minimap(double px, double py, t_maze *maze);
 double	perp_wall_dst(t_player *player, double ray_angle);
 
 //walls

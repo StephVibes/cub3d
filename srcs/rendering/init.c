@@ -8,10 +8,18 @@ static void	data_init(t_maze *maze)
 	i = 0;
 	maze->show_minimap = 0;
 	while (i < 4)
+	{
 		maze->player.key_state[i++] = 0;
+		maze->map->mini_player.key_state[i++] = 0;
+	}
 	maze->player.right_rotate = 0;
 	maze->player.left_rotate = 0;
 	maze->player.angle = (3 * M_PI) / 2; // depending on N S W E in map
+
+	maze->map->mini_player.right_rotate = 0;
+	maze->map->mini_player.left_rotate = 0;
+	maze->map->mini_player.angle = (3 * M_PI) / 2; // depending on N S W E in map
+
 	maze->img_3d.width = WIDTH;
 	maze->img_3d.height = HEIGHT;
 	maze->img_2d.width = MAP_SIZE;
@@ -23,19 +31,12 @@ static void	data_init(t_maze *maze)
 	maze->map->offset_2dx = (maze->img_2d.width - (maze->map->width * maze->map->block)) / 2;
 	maze->map->offset_2dy = (maze->img_2d.height - (maze->map->height * maze->map->block)) / 2;
 	get_player_init_pos(maze);
+	get_player_init_pos_minimap(maze);
 	get_player_angle(maze);
-	//maze->segments = 0;
-	i = 0;
-    /* while (i < W_SEGMENTS)
-	{
-        maze->w[i].st.x = 0.0;
-		maze->w[i].st.y = 0.0;
-		maze->w[i].end.x = 0.0;
-		maze->w[i].end.y = 0.0;
-		i++;
-	} */
 	maze->player.ray_x = maze->player.x;
 	maze->player.ray_y = maze->player.y;
+	maze->map->mini_player.ray_y = maze->map->mini_player.y;
+	maze->map->mini_player.ray_x = maze->map->mini_player.x;
 	init_textures(maze->map);
 	get_images_xpm(maze->map, maze);
 }
