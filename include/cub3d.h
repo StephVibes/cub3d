@@ -19,21 +19,22 @@
 # define MAX_DST 200
 # define SPEED 9
 # define ANGLE_SPEED 0.08
-# define MAP_SIZE 400
+# define MAP_SIZE 350
 # define WALL '1'
 # define EMPTY '0'
 # define MAX_COLORS 256
 # define BLOCK 60
 
-# define COLOR_GREEN_1 0x00FFAA00  // Light green
-# define COLOR_RED     0x00FF0000  // Red
-# define COLOR_GREEN   0x0000FF00  // Green
-# define COLOR_YELLOW  0x00FFFF00  // Yellow
-# define COLOR_BLUE    0x000000FF  // Blue
-# define COLOR_MAGENTA 0x00FF00FF  // Magenta
-# define COLOR_CYAN    0x0000FFFF  // Cyan
-# define COLOR_WHITE   0x00FFFFFF  // White
-# define COLOR_BLACK   0x00000000  // Black
+# define COLOR_GREEN_1	0x00FFAA00  // Light green
+# define COLOR_RED		0x00FF0000  // Red
+# define COLOR_GREEN	0x0000FF00  // Green
+# define COLOR_YELLOW	0x00FFFF00  // Yellow
+# define COLOR_BLUE		0x000000FF  // Blue
+# define COLOR_MAGENTA	0x00FF00FF  // Magenta
+# define COLOR_CYAN		0x0000FFFF  // Cyan
+# define COLOR_WHITE	0x00FFFFFF  // White
+# define COLOR_BLACK	0x00000000  // Black
+# define COLOR_CREAM	0x00F6F2E5	// Cream
 
 
 typedef struct s_image

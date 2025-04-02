@@ -42,7 +42,7 @@ void	draw_map_cell(int x, int y, t_maze *maze)
     if (map->layout[y][x] == '1' || map->layout[y][x] == 'x' || map->layout[y][x] == 'y')
         draw_square(start_x + (x * map->block),
                     start_y + (y * map->block),
-                    map->block, COLOR_BLUE, &maze->img_2d);
+                    map->block, COLOR_BLACK, &maze->img_2d);
 }
 
 void	draw_map(t_maze *maze)
@@ -144,12 +144,12 @@ void	move_player(t_player *player)
 
 void	move_player_minimap(t_player *player, int block_map)
 {
-	int	speed;
+	double		speed;
 	double	angle_speed;
 	double	cos_angle;
 	double	sin_angle;
-
-	speed = SPEED*(block_map / BLOCK);
+	
+	speed = SPEED * ((double)block_map / BLOCK) ;
 	angle_speed = ANGLE_SPEED;
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
@@ -207,7 +207,7 @@ void	clear_screen(t_image *screen)
 		j = 0;
 		while (j < HEIGHT)
 		{
-			my_pixel_put(i, j, screen, COLOR_BLACK);
+			my_pixel_put(i, j, screen, COLOR_CREAM);
 			j++;
 		}
 		i++;

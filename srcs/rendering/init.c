@@ -25,9 +25,15 @@ static void	data_init(t_maze *maze)
 	maze->img_2d.width = MAP_SIZE;
 	maze->img_2d.height = MAP_SIZE;
 	if (maze->map->width > maze->map->height)
-		maze->map->block= MAP_SIZE / maze->map->width;
+	{
+		maze->map->block = MAP_SIZE / maze->map->width;
+		maze->img_2d.height = maze->map->block * (maze->map->height + maze->map->block);
+	}
 	else
+	{
 		maze->map->block = MAP_SIZE / maze->map->height;
+		maze->img_2d.width = maze->map->block * (maze->map->width + maze->map->block);
+	}
 	maze->map->offset_2dx = (maze->img_2d.width - (maze->map->width * maze->map->block)) / 2;
 	maze->map->offset_2dy = (maze->img_2d.height - (maze->map->height * maze->map->block)) / 2;
 	get_player_init_pos(maze);
@@ -114,7 +120,10 @@ void	maze_init(t_maze *maze)
 		free(maze -> mlx_ptr);
 		error("error creating the image with minilibx"); // TODO improve
 	}
-	maze -> img_2d.img_ptr = mlx_new_image(maze -> mlx_ptr, MAP_SIZE, MAP_SIZE); // create 2d image
+	maze -> img_3d.data = mlx_get_data_addr(maze -> img_3d.img_ptr, &maze -> img_3d.bpp, 
+			&maze -> img_3d.line_len, &maze -> img_3d.endian);
+	data_init(maze);
+	maze -> img_2d.img_ptr = mlx_new_image(maze -> mlx_ptr, maze->img_2d.width, maze->img_2d.height); // create 2d image
  	if (maze -> img_2d.img_ptr == NULL)
  	{
 		mlx_destroy_window(maze -> mlx_ptr, maze -> win_ptr);
@@ -122,10 +131,7 @@ void	maze_init(t_maze *maze)
 		free(maze -> mlx_ptr);
 		error("error creating the image with minilibx"); // TODO improve
 	}
-	maze -> img_3d.data = mlx_get_data_addr(maze -> img_3d.img_ptr, &maze -> img_3d.bpp, 
-			&maze -> img_3d.line_len, &maze -> img_3d.endian);
 	maze -> img_2d.data = mlx_get_data_addr(maze -> img_2d.img_ptr, &maze -> img_2d.bpp,
-			&maze -> img_2d.line_len, &maze -> img_2d.endian);
-	data_init(maze);
+		&maze -> img_2d.line_len, &maze -> img_2d.endian);
 	events_init(maze);
 }

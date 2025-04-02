@@ -233,7 +233,7 @@ void draw_rays_minimap(t_maze *maze, t_player *player)
         // Check for internal corners while raycasting
         while (!(touch_minimap(player->ray_x, player->ray_y, maze)))
         {
-            my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_YELLOW);
+            my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_GREEN_1);
 			player->ray_x += cos(ray_angle);
 			player->ray_y += sin(ray_angle);
 		}
@@ -248,13 +248,13 @@ int	draw_loop(t_maze *maze)
 	clear_screen(&maze->img_3d);
 	draw_rays(maze, &maze->player); // not really drawing rays but the logic for the raycasting and drawing the walls
 	mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_3d.img_ptr, 0, 0);
-    // if (maze->show_minimap)
-    // {
+    if (maze->show_minimap)
+    {
 		clear_screen(&maze->img_2d);
         draw_rays_minimap(maze, &maze->map->mini_player);
 		draw_map(maze); //Maze is in the back, player is in the front.
 		draw_player(maze);
-		mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 10, HEIGHT - MAP_SIZE - 10);
-	// }
+		mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 40, HEIGHT - MAP_SIZE - 20);
+	}
 	return (0);
 }
