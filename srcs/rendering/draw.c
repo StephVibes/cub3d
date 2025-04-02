@@ -144,12 +144,12 @@ void	move_player(t_player *player)
 
 void	move_player_minimap(t_player *player, int block_map)
 {
-	double		speed;
+	double	speed;
 	double	angle_speed;
 	double	cos_angle;
 	double	sin_angle;
 	
-	speed = SPEED * ((double)block_map / BLOCK) ;
+	speed = SPEED * ((double)block_map / BLOCK);
 	angle_speed = ANGLE_SPEED;
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);

@@ -254,7 +254,7 @@ int	draw_loop(t_maze *maze)
         draw_rays_minimap(maze, &maze->map->mini_player);
 		draw_map(maze); //Maze is in the back, player is in the front.
 		draw_player(maze);
-		mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 40, HEIGHT - MAP_SIZE - 20);
+		mlx_put_image_to_window(maze->mlx_ptr, maze->win_ptr, maze->img_2d.img_ptr, 40, HEIGHT - MAP_SIZE - 80);
 	}
 	return (0);
 }

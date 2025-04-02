@@ -9,8 +9,9 @@ static void	data_init(t_maze *maze)
 	maze->show_minimap = 0;
 	while (i < 4)
 	{
-		maze->player.key_state[i++] = 0;
-		maze->map->mini_player.key_state[i++] = 0;
+		maze->player.key_state[i] = 0;
+		maze->map->mini_player.key_state[i] = 0;
+		i++;
 	}
 	maze->player.right_rotate = 0;
 	maze->player.left_rotate = 0;
@@ -27,12 +28,12 @@ static void	data_init(t_maze *maze)
 	if (maze->map->width > maze->map->height)
 	{
 		maze->map->block = MAP_SIZE / maze->map->width;
-		maze->img_2d.height = maze->map->block * (maze->map->height + maze->map->block);
+		//maze->img_2d.height = maze->map->block * (maze->map->height + maze->map->block);
 	}
 	else
 	{
 		maze->map->block = MAP_SIZE / maze->map->height;
-		maze->img_2d.width = maze->map->block * (maze->map->width + maze->map->block);
+		//maze->img_2d.width = maze->map->block * (maze->map->width + maze->map->block);
 	}
 	maze->map->offset_2dx = (maze->img_2d.width - (maze->map->width * maze->map->block)) / 2;
 	maze->map->offset_2dy = (maze->img_2d.height - (maze->map->height * maze->map->block)) / 2;
@@ -122,8 +123,8 @@ void	maze_init(t_maze *maze)
 	}
 	maze -> img_3d.data = mlx_get_data_addr(maze -> img_3d.img_ptr, &maze -> img_3d.bpp, 
 			&maze -> img_3d.line_len, &maze -> img_3d.endian);
-	data_init(maze);
-	maze -> img_2d.img_ptr = mlx_new_image(maze -> mlx_ptr, maze->img_2d.width, maze->img_2d.height); // create 2d image
+	
+	maze -> img_2d.img_ptr = mlx_new_image(maze -> mlx_ptr, MAP_SIZE, MAP_SIZE); // create 2d image
  	if (maze -> img_2d.img_ptr == NULL)
  	{
 		mlx_destroy_window(maze -> mlx_ptr, maze -> win_ptr);
@@ -133,5 +134,6 @@ void	maze_init(t_maze *maze)
 	}
 	maze -> img_2d.data = mlx_get_data_addr(maze -> img_2d.img_ptr, &maze -> img_2d.bpp,
 		&maze -> img_2d.line_len, &maze -> img_2d.endian);
+	data_init(maze);
 	events_init(maze);
 }
