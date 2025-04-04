@@ -65,8 +65,10 @@ typedef struct s_player
 typedef struct s_map {
 	char	*textures[4]; // Paths for NO, SO, WE, EA
 	t_image	*txt_imgs[4]; // Images of the textures after parsing the xpm files with mlx_xpm_file_to_image()
-	int		floor_color[3]; // RGB for floor color
-	int		ceiling_color[3]; // RGB for ceiling color
+	int		floor_color_rgb[3]; // RGB for floor color
+	int		floor_color;
+	int		ceiling_color_rgb[3]; // RGB for ceiling color
+	int		ceiling_color;
 	char	**layout; // 2D array for the map layout
 	int		width; // Width of the map
 	int		height; // Height of the map
