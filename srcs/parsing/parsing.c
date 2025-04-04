@@ -339,13 +339,13 @@ void	print_debug(t_map *map)
 	i = 0;
 	while (i < 3)
 	{
-		printf("floor_color[%d]: %d\n", i, map->floor_color[i]);
+		printf("floor_color[%d]: %d\n", i, map->floor_color_rgb[i]);
 		i++;
 	}
 	i = 0;
 	while (i < 3)
 	{
-		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color[i]);
+		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color_rgb[i]);
 		i++;
 	}
 	printf("map height = %d\n", map->height);

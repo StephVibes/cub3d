@@ -56,7 +56,7 @@ void draw_wall(t_ray *ray, t_maze *maze)
     draw_line (maze, ray, orig_y, yy);
 }
 
-double perp_wall_dst(t_player *player, double ray_angle)
+/* double perp_wall_dst(t_player *player, double ray_angle)
 {
     double ray_dir_x, ray_dir_y;
     double ray_length;
@@ -79,9 +79,9 @@ double perp_wall_dst(t_player *player, double ray_angle)
     
     // Apply fisheye correction by multiplying by cosine of the angle difference
     return ray_length * cos(correction_angle);
-}
+} */
 
-double get_wall_distance(t_player *player)
+/* double get_wall_distance(t_player *player)
 {
 	double dst;
 
@@ -99,7 +99,7 @@ double dst_to_h(double dst)
 	if (dst > MAX_DST)
 		return(MIN_WALL);
 	return (h);
-}
+} */
 
 /* void draw_wall(t_ray *ray, t_maze *maze, int wall_ax)
 {
@@ -146,15 +146,15 @@ double dst_to_h(double dst)
 } */
 
 
-double get_wall_dst(t_player *player ,double x, double y)
+/* double get_wall_dst(t_player *player ,double x, double y)
 {
 	double dst;
 
 	dst = sqrt((y - player->y) * (y - player->y) + (x - player->x) * (x - player->x));
 	return (dst);
-}
+} */
 
-int array_equals(int arr[], int expected[])
+/* int array_equals(int arr[], int expected[])
 {
     int i;
     
@@ -166,10 +166,10 @@ int array_equals(int arr[], int expected[])
         i++;
     }
     return 1;
-}
+} */
 
 
-void def_coord(t_ray *ray, t_maze *maze)
+/* void def_coord(t_ray *ray, t_maze *maze)
 {
 
     (void)maze;
@@ -200,17 +200,17 @@ void def_coord(t_ray *ray, t_maze *maze)
     // }
     else
         ray->coord = maze->ray[ray->ray_id - 1].coord;
-}
+} */
 
-void hit_compass(t_ray *ray, t_maze *maze)
+/* void hit_compass(t_ray *ray, t_maze *maze)
 {
     ray->compass[0] = touch(ray->hit_point.x, ray->hit_point.y - 1, maze);
     ray->compass[1] = touch(ray->hit_point.x, ray->hit_point.y + 1, maze);
     ray->compass[2] = touch(ray->hit_point.x + 1, ray->hit_point.y, maze);
     ray->compass[3] = touch(ray->hit_point.x - 1, ray->hit_point.y, maze);
-}
+} */
 
-void draw_rays(t_maze *maze, t_player *player)
+/* void draw_rays(t_maze *maze, t_player *player)
 {
     double fov;
     int wall_ax;
@@ -268,6 +268,58 @@ void draw_rays(t_maze *maze, t_player *player)
         draw_wall(&maze->ray[i], maze, wall_ax); // Normal wall
         i++;
     }
+} */
+void draw_utils (t_maze *maze, int i, double ray_angle)
+{
+    ray_data(maze, i, ray_angle, &maze->player);
+    hit_compass(&maze->ray[i], maze);
+    def_coord(&maze->ray[i], maze);
+    determine_text(&maze->ray[i], maze);
+    draw_wall(&maze->ray[i], maze);
+}
+
+void draw_rays(t_maze *maze, t_player *player)
+{
+    double fov;
+    //int wall_ax;
+    double angle_step;
+    int i;
+    double ray_angle;
+
+    fov = 66 * M_PI / 180;
+    angle_step = fov / (N_RAYS - 1);
+    i = 0;
+    while (i < WIDTH)
+    {
+        ray_angle = player->angle - (fov / 2) + (i * angle_step); // Calculate ray angle
+        player->ray_x = player->x;
+        player->ray_y = player->y;
+        while (!(touch(player->ray_x, player->ray_y, maze)))
+        {
+            //my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_YELLOW);
+            double next_x = player->ray_x + cos(ray_angle);
+            double next_y = player->ray_y + sin(ray_angle);
+             if (touch(next_x, player->ray_y, maze) && touch(player->ray_x, next_y, maze))
+            {
+                /* ray_data(maze, i, ray_angle, player);
+                hit_compass(&maze->ray[i], maze);
+                def_coord(&maze->ray[i], maze);
+                determine_text(&maze->ray[i], maze);
+                draw_wall(&maze->ray[i], maze); */
+                draw_utils (maze, i, ray_angle);
+                break;
+            }
+            player->ray_x = next_x;
+            player->ray_y = next_y;
+        }
+        /* ray_data(maze, i, ray_angle, player);
+        hit_compass(&maze->ray[i], maze);
+        def_coord(&maze->ray[i], maze);
+        determine_text(&maze->ray[i], maze);
+        draw_wall(&maze->ray[i], maze); */
+        draw_utils (maze, i, ray_angle);
+        i++;
+    }
 }
 
 void draw_rays_minimap(t_maze *maze, t_player *player)
@@ -290,8 +342,14 @@ void draw_rays_minimap(t_maze *maze, t_player *player)
         while (!(touch_minimap(player->ray_x, player->ray_y, maze)))
         {
             my_pixel_put((int)player->ray_x, (int)player->ray_y, &maze->img_2d, COLOR_GREEN_1);
-			player->ray_x += cos(ray_angle);
-			player->ray_y += sin(ray_angle);
+			double next_x = player->ray_x + cos(ray_angle);
+            double next_y = player->ray_y + sin(ray_angle);
+            if (touch_minimap(next_x, player->ray_y, maze) && touch_minimap(player->ray_x, next_y, maze))
+            {
+                break;
+            }
+            player->ray_x = next_x;
+            player->ray_y = next_y;
 		}
         i++;
     }
