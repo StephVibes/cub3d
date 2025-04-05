@@ -20,6 +20,7 @@ SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/rendering/render.c \
 	   $(SRC_DIR)/rendering/render_utils.c \
        $(SRC_DIR)/rendering/draw.c \
+	   $(SRC_DIR)/rendering/draw_utils.c \
        $(SRC_DIR)/parsing/read_file.c \
 	   $(SRC_DIR)/parsing/parsing.c \
 	   $(SRC_DIR)/parsing/player_init.c \

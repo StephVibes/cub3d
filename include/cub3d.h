@@ -24,6 +24,7 @@
 # define EMPTY '0'
 # define MAX_COLORS 256
 # define BLOCK 60
+# define FOV (double) 1.151917306316260
 
 # define COLOR_GREEN_1	0x00FFAA00  // Light green
 # define COLOR_RED		0x00FF0000  // Red
