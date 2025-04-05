@@ -1,25 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 16:20:25 by alramire          #+#    #+#             */
+/*   Updated: 2025/04/05 17:12:56 by alramire         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
-
-int	is_map_line(char *line)
-{
-	size_t	i;
-
-	i = 0;
-	if (!line)
-		return (0);
-	while (line[i] == ' ')
-		i++;
-	while (line[i] && line[i] != '\n')
-	{
-		if (!(line[i] == '0' || line[i] == '1' || line[i] == ' ' ||
-			line[i] == 'N' || line[i] == 'S' || line[i] == 'W' || line[i] == 'E'))
-			return 0;
-		i++;
-	}
-	return (ft_strchr(line, '0') || ft_strchr(line, '1') ||
-			ft_strchr(line, 'N') || ft_strchr(line, 'S') ||
-			ft_strchr(line, 'W') || ft_strchr(line, 'E'));
-}
 
 int	find_map_start(char **lines)
 {
@@ -93,7 +84,7 @@ void	parse_map(char **lines, t_map *map)
 		get_map_info(lines, map, map_start);
 	}
 	else
-		error("map not found");
+		error("map not found or not in the right position");
 	validate_map(map->layout, map);
 	print_debug(map);
 }

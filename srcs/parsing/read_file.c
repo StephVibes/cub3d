@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_file.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 16:05:27 by alramire          #+#    #+#             */
+/*   Updated: 2025/04/05 16:05:48 by alramire         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 static int	count_lines(const char *file_name)
 {
-	int	fd;
+	int		fd;
 	char	*line;
-	int	num_lines;
+	int		num_lines;
 
 	num_lines = 0;
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
-		error("error opening the map"); // improve
+		error("error opening the map");
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
@@ -18,15 +30,15 @@ static int	count_lines(const char *file_name)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return(num_lines);
+	return (num_lines);
 }
 
 char	**read_file(const char *file_name)
 {
-	int	num_lines;
-	int	fd;
+	int		num_lines;
+	int		fd;
 	char	**lines;
-	int	i;
+	int		i;
 	char	*ext;
 
 	i = 0;
@@ -39,15 +51,15 @@ char	**read_file(const char *file_name)
 		error("Invalid map file extension");
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
-		error("error opening the file"); // improve
-	while(i < num_lines)
+		error("error opening the file");
+	while (i < num_lines)
 	{
 		lines[i] = get_next_line(fd);
 		i++;
 	}
 	lines[i] = NULL;
 	close(fd);
-	return(lines);
+	return (lines);
 }
 
 void	ft_free_split(char **split)
@@ -67,10 +79,10 @@ t_map	*load_map(const char *file_name)
 {
 	char	**lines;
 	t_map	*map;
-	
+
 	lines = read_file(file_name);
 	if (!lines)
-        	return (NULL);
+		return (NULL);
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (NULL);

@@ -22,7 +22,10 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/rendering/render_rays.c \
        $(SRC_DIR)/rendering/draw.c \
 	   $(SRC_DIR)/rendering/draw_utils.c \
+	   $(SRC_DIR)/rendering/move_player.c \
        $(SRC_DIR)/parsing/read_file.c \
+	   $(SRC_DIR)/parsing/print_debug.c \
+	   $(SRC_DIR)/parsing/parsing_utils.c \
 	   $(SRC_DIR)/parsing/parsing.c \
 	   $(SRC_DIR)/parsing/parsing_color.c \
 	   $(SRC_DIR)/parsing/parsing_texture.c \

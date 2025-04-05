@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 17:07:57 by alramire          #+#    #+#             */
+/*   Updated: 2025/04/05 17:08:01 by alramire         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	error(char *message)
@@ -14,7 +26,7 @@ int	parsing(char *map_name, t_maze *maze)
 	if (!maze->map)
 		return (1);
 	else
-		return(0);
+		return (0);
 }
 
 int	main(int argc, char **argv)

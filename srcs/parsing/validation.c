@@ -1,8 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validation.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 15:52:33 by alramire          #+#    #+#             */
+/*   Updated: 2025/04/05 16:27:21 by alramire         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <cub3d.h>
+
+int	is_player(char c)
+{
+	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
+}
 
 void	check_file(char *file)
 {
-	int	fd;
+	int		fd;
 	char	buff[1];
 	char	*ext;
 
@@ -29,7 +46,7 @@ void	remove_newline(char *str)
 		if (str[i] == '\n')
 		{
 			str[i] = '\0';
-			break;
+			break ;
 		}
 		i++;
 	}
@@ -50,34 +67,4 @@ void	validate_textures(char *textures[])
 	i = 0;
 	while (i < 4)
 		check_file(textures[i++]);
-}
-
-void	print_debug(t_map *map)
-{
-	int i = 0;
-	while (i < 4)
-	{
-		printf("texture[%d] = %s\n", i, map->textures[i]);
-		i++;
-	}
-	i = 0;
-	while (i < 3)
-	{
-		printf("floor_color[%d]: %d\n", i, map->floor_color_rgb[i]);
-		i++;
-	}
-	i = 0;
-	while (i < 3)
-	{
-		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color_rgb[i]);
-		i++;
-	}
-	printf("map height = %d\n", map->height);
-	printf("map_width = %d\n", map->width);
-	i = 0;
-	while(map->layout[i])
-	{
-		printf("[%d] = %s", i, map->layout[i]);
-		i++;
-	}
 }

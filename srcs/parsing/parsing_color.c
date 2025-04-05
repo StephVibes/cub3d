@@ -6,17 +6,11 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:04:10 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 15:04:16 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/05 16:45:39 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	rgb_to_int(t_map *map)
-{
-	map->ceiling_color = (map->ceiling_color_rgb[0] << 16) | (map->ceiling_color_rgb[1] << 8) | map->ceiling_color_rgb[2];
-	map->floor_color = (map->floor_color_rgb[0] << 16) | (map->floor_color_rgb[1] << 8) | map->floor_color_rgb[2];
-}
 
 int	validate_color(char *color, t_map *map, int index, int type)
 {

@@ -1,28 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 16:50:32 by alramire          #+#    #+#             */
+/*   Updated: 2025/04/05 17:33:01 by alramire         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	my_pixel_put(int x, int y, t_image *img, int color)
 {
-	if (x >= img->width || y >= img->height || x < 0 || y < 0)
-		return;
 	int	offset;
 
+	if (x >= img->width || y >= img->height || x < 0 || y < 0)
+		return ;
 	offset = (y * img->line_len) + (x * (img->bpp / 8));
 	*(unsigned int *)(img->data + offset) = color;
 }
 
-void	draw_square(int x, int y, int size, int color, t_image *img)
+void	draw_square(t_point *p, int color, t_image *img)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i < size)
+	while (i < p->ray)
 	{
 		j = 0;
-		while (j < size)
+		while (j < p->ray)
 		{
-			if (x + i < MAP_SIZE && y + j < MAP_SIZE)
-				my_pixel_put(x + i, y + j, img, color);
+			if (p->x + i < MAP_SIZE && p->y + j < MAP_SIZE)
+				my_pixel_put(p->x + i, p->y + j, img, color);
 			j++;
 		}
 		i++;
@@ -31,17 +43,23 @@ void	draw_square(int x, int y, int size, int color, t_image *img)
 
 void	draw_map_cell(int x, int y, t_maze *maze)
 {
-	int	start_x;
-	int	start_y;
+	int		start_x;
+	int		start_y;
 	t_map	*map;
+	t_point	p;
 
 	map = maze->map;
 	start_x = (maze->img_2d.width - (map->width * map->block)) / 2;
 	start_y = (maze->img_2d.height - (map->height * map->block)) / 2;
-    if (map->layout[y][x] == '1' || map->layout[y][x] == 'x' || map->layout[y][x] == 'y')
-        draw_square(start_x + (x * map->block),
-                    start_y + (y * map->block),
-                    map->block, COLOR_BLACK, &maze->img_2d);
+	if (map->layout[y][x] == '1' || map->layout[y][x] == 'x'
+		|| map->layout[y][x] == 'y')
+	{
+		p.x = start_x + (x * map->block);
+		p.y = start_y + (y * map->block);
+		p.ray = map->block;
+		draw_square(&p, COLOR_BLACK, &maze->img_2d);
+	}
+		
 }
 
 void	draw_map(t_maze *maze)
@@ -64,12 +82,21 @@ void	draw_map(t_maze *maze)
 
 void	draw_player(t_maze *maze)
 {
-	int	player_size;
+	t_point player;
+
+	player.ray = maze->map->block / 3;
+	player.x = maze->map->mini_player.x - (player.ray / 2);
+	player.y = maze->map->mini_player.y - (player.ray / 2);
+	draw_square(&player, COLOR_RED, &maze->img_2d); 
+	
+	/* int	player_size;
 	int	player_x;
 	int	player_y;
+
+
 
 	player_size = maze->map->block / 3;
 	player_x = maze->map->mini_player.x - (player_size / 2);
 	player_y = maze->map->mini_player.y - (player_size / 2);
-	draw_square(player_x, player_y, player_size, COLOR_RED, &maze->img_2d);
+	draw_square(player_x, player_y, player_size, COLOR_RED, &maze->img_2d); */
 }
