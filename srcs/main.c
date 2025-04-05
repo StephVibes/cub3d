@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:07:57 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 17:08:01 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:44:20 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	error(char *message)
 	printf("Error\n");
 	printf("%s\n", message);
 	exit(1);
-
 }
 
 int	parsing(char *map_name, t_maze *maze)
@@ -40,7 +39,7 @@ int	main(int argc, char **argv)
 	maze_init(&maze);
 	maze.fd_log = open("log.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (maze.fd_log == -1)
-    	error("Failed to open log file");
+		error("Failed to open log file");
 	mlx_loop_hook(maze.mlx_ptr, draw_loop, &maze);
 	mlx_loop(maze.mlx_ptr);
 	if (maze.fd_log > 0)

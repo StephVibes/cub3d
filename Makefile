@@ -15,14 +15,19 @@ LIB_DIR = include/minilibx-linux
 
 # Files
 SRCS = $(SRC_DIR)/main.c \
-       $(SRC_DIR)/rendering/init.c \
-       $(SRC_DIR)/rendering/events.c \
+	   $(SRC_DIR)/rendering/maze_init.c \
+	   $(SRC_DIR)/rendering/data_init.c \
+	   $(SRC_DIR)/rendering/events_key_press.c \
+	   $(SRC_DIR)/rendering/events_key_release.c \
+	   $(SRC_DIR)/rendering/events_utils.c \
+	   $(SRC_DIR)/rendering/wall_dir.c \
        $(SRC_DIR)/rendering/render.c \
 	   $(SRC_DIR)/rendering/render_utils.c \
 	   $(SRC_DIR)/rendering/render_rays.c \
        $(SRC_DIR)/rendering/draw.c \
 	   $(SRC_DIR)/rendering/draw_utils.c \
 	   $(SRC_DIR)/rendering/move_player.c \
+	   $(SRC_DIR)/rendering/draw_loop.c \
        $(SRC_DIR)/parsing/read_file.c \
 	   $(SRC_DIR)/parsing/print_debug.c \
 	   $(SRC_DIR)/parsing/parsing_utils.c \

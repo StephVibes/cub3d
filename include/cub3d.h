@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:42:15 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 17:02:38 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:21:25 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,42 +122,17 @@ typedef struct s_ray
 	double		h;
 }				t_ray;
 
-/* typedef struct s_wall
-{
-	t_point		st;
-	t_point		end;
-	char		delta;
-	double		m;
-	double		b;
-
-}				t_wall;
-
-typedef struct s_wall_delta
-{
-	t_point		p1;
-	t_point		p2;
-	t_point		p3;
-	t_point		p4;
-	double		dx1;
-	double		dx2;
-	double		dx3;
-	double		dy1;
-	double		dy2;
-	double		dy3;
-
-}				t_w_delta; */
-
 typedef struct s_maze
 {
-	void *win_ptr;  // Pointer to the window
-	void *mlx_ptr;  // Pointer to the MLX instance
-	t_image img_3d; // For rendering the screen buffer
+	void		*win_ptr;
+	void		*mlx_ptr;
+	t_image		img_3d;
 	t_image		img_2d;
-	int fd_log;         // File descriptor, log file.
-	t_player player;    // Player info
-	double wall_seg[9]; // coordinate that defines a wall segment
-	t_image screen;     // For rendering the screen buffer
-	t_map *map;         // Pointer to the map info
+	int			fd_log;
+	t_player	player;
+	//double wall_seg[9];
+	t_image		screen;
+	t_map		*map;
 	t_ray		ray[N_RAYS];
 	int			show_minimap;
 }				t_maze;
@@ -210,6 +185,7 @@ void			draw_wall(t_maze *maze, int i, double ray_angle);
 void			draw_utils(t_ray *ray, t_maze *maze);
 
 // Rendering
+void			data_init(t_maze *maze);
 void			draw_square(t_point *p, int color, t_image *img);
 void			maze_render(t_maze *maze);
 int				draw_loop(t_maze *maze);

@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:50:32 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 17:33:01 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/05 18:04:56 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	draw_map_cell(int x, int y, t_maze *maze)
 		p.ray = map->block;
 		draw_square(&p, COLOR_BLACK, &maze->img_2d);
 	}
-		
 }
 
 void	draw_map(t_maze *maze)
@@ -82,21 +81,10 @@ void	draw_map(t_maze *maze)
 
 void	draw_player(t_maze *maze)
 {
-	t_point player;
+	t_point	player;
 
 	player.ray = maze->map->block / 3;
 	player.x = maze->map->mini_player.x - (player.ray / 2);
 	player.y = maze->map->mini_player.y - (player.ray / 2);
-	draw_square(&player, COLOR_RED, &maze->img_2d); 
-	
-	/* int	player_size;
-	int	player_x;
-	int	player_y;
-
-
-
-	player_size = maze->map->block / 3;
-	player_x = maze->map->mini_player.x - (player_size / 2);
-	player_y = maze->map->mini_player.y - (player_size / 2);
-	draw_square(player_x, player_y, player_size, COLOR_RED, &maze->img_2d); */
+	draw_square(&player, COLOR_RED, &maze->img_2d);
 }

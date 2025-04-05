@@ -1,27 +1,39 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/05 18:44:34 by alramire          #+#    #+#             */
+/*   Updated: 2025/04/05 18:44:52 by alramire         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
-double reescale(int value, int block, int coord)
+double	reescale(int value, int block, int coord)
 {
 	double	new;
 
 	if (block == 0)
 		return (0.0);
 	new = (double)value / (double)block;
-	if ( coord == 0 || coord == 2)
+	if (coord == 0 || coord == 2)
 		return (1 - new);
 	else
 		return (new);
 }
 
-double get_text_x(double val, int txt_width)
+double	get_text_x(double val, int txt_width)
 {
 	double	text_x;
 
-    if (val < 0.0)
-        val = 0.0;
-    if (val > 1.0)
-        val = 1.0;
-    text_x = floor(val * ( txt_width - 1));
+	if (val < 0.0)
+		val = 0.0;
+	if (val > 1.0)
+		val = 1.0;
+	text_x = floor(val * (txt_width - 1));
 	return (text_x);
 }
 
