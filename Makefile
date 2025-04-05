@@ -19,12 +19,17 @@ SRCS = $(SRC_DIR)/main.c \
        $(SRC_DIR)/rendering/events.c \
        $(SRC_DIR)/rendering/render.c \
 	   $(SRC_DIR)/rendering/render_utils.c \
+	   $(SRC_DIR)/rendering/render_rays.c \
        $(SRC_DIR)/rendering/draw.c \
 	   $(SRC_DIR)/rendering/draw_utils.c \
        $(SRC_DIR)/parsing/read_file.c \
 	   $(SRC_DIR)/parsing/parsing.c \
+	   $(SRC_DIR)/parsing/parsing_color.c \
+	   $(SRC_DIR)/parsing/parsing_texture.c \
 	   $(SRC_DIR)/parsing/player_init.c \
 	   $(SRC_DIR)/parsing/validation.c \
+	   $(SRC_DIR)/parsing/validation_map.c \
+	   $(SRC_DIR)/parsing/validation_map_closed.c \
 	   $(SRC_DIR)/parsing/textures_init.c \
 	   $(SRC_DIR)/textures/textures.c
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

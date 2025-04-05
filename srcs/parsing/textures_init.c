@@ -18,7 +18,7 @@ void	init_txt_image(t_maze *maze, t_image *img, char *path)
 		mlx_destroy_window(maze -> mlx_ptr, maze -> win_ptr);
 		mlx_destroy_display(maze -> mlx_ptr);
 		free(maze -> mlx_ptr);
-		error("error creating texture image with minilibx"); // TODO improve
+		error("error creating texture image with minilibx");
 	}
 	img->data = mlx_get_data_addr(img->img_ptr, &img->bpp, &img->line_len, &img->endian);
 	return ;

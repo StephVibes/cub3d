@@ -51,3 +51,33 @@ void	validate_textures(char *textures[])
 	while (i < 4)
 		check_file(textures[i++]);
 }
+
+void	print_debug(t_map *map)
+{
+	int i = 0;
+	while (i < 4)
+	{
+		printf("texture[%d] = %s\n", i, map->textures[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		printf("floor_color[%d]: %d\n", i, map->floor_color_rgb[i]);
+		i++;
+	}
+	i = 0;
+	while (i < 3)
+	{
+		printf("ceiling_color[%d]: %d\n", i, map->ceiling_color_rgb[i]);
+		i++;
+	}
+	printf("map height = %d\n", map->height);
+	printf("map_width = %d\n", map->width);
+	i = 0;
+	while(map->layout[i])
+	{
+		printf("[%d] = %s", i, map->layout[i]);
+		i++;
+	}
+}

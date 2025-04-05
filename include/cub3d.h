@@ -38,6 +38,16 @@
 # define COLOR_CREAM	0x00F6F2E5	// Cream
 
 
+typedef struct s_flood_fill
+{
+	char	**map;
+	int		**visited;
+	int		rows;
+	int		cols;
+	
+} t_flood_fill;
+
+
 typedef struct s_image
 {
 	void	*img_ptr;      // Pointer to the image
@@ -175,6 +185,9 @@ void	rgb_to_int(t_map *map);
 
 // Validation
 void	validate_textures(char *textures[]);
+int		is_map_closed(char **map, int rows, int cols);
+void	validate_map(char **layout, t_map *map);
+void	print_debug(t_map *map);
 
 // Draw
 void    my_pixel_put(int x, int y, t_image *img, int color);
@@ -182,7 +195,8 @@ void    clear_screen(t_image *screen);
 void    move_player(t_player *player);
 void	move_player_minimap(t_player *player, int block_map);
 void    draw_player(t_maze *maze);
-void	draw_utils (t_maze *maze, int i, double ray_angle);
+void	draw_wall (t_maze *maze, int i, double ray_angle);
+void	draw_utils(t_ray *ray, t_maze *maze);
 
 // Rendering
 void	draw_square(int x, int y, int size, int color, t_image *screen);
@@ -198,6 +212,8 @@ void	def_coord(t_ray *ray, t_maze *maze);
 void 	draw_ceiling (t_maze *maze, t_ray *ray, double orig_y);
 void	draw_floor (t_maze *maze, t_ray *ray, double floor);
 void	draw_line (t_maze *maze, t_ray *ray, double orig_y, double yy);
+void	draw_rays_minimap(t_maze *maze, t_player *player);
+void	draw_rays(t_maze *maze, t_player *player);
 
 //walls
 void	wall_segment(t_maze *maze, int i);
