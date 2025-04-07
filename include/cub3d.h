@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:42:15 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 18:21:25 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/07 11:42:22 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,9 +152,9 @@ int				key_release_handler(int keycode, t_maze *maze);
 // Parsing
 void			ft_free_split(char **split);
 t_map			*load_map(const char *file_name);
-void			parse_textures(char **lines, t_map *map);
-void			parse_colors(char **lines, t_map *map);
-void			parse_map(char **lines, t_map *map);
+int				parse_textures(char **lines, t_map *map);
+int				parse_colors(char **lines, t_map *map);
+int				parse_map(char **lines, t_map *map);
 void			get_player_init_pos(t_maze *maze);
 void			get_player_angle(t_maze *maze);
 void			get_player_init_pos(t_maze *maze);
@@ -169,9 +169,9 @@ int				accept_coord(char c);
 int				is_map_line(char *line);
 
 // Validation
-void			validate_textures(char *textures[]);
+int				validate_textures(char *textures[]);
 int				is_map_closed(char **map, int rows, int cols);
-void			validate_map(char **layout, t_map *map);
+int				validate_map(char **layout, t_map *map);
 void			print_debug(t_map *map);
 int				is_player(char c);
 

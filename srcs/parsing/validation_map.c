@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:15:25 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 16:36:55 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/07 11:39:28 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@ static int	check_player_position(char **layout, t_map *map, int i, int j)
 {
 	(void)layout;
 	if (i == 0 || i == map->height - 1 || j == 0 || j == map->width - 1)
+	{
 		error("Player on the edge");
+		return (-1);
+	}
 	return (1);
 }
 
-static void	check_valid_characters(char **layout)
+static int	check_valid_characters(char **layout)
 {
 	int	i;
 	int	j;
@@ -32,11 +35,15 @@ static void	check_valid_characters(char **layout)
 		while (layout[i][j] != '\n')
 		{
 			if (!accept_valid(layout[i][j]))
+			{
 				error("Wrong value in the map");
+				return (-1);
+			}
 			j++;
 		}
 		i++;
 	}
+	return (0);
 }
 
 static int	find_player(char **layout, t_map *map)
@@ -55,22 +62,34 @@ static int	find_player(char **layout, t_map *map)
 			if (accept_coord(layout[i][j]))
 			{
 				if (player_found)
+				{
 					error("More than one player in the map");
+					return (-1);
+				}
 				player_found = check_player_position(layout, map, i, j);
 			}
 			j++;
 		}
 		i++;
 	}
-	if (!player_found)
+	if (player_found == -1)
+	{
 		error("No player found in the map");
+		return (-1);
+	}
 	return (player_found);
 }
 
-void	validate_map(char **layout, t_map *map)
+int	validate_map(char **layout, t_map *map)
 {
 	if (!is_map_closed(layout, map->height, map->width))
+	{
 		error("Map needs to be enclosed by walls");
-	check_valid_characters(layout);
-	find_player(layout, map);
+		return (-1);
+	}
+	if (check_valid_characters(layout) == -1)
+		return (-1);
+	if (find_player(layout, map) == -1)
+		return (-1);
+	return (0);
 }

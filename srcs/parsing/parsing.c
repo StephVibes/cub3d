@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:20:25 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 17:12:56 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/07 14:05:30 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	find_map_start(char **lines)
 	return (-1);
 }
 
-void	calculate_map_dimensions(char **lines, t_map *map, int map_start)
+int	calculate_map_dimensions(char **lines, t_map *map, int map_start)
 {
 	int	i;
 	int	line_len;
@@ -47,7 +47,11 @@ void	calculate_map_dimensions(char **lines, t_map *map, int map_start)
 		i++;
 	}
 	if (map->height < 3 || map->width < 3)
+	{
 		error("Map is too small");
+		return (-1);
+	}
+	return(0);
 }
 
 void	allocate_map_layout(char **lines, t_map *map, int map_start)
@@ -68,23 +72,31 @@ void	allocate_map_layout(char **lines, t_map *map, int map_start)
 	map->layout[i] = NULL;
 }
 
-void	get_map_info(char **lines, t_map *map, int map_start)
+int	get_map_info(char **lines, t_map *map, int map_start)
 {
-	calculate_map_dimensions(lines, map, map_start);
+	if(calculate_map_dimensions(lines, map, map_start) == -1)
+		return (-1);
 	allocate_map_layout(lines, map, map_start);
+	return (0);
 }
 
-void	parse_map(char **lines, t_map *map)
+int	parse_map(char **lines, t_map *map)
 {
 	int	map_start;
 
 	map_start = find_map_start(lines);
 	if (map_start > 0)
 	{
-		get_map_info(lines, map, map_start);
+		if(get_map_info(lines, map, map_start) == -1)
+			return(-1);
 	}
 	else
+	{
 		error("map not found or not in the right position");
-	validate_map(map->layout, map);
+		return (-1);
+	}
+	if (validate_map(map->layout, map) == -1)
+		return (-1);
 	print_debug(map);
+	return (0);
 }

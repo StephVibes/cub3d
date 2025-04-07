@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:07:57 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 18:44:20 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/07 12:18:52 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	error(char *message)
 {
 	printf("Error\n");
 	printf("%s\n", message);
-	exit(1);
 }
 
 int	parsing(char *map_name, t_maze *maze)
