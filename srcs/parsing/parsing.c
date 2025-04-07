@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:20:25 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/07 14:05:30 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:55:04 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	calculate_map_dimensions(char **lines, t_map *map, int map_start)
 		error("Map is too small");
 		return (-1);
 	}
-	return(0);
+	return (0);
 }
 
 void	allocate_map_layout(char **lines, t_map *map, int map_start)
@@ -74,7 +74,7 @@ void	allocate_map_layout(char **lines, t_map *map, int map_start)
 
 int	get_map_info(char **lines, t_map *map, int map_start)
 {
-	if(calculate_map_dimensions(lines, map, map_start) == -1)
+	if (calculate_map_dimensions(lines, map, map_start) == -1)
 		return (-1);
 	allocate_map_layout(lines, map, map_start);
 	return (0);
@@ -87,8 +87,8 @@ int	parse_map(char **lines, t_map *map)
 	map_start = find_map_start(lines);
 	if (map_start > 0)
 	{
-		if(get_map_info(lines, map, map_start) == -1)
-			return(-1);
+		if (get_map_info(lines, map, map_start) == -1)
+			return (-1);
 	}
 	else
 	{

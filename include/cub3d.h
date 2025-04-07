@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:42:15 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/07 11:42:22 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:39:56 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,10 @@ void			free_visited_array(int **visited, int rows);
 int				accept_valid(char c);
 int				accept_coord(char c);
 int				is_map_line(char *line);
+int				count_lines(const char *file_name);
+void			validate_file_extension(const char *file_name, char **lines);
+int				open_map_file(const char *file_name, char **lines);
+void			free_map_resources(t_map *map, char **lines);
 
 // Validation
 int				validate_textures(char *textures[]);
@@ -174,6 +178,9 @@ int				is_map_closed(char **map, int rows, int cols);
 int				validate_map(char **layout, t_map *map);
 void			print_debug(t_map *map);
 int				is_player(char c);
+int				check_color_format(char *line);
+int				validate_color_array(char **color_array, t_map *map, int type);
+int				validate_color(char *color, t_map *map, int index, int type);
 
 // Draw
 void			my_pixel_put(int x, int y, t_image *img, int color);
@@ -202,16 +209,6 @@ void			draw_floor(t_maze *maze, t_ray *ray, double floor);
 void			draw_line(t_maze *maze, t_ray *ray, double orig_y, double yy);
 void			draw_rays_minimap(t_maze *maze, t_player *player);
 void			draw_rays(t_maze *maze, t_player *player);
-
-// walls
-void			wall_segment(t_maze *maze, int i);
-void			wall_segment_init(t_maze *maze, int i);
-void			init_wall_delta(t_maze *maze);
-void			touch_points(t_maze *maze, t_player *player);
-void			draw_walls(t_maze *maze, t_player *player);
-void			wall_deltas(t_maze *maze, int i);
-void			segment_end(t_maze *maze, t_point p);
-void			segment_init(t_maze *maze, t_point p);
 
 // textures
 void			determine_text(t_ray *ray, t_maze *maze);

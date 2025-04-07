@@ -29,6 +29,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/rendering/move_player.c \
 	   $(SRC_DIR)/rendering/draw_loop.c \
        $(SRC_DIR)/parsing/read_file.c \
+	   $(SRC_DIR)/parsing/read_file_utils.c \
 	   $(SRC_DIR)/parsing/print_debug.c \
 	   $(SRC_DIR)/parsing/parsing_utils.c \
 	   $(SRC_DIR)/parsing/parsing.c \
@@ -38,6 +39,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/parsing/validation.c \
 	   $(SRC_DIR)/parsing/validation_map.c \
 	   $(SRC_DIR)/parsing/validation_map_closed.c \
+	   $(SRC_DIR)/parsing/validate_color.c \
 	   $(SRC_DIR)/parsing/textures_init.c \
 	   $(SRC_DIR)/textures/textures.c
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

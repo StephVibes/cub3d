@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:07:57 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/07 12:18:52 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/07 16:28:10 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,15 @@ int	main(int argc, char **argv)
 	t_maze	maze;
 
 	if (argc != 2)
+	{
 		error("Not enough arguments");
+		exit(1);
+	}
 	if (parsing(argv[1], &maze) != 0)
+	{
 		error("Error parsing map");
+		exit(1);
+	}
 	maze_init(&maze);
 	maze.fd_log = open("log.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (maze.fd_log == -1)

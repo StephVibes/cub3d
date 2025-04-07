@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:52:33 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/07 11:15:53 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:40:43 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,11 @@ int	check_file(char *file)
 	if (read(fd, buff, 1) < 0)
 	{
 		return (error("Can't read file"), -1);
-		//return (-1);
 	}
 	close(fd);
 	if (ft_strncmp(ext, ".xpm", 4))
 	{
 		return (error("Invalid texture file extension"), -1);
-		//return (-1);
 	}
 	return (0);
 }

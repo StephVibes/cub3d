@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:15:25 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/07 11:39:28 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/07 17:54:11 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,13 @@ static int	check_valid_characters(char **layout)
 	return (0);
 }
 
-static int	find_player(char **layout, t_map *map)
+static int	while_find_player(char **layout, t_map *map, int *player_found)
 {
 	int	i;
 	int	j;
-	int	player_found;
 
-	player_found = 0;
 	i = 0;
+	j = 0;
 	while (layout[i])
 	{
 		j = 0;
@@ -61,18 +60,28 @@ static int	find_player(char **layout, t_map *map)
 		{
 			if (accept_coord(layout[i][j]))
 			{
-				if (player_found)
+				if (*player_found)
 				{
 					error("More than one player in the map");
 					return (-1);
 				}
-				player_found = check_player_position(layout, map, i, j);
+				*player_found = check_player_position(layout, map, i, j);
 			}
 			j++;
 		}
 		i++;
 	}
-	if (player_found == -1)
+	return (0);
+}
+
+static int	find_player(char **layout, t_map *map)
+{
+	int	player_found;
+
+	player_found = 0;
+	if (while_find_player(layout, map, &player_found) == -1)
+		return (-1);
+	if (player_found == 0)
 	{
 		error("No player found in the map");
 		return (-1);
