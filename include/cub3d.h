@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:42:15 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/07 17:39:56 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:11:18 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define WALL '1'
 # define EMPTY '0'
 # define MAX_COLORS 256
-# define BLOCK 60
+# define BLOCK 120
 # define FOV 1.151917306316260
 
 # define COLOR_GREEN_1 0x00FFAA00
