@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smanriqu <smanriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:42:15 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/08 18:11:18 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/08 19:38:43 by smanriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,11 @@
 # define N_RAYS 1920
 # define MIN_WALL 200
 # define MAX_DST 200
-# define SPEED 9
+# define SPEED 10
 # define ANGLE_SPEED 0.08
 # define MAP_SIZE 350
-# define WALL '1'
-# define EMPTY '0'
 # define MAX_COLORS 256
-# define BLOCK 120
+# define BLOCK 150
 # define FOV 1.151917306316260
 
 # define COLOR_GREEN_1 0x00FFAA00
@@ -60,41 +58,41 @@ typedef struct s_flood_fill
 
 typedef struct s_image
 {
-	void *img_ptr;
-	char *data;
-	int width;
-	int height;
-	int bpp;
-	int line_len;
-	int endian;
+	void	*img_ptr;
+	char	*data;
+	int		width;
+	int		height;
+	int		bpp;
+	int		line_len;
+	int		endian;
 }				t_image;
 
 typedef struct s_player
 {
-	int key_state[4];
-	double x;
-	double y;
-	int			right_rotate;
-	int			left_rotate;
-	double		angle;
-	double		ray_x;
-	double		ray_y;
-	char		dir;
+	int		key_state[4];
+	double	x;
+	double	y;
+	int		right_rotate;
+	int		left_rotate;
+	double	angle;
+	double	ray_x;
+	double	ray_y;
+	char	dir;
 
 }				t_player;
 
 typedef struct s_map
 {
-	char *textures[4];
-	t_image *txt_imgs[4];  
-	int floor_color_rgb[3];
+	char		*textures[4];
+	t_image		*txt_imgs[4];
+	int			floor_color_rgb[3];
 	int			floor_color;
-	int ceiling_color_rgb[3];
+	int			ceiling_color_rgb[3];
 	int			ceiling_color;
-	char **layout;
-	int width;
-	int height;
-	char player_dir;
+	char		**layout;
+	int			width;
+	int			height;
+	char		player_dir;
 	int			block;
 	int			offset_2dx;
 	int			offset_2dy;
@@ -130,7 +128,6 @@ typedef struct s_maze
 	t_image		img_2d;
 	int			fd_log;
 	t_player	player;
-	//double wall_seg[9];
 	t_image		screen;
 	t_map		*map;
 	t_ray		ray[N_RAYS];
@@ -204,6 +201,7 @@ void			ray_data(t_maze *maze, int i, double ray_angle,
 					t_player *player);
 void			hit_compass(t_ray *ray, t_maze *maze);
 void			def_coord(t_ray *ray, t_maze *maze);
+int				check_strict_compass_match(t_ray *ray);
 void			draw_ceiling(t_maze *maze, t_ray *ray, double orig_y);
 void			draw_floor(t_maze *maze, t_ray *ray, double floor);
 void			draw_line(t_maze *maze, t_ray *ray, double orig_y, double yy);

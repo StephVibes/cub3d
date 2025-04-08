@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation_map_closed.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smanriqu <smanriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 15:07:19 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 16:36:31 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/08 19:38:36 by smanriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	flood_fill(t_flood_fill *f, int x, int y)
 {
 	if (x < 0 || y < 0 || x >= f->rows || y >= f->cols)
 		return (1);
-	if (f->map[x][y] == WALL || f->visited[x][y])
+	if (f->map[x][y] == '1' || f->visited[x][y])
 		return (0);
 	f->visited[x][y] = 1;
 	if (flood_fill(f, x + 1, y) || flood_fill(f, x - 1, y) || 
@@ -52,7 +52,7 @@ int	**allocate_visited_array(int rows, int cols)
 
 int	process_cell(t_flood_fill *f, int i, int j)
 {
-	if (f->map[i][j] == EMPTY || is_player(f->map[i][j]))
+	if (f->map[i][j] == '0' || is_player(f->map[i][j]))
 	{
 		if (flood_fill(f, i, j))
 			return (0);

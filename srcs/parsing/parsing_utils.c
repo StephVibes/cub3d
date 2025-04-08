@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smanriqu <smanriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:05:27 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 16:47:25 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/08 19:40:02 by smanriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	free_visited_array(int **visited, int rows)
 
 int	accept_valid(char c)
 {
-	return (c == EMPTY || c == WALL || c == 'N' || c == 'S' || c == 'E'
+	return (c == '0' || c == '1' || c == 'N' || c == 'S' || c == 'E'
 		|| c == 'W' || c == ' ');
 }
 

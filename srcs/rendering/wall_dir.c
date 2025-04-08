@@ -3,103 +3,89 @@
 /*                                                        :::      ::::::::   */
 /*   wall_dir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smanriqu <smanriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:23:17 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/08 18:33:16 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/08 19:29:54 by smanriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	array_equals(int arr[], int expected[])
+static int	handle_vertical_ambiguity(t_ray *ray, t_ray *prev)
 {
-	int	i;
-
-	i = 0;
-	while (i < 4)
+	if (ray->compass[0] == 1 && ray->compass[1] == 0
+		&& ray->compass[2] == 1 && ray->compass[3] == 0)
 	{
-		if (arr[i] != expected[i])
+		if (prev->coord == 3)
+			return (3);
+		else
+			return (1);
+	}
+	if (ray->compass[0] == 0 && ray->compass[1] == 1
+		&& ray->compass[2] == 1 && ray->compass[3] == 0)
+	{
+		if (prev->coord == 0)
 			return (0);
-		i++;
+		else
+			return (3);
 	}
-	return (1);
+	return (-1);
 }
 
-void	init_compass_arrays(int north[4], 
-		int south[4], int east[4], int west[4])
+static int	handle_horizontal_ambiguity(t_ray *ray, t_ray *prev)
 {
-	north[0] = 0;
-	north[1] = 1;
-	north[2] = 1;
-	north[3] = 1;
-	south[0] = 1;
-	south[1] = 0;
-	south[2] = 1;
-	south[3] = 1;
-	east[0] = 1;
-	east[1] = 1;
-	east[2] = 0;
-	east[3] = 1;
-	west[0] = 1;
-	west[1] = 1;
-	west[2] = 1;
-	west[3] = 0;
+	if (ray->compass[0] == 1 && ray->compass[1] == 0
+		&& ray->compass[2] == 0 && ray->compass[3] == 1)
+	{
+		if (prev->coord == 1)
+			return (1);
+		else
+			return (2);
+	}
+	if (ray->compass[0] == 0 && ray->compass[1] == 1
+		&& ray->compass[2] == 0 && ray->compass[3] == 1)
+	{
+		if (prev->coord == 2)
+			return (2);
+		else
+			return (0);
+	}
+	return (-1);
 }
 
-void	check_compass_direction(t_ray *ray, t_maze *maze)
+static int	check_ambiguous_compass_cases(t_ray *ray, t_maze *maze)
 {
-	int	wall_facing_north[4];
-	int	wall_facing_south[4];
-	int	wall_facing_east[4];
-	int	wall_facing_west[4];
+	t_ray	*prev;
+	int		result;
 
-	init_compass_arrays(wall_facing_north, wall_facing_south, 
-		wall_facing_east, wall_facing_west);
-	if (array_equals(ray->compass, wall_facing_north))
-		ray->coord = 0;
-	else if (array_equals(ray->compass, wall_facing_south))
-		ray->coord = 1;
-	else if (array_equals(ray->compass, wall_facing_east))
-		ray->coord = 2;
-	else if (array_equals(ray->compass, wall_facing_west))
-		ray->coord = 3;
-	else if (ray->compass[0] == 1 && ray->compass[1] == 0 && ray->compass[2] == 1 && ray->compass[3] == 0)
-	{
-		if (maze->ray[ray->ray_id - 1].coord == 3)
-			ray->coord = 3;
-		else 
-			ray->coord = 1;
-	}
-	else if (ray->compass[0] == 0 && ray->compass[1] == 1 && ray->compass[2] == 1 && ray->compass[3] == 0)
-	{
-		if (maze->ray[ray->ray_id - 1].coord == 0)
-			ray->coord = 0;
-		else 
-			ray->coord = 3;
-	}
-	else if (ray->compass[0] == 1 && ray->compass[1] == 0 && ray->compass[2] == 0 && ray->compass[3] == 1)
-	{
-		if (maze->ray[ray->ray_id - 1].coord == 1)
-			ray->coord = 1;
-		else 
-			ray->coord = 2;
-	}
-	else if (ray->compass[0] == 0 && ray->compass[1] == 1 && ray->compass[2] == 0 && ray->compass[3] == 1)
-	{
-		if (maze->ray[ray->ray_id - 1].coord == 2)
-			ray->coord = 2;
-		else 
-			ray->coord = 0;
-	}
-	else
-		ray->coord = maze->ray[ray->ray_id - 1].coord;
+	prev = &maze->ray[ray->ray_id - 1];
+	result = handle_vertical_ambiguity(ray, prev);
+	if (result != -1)
+		return (result);
+	result = handle_horizontal_ambiguity(ray, prev);
+	if (result != -1)
+		return (result);
+	return (-1);
 }
 
 void	def_coord(t_ray *ray, t_maze *maze)
 {
-	(void)maze;
-	check_compass_direction(ray, maze);
+	int	coord;
+
+	coord = check_strict_compass_match(ray);
+	if (coord != -1)
+	{
+		ray->coord = coord;
+		return ;
+	}
+	coord = check_ambiguous_compass_cases(ray, maze);
+	if (coord != -1)
+	{
+		ray->coord = coord;
+		return ;
+	}
+	ray->coord = maze->ray[ray->ray_id - 1].coord;
 }
 
 void	hit_compass(t_ray *ray, t_maze *maze)

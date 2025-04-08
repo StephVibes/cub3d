@@ -21,6 +21,7 @@ SRCS = $(SRC_DIR)/main.c \
 	   $(SRC_DIR)/rendering/events_key_release.c \
 	   $(SRC_DIR)/rendering/events_utils.c \
 	   $(SRC_DIR)/rendering/wall_dir.c \
+	   $(SRC_DIR)/rendering/wall_dir_utils.c \
        $(SRC_DIR)/rendering/render.c \
 	   $(SRC_DIR)/rendering/render_utils.c \
 	   $(SRC_DIR)/rendering/render_rays.c \
