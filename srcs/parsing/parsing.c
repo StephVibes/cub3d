@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smanriqu <smanriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:20:25 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/07 17:55:04 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/08 19:43:51 by smanriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,5 @@ int	parse_map(char **lines, t_map *map)
 	}
 	if (validate_map(map->layout, map) == -1)
 		return (-1);
-	print_debug(map);
 	return (0);
 }
