@@ -6,7 +6,7 @@
 /*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 18:23:17 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/05 18:38:24 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/08 17:43:03 by alramire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,41 @@ void	check_compass_direction(t_ray *ray, t_maze *maze)
 		ray->coord = 2;
 	else if (array_equals(ray->compass, wall_facing_west))
 		ray->coord = 3;
+	//coord 1 coord 3
+	else if (ray->compass[0] == 1 && ray->compass[1] == 0 && ray->compass[2] == 1 && ray->compass[3] == 0)
+	{
+		if (maze->ray[ray->ray_id - 1].coord == 3)
+			ray->coord = 3;
+		else 
+			ray->coord = 1;
+	}
+	//Coord 3 coord 0
+	else if (ray->compass[0] == 0 && ray->compass[1] == 1 && ray->compass[2] == 1 && ray->compass[3] == 0)
+	{
+		if (maze->ray[ray->ray_id - 1].coord == 0)
+			ray->coord = 0;
+		else 
+			ray->coord = 3;
+	}
+	//coord 
+	else if (ray->compass[0] == 1 && ray->compass[1] == 0 && ray->compass[2] == 0 && ray->compass[3] == 1)
+	{
+		if (maze->ray[ray->ray_id - 1].coord == 1)
+			ray->coord = 1;
+		else 
+			ray->coord = 2;
+	}
+	//Coord 2 coord 0 
+	else if (ray->compass[0] == 0 && ray->compass[1] == 1 && ray->compass[2] == 0 && ray->compass[3] == 1)
+	{
+		if (maze->ray[ray->ray_id - 1].coord == 2)
+			ray->coord = 2;
+		else 
+			ray->coord = 0;
+	}
 	else
 		ray->coord = maze->ray[ray->ray_id - 1].coord;
+	//Every corner has 2 options. and there are some combinations that are not possible.	
 }
 
 void	def_coord(t_ray *ray, t_maze *maze)
