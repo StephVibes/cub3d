@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alramire <alramire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: smanriqu <smanriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:07:57 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/07 16:28:10 by alramire         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:47:38 by smanriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ void	error(char *message)
 {
 	printf("Error\n");
 	printf("%s\n", message);
+}
+
+void	usage(void)
+{
+	printf("Usage:\n   Please run:\n   ./cub3D [scene description ");
+	printf("file with the .cub extension]\n");
 }
 
 int	parsing(char *map_name, t_maze *maze)
@@ -33,7 +39,7 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		error("Not enough arguments");
+		usage();
 		exit(1);
 	}
 	if (parsing(argv[1], &maze) != 0)
