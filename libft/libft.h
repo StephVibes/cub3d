@@ -96,4 +96,10 @@ void			*freeing(char *buffer, char *line);
 
 char			*ft_gnl_strjoin(char *s1, char const *s2);
 
+char			*f_strchr(char *s, int c);
+
+char			*f_strdup(char *s1);
+
+char			*f_strjoin(char *s1, char *s2);
+
 #endif
