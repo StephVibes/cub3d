@@ -6,7 +6,7 @@
 /*   By: smanriqu <smanriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:42:15 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/08 19:38:43 by smanriqu         ###   ########.fr       */
+/*   Updated: 2025/04/10 10:57:51 by smanriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@
 # define N_RAYS 1920
 # define MIN_WALL 200
 # define MAX_DST 200
-# define SPEED 10
+# define SPEED 25
 # define ANGLE_SPEED 0.08
 # define MAP_SIZE 350
 # define MAX_COLORS 256
-# define BLOCK 150
+# define BLOCK 300
 # define FOV 1.151917306316260
 
 # define COLOR_GREEN_1 0x00FFAA00
