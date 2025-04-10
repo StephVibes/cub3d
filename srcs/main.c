@@ -6,7 +6,7 @@
 /*   By: smanriqu <smanriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 17:07:57 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/10 11:47:38 by smanriqu         ###   ########.fr       */
+/*   Updated: 2025/04/10 11:50:55 by smanriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ int	main(int argc, char **argv)
 		exit(1);
 	}
 	maze_init(&maze);
-	maze.fd_log = open("log.txt", O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (maze.fd_log == -1)
 		error("Failed to open log file");
 	mlx_loop_hook(maze.mlx_ptr, draw_loop, &maze);
