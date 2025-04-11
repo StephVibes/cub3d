@@ -6,7 +6,7 @@
 /*   By: smanriqu <smanriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/05 16:42:15 by alramire          #+#    #+#             */
-/*   Updated: 2025/04/10 10:57:51 by smanriqu         ###   ########.fr       */
+/*   Updated: 2025/04/11 17:58:46 by smanriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ typedef struct s_maze
 	void		*mlx_ptr;
 	t_image		img_3d;
 	t_image		img_2d;
-	int			fd_log;
 	t_player	player;
 	t_image		screen;
 	t_map		*map;
