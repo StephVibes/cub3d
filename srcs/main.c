@@ -48,7 +48,6 @@ int	main(int argc, char **argv)
 		exit(1);
 	}
 	maze_init(&maze);
-		error("Failed to open log file");
 	mlx_loop_hook(maze.mlx_ptr, draw_loop, &maze);
 	mlx_loop(maze.mlx_ptr);
 	return (0);
